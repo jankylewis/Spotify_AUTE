@@ -1,0 +1,91 @@
+package se.infrastructure;
+
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.BrowserType.LaunchOptions;
+
+
+public class PlaywrightFactory {
+
+    //region Introducing playwright objects
+
+    protected static Playwright playwright;
+    protected static Browser browser;
+    protected static BrowserContext browserContext;
+    protected static BrowserType browserType;
+    protected static LaunchOptions launchOptions;
+    protected static Page page;
+
+    //endregion
+
+    //region Initializing browser
+
+    protected static BrowserContext produceBrowserContext() {
+        return browserContext = browser.newContext();
+    }
+
+    protected static Page producePlaywrightPage() {
+        return page = browserContext.newPage();
+    }
+
+    protected static LaunchOptions produceLaunchOptions(String browserName, boolean isHeaded) {
+
+        //Specifically handling for chrome browser type
+        return launchOptions = browserName.toLowerCase() == BrowserManagement._chromeBrowserType ?
+                new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
+                new LaunchOptions().setHeadless(!isHeaded);
+    }
+
+    protected static Playwright producePlaywright() {
+        return playwright = Playwright.create();
+    }
+
+    private static BrowserType produceChromeBrowserType() {
+        return browserType = BrowserManagement.chromeBrowserType;
+    }
+
+    private static BrowserType produceFirefoxBrowserType() {
+        return browserType = BrowserManagement.firefoxBrowserType;
+    }
+
+    private static BrowserType produceWebkitBrowserType() {
+        return browserType = BrowserManagement.webkitBrowserType;
+    }
+
+    //region Launching a new browser
+
+    private static Page produceInteractivePlwPage(String browserName, boolean isHeaded) throws IllegalArgumentException {
+
+        producePlaywright();
+
+        switch (browserName.toLowerCase()) {
+            case BrowserManagement._chromeBrowserType:
+                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                break;
+            case BrowserManagement._firefoxBrowserType:
+                browser = produceFirefoxBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                break;
+            case BrowserManagement._webkitBrowserType:
+                browser = produceWebkitBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        "Your desired browser was invalid, please provide another browser type!");
+        }
+
+        produceBrowserContext();
+
+        producePlaywrightPage();
+
+        return page;
+    }
+
+    //endregion
+
+    public Page initializeBrowser(String browserName, boolean isHeaded) {
+        produceInteractivePlwPage(browserName, isHeaded);
+        return page;
+    }
+
+    //endregion
+
+}
