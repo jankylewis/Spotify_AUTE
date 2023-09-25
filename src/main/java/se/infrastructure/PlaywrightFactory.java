@@ -1,8 +1,13 @@
 package se.infrastructure;
 
-import com.microsoft.playwright.*;
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.BrowserContext;
 
+import java.util.Locale;
 
 public class PlaywrightFactory {
 
@@ -30,7 +35,7 @@ public class PlaywrightFactory {
     protected static LaunchOptions produceLaunchOptions(String browserName, boolean isHeaded) {
 
         //Specifically handling for chrome browser type
-        return launchOptions = browserName.toLowerCase() == BrowserManagement._chromeBrowserType ?
+        return launchOptions = browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
                 new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
                 new LaunchOptions().setHeadless(!isHeaded);
     }
@@ -58,6 +63,9 @@ public class PlaywrightFactory {
         producePlaywright();
 
         switch (browserName.toLowerCase()) {
+            case BrowserManagement._chromiumBrowserType:
+                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                break;
             case BrowserManagement._chromeBrowserType:
                 browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
                 break;
