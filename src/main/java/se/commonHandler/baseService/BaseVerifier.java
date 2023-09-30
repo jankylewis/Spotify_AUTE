@@ -1,4 +1,4 @@
-package se.commonHandler.commonKeyword;
+package se.commonHandler.baseService;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -13,5 +13,10 @@ public class BaseVerifier {
 
     public boolean verifyElementVisible(Locator expLocator) {
         return expLocator.isVisible();
+    }
+
+    public interface IVerification {
+        void verificationWentPassed();
+        void verificationWentFailed();
     }
 }

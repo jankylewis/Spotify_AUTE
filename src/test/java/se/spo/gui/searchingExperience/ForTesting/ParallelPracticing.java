@@ -1,11 +1,11 @@
-package se.spo.gui.searchingExperience;
+package se.spo.gui.searchingExperience.ForTesting;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class exe {
+public class ParallelPracticing {
 
     public static void main(String[] args) throws Exception {
         AtomicBoolean processing = new AtomicBoolean(true);

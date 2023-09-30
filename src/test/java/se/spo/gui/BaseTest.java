@@ -1,63 +1,43 @@
 package se.spo.gui;
 
-import com.microsoft.playwright.Page;
-import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import se.business.BasePage;
 import se.business.LogInPage;
-import se.infrastructure.PlaywrightFactory;
+import se.business.ProfilePage;
+import se.commonHandler.baseService.BaseService;
 import se.model.UserInformationModel;
-import se.utility.GlobalVariableUtil.Environment;
-import se.utility.GlobalVariableUtil.BrowserConfiguration;
-import se.utility.GlobalVariableUtil.UserCredential;
 
-public class BaseTest {
+public class BaseTest extends BaseService {
 
-    //region Introducing fields
+    // region Introducing fields
 
-    protected PlaywrightFactory playwrightFactory;
-    protected Page page;
-    protected BasePage basePage;
     protected LogInPage logInPage;
+    protected ProfilePage profPage;
+    protected UserInformationModel usrModel;
 
-    protected final Environment gvE;
-    protected final BrowserConfiguration gvBC;
-    protected final UserCredential gvUC;
+    // endregion
 
-    //endregion
-
-    //region Retrieving global variables
+    //region Initializing instances
 
     {
-        gvE = new Environment();
-        gvBC = new BrowserConfiguration();
-        gvUC = new UserCredential();
+        logInPage = new LogInPage(page);
+        profPage = new ProfilePage(page);
     }
 
     //endregion
 
     @BeforeSuite
     public void testPreparation() {
+        logInPage.navigateToLogInPage()             //Logging in to Spotify gateway
+                .logInToSpotifyGateway(usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered));
 
-        //region Initializing the base services
+        profPage.verifySpotifyLogoPresented();
 
-        playwrightFactory = new PlaywrightFactory();
-        page = playwrightFactory.initializeBrowser(gvBC.browserType, !gvBC.isHeadless);
-        basePage = new BasePage(page);
-
-        //endregion
-        logInPage = new LogInPage(page);
-
-        logInPage.navigateToLogInPage()                         //Logging in to Spotify gateway
-                .logInToSpotifyGateway(new UserInformationModel(gvUC.userEmail, gvUC.userPassword, gvUC.isRemembered))
-                .navigateToBaseUrl();
-
-        Assert.assertTrue(logInPage.verifyAccountMenuPresented());
+        basePage.navigateToBaseUrl();
     }
 
     @AfterSuite
     public void testCleaning() {
-        basePage.logOutOfSpotifyGateway();                      //Logging out of Spotify gateway
+        basePage.logOutOfSpotifyGateway();          //Logging out of Spotify gateway
     }
 }

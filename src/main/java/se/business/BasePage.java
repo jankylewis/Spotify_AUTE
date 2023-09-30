@@ -1,9 +1,10 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
-import se.commonHandler.commonKeyword.BaseUIAction;
-import se.commonHandler.commonKeyword.BaseVerifier;
-import se.commonHandler.commonKeyword.BaseWaitHelper;
+import se.commonHandler.baseService.BaseUIAction;
+import se.commonHandler.baseService.BaseVerifier;
+import se.commonHandler.baseService.BaseWaitHelper;
+import se.pageObject.ProfileObject;
 import se.utility.GlobalVariableUtil.Environment;
 import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
@@ -23,6 +24,7 @@ public class BasePage extends BaseObject {
     protected BaseVerifier baseVerifier;
     protected BaseWaitHelper waitHelper;
     protected CommonObject commonObject;
+    protected ProfileObject profObject;
     protected WaitConstant waitConst;
 
     //region Retrieving global variables
@@ -46,6 +48,7 @@ public class BasePage extends BaseObject {
         waitHelper = new BaseWaitHelper(page);
 
         commonObject = new CommonObject(page);
+        profObject = new ProfileObject(page);
     }
 
     public BasePage navigateToBaseUrl() {

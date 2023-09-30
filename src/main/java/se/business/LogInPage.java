@@ -8,7 +8,7 @@ import se.pageObject.LogInObject;
 public class LogInPage extends BasePage {
 
     //region Initializing log-in objects
-//    private P<? extends P> logInObj = new P<LogInObject>();
+
     private LogInObject logInObj;
 
     public LogInPage(Page page) {

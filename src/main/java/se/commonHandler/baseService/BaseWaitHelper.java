@@ -1,4 +1,4 @@
-package se.commonHandler.commonKeyword;
+package se.commonHandler.baseService;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

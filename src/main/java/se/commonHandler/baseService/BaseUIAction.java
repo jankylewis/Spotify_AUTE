@@ -1,10 +1,12 @@
-package se.commonHandler.commonKeyword;
+package se.commonHandler.baseService;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.ConstantContainer.ActionConstant;
 import se.commonHandler.ConstantContainer.WaitConstant;
+
+import java.awt.*;
 
 public class BaseUIAction {
 
@@ -25,6 +27,20 @@ public class BaseUIAction {
     }
 
     // endregion
+
+    public void resizeDynamicViewport() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int screenWidth = (int)screenSize.getWidth();
+        int screenHeight = (int)screenSize.getHeight();
+
+        
+    }
+
+    public void resizeDynamicViewport(double width, double height) {
+
+    }
+
     public void navigateToUrl(String expUrl) {
         page.navigate(expUrl, waitHelper.navOpts.setWaitUntil(waitConst.DOMCONTENTWAITER));
     }

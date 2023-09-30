@@ -7,15 +7,15 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.BrowserContext;
 
-import java.util.Locale;
+import java.awt.*;
 
 public class PlaywrightFactory {
 
     //region Introducing playwright objects
 
+    public static BrowserContext browserContext;
     protected static Playwright playwright;
-    protected static Browser browser;
-    protected static BrowserContext browserContext;
+    public static Browser browser;
     protected static BrowserType browserType;
     protected static LaunchOptions launchOptions;
     protected static Page page;
@@ -24,7 +24,15 @@ public class PlaywrightFactory {
 
     //region Initializing browser
 
+    //Maximizing window
+//    private static Browser.NewContextOptions produceNewContextOptions() {
+//
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        return new Browser.NewContextOptions().setViewportSize(screenSize.width, screenSize.height);
+//    }
+
     protected static BrowserContext produceBrowserContext() {
+//        return browserContext = browser.newContext(produceNewContextOptions());
         return browserContext = browser.newContext();
     }
 
@@ -35,9 +43,7 @@ public class PlaywrightFactory {
     protected static LaunchOptions produceLaunchOptions(String browserName, boolean isHeaded) {
 
         //Specifically handling for chrome browser type
-        return launchOptions = browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
-                new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
-                new LaunchOptions().setHeadless(!isHeaded);
+        return launchOptions = browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded);
     }
 
     protected static Playwright producePlaywright() {
@@ -76,8 +82,7 @@ public class PlaywrightFactory {
                 browser = produceWebkitBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
                 break;
             default:
-                throw new IllegalArgumentException(
-                        "Your desired browser was invalid, please provide another browser type!");
+                throw new IllegalArgumentException("Your desired browser was invalid, please provide another browser type!");
         }
 
         produceBrowserContext();
