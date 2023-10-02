@@ -2,7 +2,9 @@ package se.commonHandler.baseService;
 
 import com.microsoft.playwright.Page;
 import se.business.BasePage;
+import se.commonHandler.ConstantContainer.WaitConstant;
 import se.infrastructure.PlaywrightFactory;
+import se.utility.FakeDataUtil;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
 import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.GlobalVariableUtil.Environment;
@@ -19,6 +21,7 @@ public class BaseService {
 
     //region Introducing variables
 
+    public FakeDataUtil faker;
     public PLUtil plUtil;
     public Environment gve;
     public BrowserConfiguration gvbc;
@@ -26,7 +29,10 @@ public class BaseService {
 
     public PlaywrightFactory playwrightFactory;
     public Page page;
+
     public BasePage basePage;
+    public BaseWaitHelper waitHelper;
+    public WaitConstant waitConst;
 
     //endregion
 
@@ -36,6 +42,10 @@ public class BaseService {
         gve = new Environment();
         gvbc = new BrowserConfiguration();
         gvuc = new UserCredential();
+
+        waitHelper = new BaseWaitHelper(page);
+
+        faker = new FakeDataUtil();
     }
 
     //endregion

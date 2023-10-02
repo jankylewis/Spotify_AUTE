@@ -9,6 +9,6 @@ public class HomeObject extends BaseObject {
         super(page);
     }
 
-    public Locator LBL_MADEFORUSERNAME = page.locator("\"//section[contains(@aria-label, 'Made For Jan')]//a[contains(text(), 'Made For Jan')]\"");
-
+    public Locator LBL_MADEFORUSERNAME = page.locator("\"xpath=//section[contains(@aria-label, 'Made For Jan')]//a[contains(text(), 'Made For Jan')]\"");
+    public Locator BTN_LOG_IN = page.locator("xpath=//button[contains(@data-testid, 'login-button')]");
 }

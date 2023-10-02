@@ -2,6 +2,7 @@ package se.business;
 
 import com.microsoft.playwright.Page;
 import se.commonHandler.ConstantContainer.LocalPathConstant;
+import se.commonHandler.ConstantContainer.MessageConstant;
 import se.model.UserInformationModel;
 import se.pageObject.LogInObject;
 
@@ -45,9 +46,14 @@ public class LogInPage extends BasePage {
 
     //region Making verifications on successful log-in
 
-    public boolean verifyAccountMenuPresented() {
+    public void verifyAccountMenuPresented() {
         waitHelper.waitForElementVisible(commonObject.BTN_ACCOUNT_MENU, true);
-        return baseVerifier.verifyElementVisible(commonObject.BTN_ACCOUNT_MENU);
+        baseVerifier.verifyElementVisible(commonObject.BTN_ACCOUNT_MENU);
+    }
+
+    public void verifyErrorMessagePresented() {
+        waitHelper.waitForElementVisible(logInObj.LBL_INVALID_CREDENTIALS, false);
+        baseVerifier.verifyStringsEqual(MessageConstant.LBL_INVALID_CREDENTIALS, logInObj.LBL_INVALID_CREDENTIALS.textContent());
     }
 
     //endregion

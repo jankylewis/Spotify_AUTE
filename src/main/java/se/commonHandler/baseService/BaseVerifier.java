@@ -11,12 +11,22 @@ public class BaseVerifier {
         this.page = page;
     }
 
-    public boolean verifyElementVisible(Locator expLocator) {
-        return expLocator.isVisible();
+    public void verifyElementVisible(Locator expLocator) {
+         expLocator.isVisible();
+    }
+
+    public boolean verifyStringsEqual(String expStr, String actStr) {
+
+        if (expStr.trim().toLowerCase() == actStr.trim().toLowerCase()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public interface IVerification {
         void verificationWentPassed();
+
         void verificationWentFailed();
     }
 }

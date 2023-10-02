@@ -44,7 +44,7 @@ public class BaseWaitHelper {
 
     //region Hard-coded waiting
 
-    public void forceWait(int millisecondsToWait) {
+    public void forcedWait(int millisecondsToWait) {
         try {
             Thread.sleep(millisecondsToWait);
         } catch (Exception ex) {
