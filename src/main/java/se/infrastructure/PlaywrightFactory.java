@@ -24,12 +24,15 @@ public class PlaywrightFactory {
 
     //region Initializing browser
 
-    //Maximizing window
+    //region Maximizing window
+
 //    private static Browser.NewContextOptions produceNewContextOptions() {
 //
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        return new Browser.NewContextOptions().setViewportSize(screenSize.width, screenSize.height);
 //    }
+
+    //endregion
 
     protected static BrowserContext produceBrowserContext() {
 //        return browserContext = browser.newContext(produceNewContextOptions());

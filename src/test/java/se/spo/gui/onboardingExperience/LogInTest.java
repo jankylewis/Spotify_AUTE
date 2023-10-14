@@ -58,6 +58,7 @@ public class LogInTest extends BaseService {
 
         //Performing logging-in to Spotify
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
+
     }
 
     @Test(priority = 2)
