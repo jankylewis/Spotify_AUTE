@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Authentication Tests" parallel="true">
+    <test name="Log In" parallel="true">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.LogInTest"/>
+        </classes>
+    </test>
+</suite>

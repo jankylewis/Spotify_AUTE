@@ -54,7 +54,7 @@ public class BaseService {
 
     public BaseService() {
         playwrightFactory = new PlaywrightFactory();
-        page = playwrightFactory.initializeBrowser(gvbc.browserType, !gvbc.isHeadless);
+        page = playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
         basePage = new BasePage(page);
     }
 

@@ -6,9 +6,12 @@ public class BrowserManagement {
 
     //region Introducing browser types
 
-    protected static BrowserType chromeBrowserType = PlaywrightFactory.playwright.chromium();
-    protected static BrowserType firefoxBrowserType = PlaywrightFactory.playwright.firefox();
-    protected static BrowserType webkitBrowserType = PlaywrightFactory.playwright.webkit();
+//    protected static BrowserType chromeBrowserType = PlaywrightFactory.playwright.chromium();
+//    protected static BrowserType firefoxBrowserType = PlaywrightFactory.playwright.firefox();
+//    protected static BrowserType webkitBrowserType = PlaywrightFactory.playwright.webkit();
+    protected static BrowserType chromeBrowserType = PlaywrightFactory.getPlaywright().chromium();
+    protected static BrowserType firefoxBrowserType = PlaywrightFactory.getPlaywright().firefox();
+    protected static BrowserType webkitBrowserType = PlaywrightFactory.getPlaywright().webkit();
 
     //These browser type will be retrieved from settings files
     protected static final String _chromiumBrowserType = "chromium";

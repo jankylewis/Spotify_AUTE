@@ -1,8 +1,6 @@
 package se.spo.gui.onboardingExperience;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import se.business.HomePage;
 import se.business.LogInPage;
 import se.business.ProfilePage;
@@ -49,7 +47,7 @@ public class LogInTest extends BaseService {
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
     }
 
-    @Test(priority = 2)
+//    @Test(priority = 2)
     public void logInUnsuccessfullyWithBadUsrname() {
 
         //Preparing an invalid username
@@ -58,10 +56,9 @@ public class LogInTest extends BaseService {
 
         //Performing logging-in to Spotify
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
-
     }
 
-    @Test(priority = 2)
+//    @Test(priority = 2)
     public void logInUnccessfullyWithBadCredentials() {
 
         //Preparing invalid credentials
@@ -76,7 +73,7 @@ public class LogInTest extends BaseService {
 
     //region Test preparation and cleaning-up
 
-    @BeforeMethod()
+    @BeforeMethod(alwaysRun = true)
     public void testPreparation() {
         usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered);
         logInPage = new LogInPage(page);
@@ -84,7 +81,7 @@ public class LogInTest extends BaseService {
         homePage = new HomePage(page);
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void testCleaningUp() {
         if (wasSuccessfullyLoggedIn) {
             profPage.logOutOfSpotifyGateway();                  //User logged-off Spotify

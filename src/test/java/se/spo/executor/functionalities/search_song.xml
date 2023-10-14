@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Regression executed from Spotify">
-    <test name="Regression">
+<suite name="Searching Song Tests">
+    <test name="Basic Searches">
         <classes>
             <class name="se.spo.gui.searchingExperience.SearchingSong"/>
         </classes>

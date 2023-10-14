@@ -6,101 +6,160 @@ import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.BrowserContext;
-
-import java.awt.*;
+import org.jetbrains.annotations.NotNull;
 
 public class PlaywrightFactory {
 
-    //region Introducing playwright objects
+    //region Introducing objects
 
-    public static BrowserContext browserContext;
-    protected static Playwright playwright;
-    public static Browser browser;
-    protected static BrowserType browserType;
-    protected static LaunchOptions launchOptions;
-    protected static Page page;
+    private static ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
+    private static ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
+    private static ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
+    private static ThreadLocal<Page> tlPage = new ThreadLocal<>();
+    protected static ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
+    private static ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
 
     //endregion
 
     //region Initializing browser
 
-    //region Maximizing window
-
+    //Maximizing window
 //    private static Browser.NewContextOptions produceNewContextOptions() {
 //
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        return new Browser.NewContextOptions().setViewportSize(screenSize.width, screenSize.height);
 //    }
 
+
+    //region Thread management
+
+    //region Initializing Playwright
+
+    private static void setPlaywright() {
+        tlPlaywright.set(Playwright.create());
+    }
+
+    protected static Playwright getPlaywright() {
+        return tlPlaywright.get();
+    }
+
     //endregion
 
-    protected static BrowserContext produceBrowserContext() {
-//        return browserContext = browser.newContext(produceNewContextOptions());
-        return browserContext = browser.newContext();
+    //region Initializing BrowserType
+
+    private static void setChromeBrowserType() {
+        tlBrowserType.set(BrowserManagement.chromeBrowserType);
     }
 
-    protected static Page producePlaywrightPage() {
-        return page = browserContext.newPage();
+    private static void setFirefoxBrowserType() {
+        tlBrowserType.set(BrowserManagement.firefoxBrowserType);
     }
 
-    protected static LaunchOptions produceLaunchOptions(String browserName, boolean isHeaded) {
-
-        //Specifically handling for chrome browser type
-        return launchOptions = browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded);
+    private static void setWebkitBrowserType() {
+        tlBrowserType.set(BrowserManagement.webkitBrowserType);
     }
 
-    protected static Playwright producePlaywright() {
-        return playwright = Playwright.create();
+    private static BrowserType getBrowserType() {
+        return tlBrowserType.get();
     }
 
-    private static BrowserType produceChromeBrowserType() {
-        return browserType = BrowserManagement.chromeBrowserType;
+    //endregion
+
+    //region Initializing LaunchOptions
+
+    private static void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
+        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
+                            new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
+                            new LaunchOptions().setHeadless(!isHeaded));
     }
 
-    private static BrowserType produceFirefoxBrowserType() {
-        return browserType = BrowserManagement.firefoxBrowserType;
+    private static LaunchOptions getLaunchOptions() {
+        return tlLaunchOptions.get();
     }
 
-    private static BrowserType produceWebkitBrowserType() {
-        return browserType = BrowserManagement.webkitBrowserType;
+    //endregion
+
+    //region Initializing Browser
+
+    private static void setBrowser() {
+        tlBrowser.set(getBrowserType().launch(getLaunchOptions()));
     }
 
-    //region Launching a new browser
+    private static Browser getBrowser() {
+        return tlBrowser.get();
+    }
 
-    private static Page produceInteractivePlwPage(String browserName, boolean isHeaded) throws IllegalArgumentException {
+    //endregion
 
-        producePlaywright();
+    //region Initializing BrowserContext
 
-        switch (browserName.toLowerCase()) {
-            case BrowserManagement._chromiumBrowserType:
-                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
-                break;
+    private static void setBrowserContext() {
+        tlBrowserContext.set(getBrowser().newContext());
+    }
+
+    private static BrowserContext getBrowserContext() {
+        return tlBrowserContext.get();
+    }
+
+    //endregion
+
+    //region Producing an interactive Playwright Page
+
+    private static void produceInteractivePlaywrightPage(@NotNull String browserName, boolean isHeaded) {
+
+        //Producing Playwright
+        setPlaywright();
+
+        //Normalizing browserName
+        browserName = browserName.toLowerCase().trim();
+
+        switch (browserName) {
             case BrowserManagement._chromeBrowserType:
-                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setChromeBrowserType();                             //Producing BrowserType with Chrome browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Chrome browser
+                setBrowser();                                       //Producing Browser
                 break;
             case BrowserManagement._firefoxBrowserType:
-                browser = produceFirefoxBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setFirefoxBrowserType();                            //Producing BrowserType with Firefox browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Firefox browser
+                setBrowser();                                       //Producing Browser
                 break;
             case BrowserManagement._webkitBrowserType:
-                browser = produceWebkitBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setWebkitBrowserType();                             //Producing BrowserType with Webkit browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Webkit browser
+                setBrowser();                                       //Producing Browser
                 break;
-            default:
-                throw new IllegalArgumentException("Your desired browser was invalid, please provide another browser type!");
         }
 
-        produceBrowserContext();
+        //Producing BrowserContext
+        setBrowserContext();
 
-        producePlaywrightPage();
+        //Producing Page
+        setPage();
+    }
 
-        return page;
+    public Page initializeInteractiveBrowser(String browserName, boolean isHeaded) {
+
+        //Ushering a Page
+        produceInteractivePlaywrightPage(browserName, isHeaded);
+
+        //Generating an interactive Page
+        return getPage();
     }
 
     //endregion
 
-    public Page initializeBrowser(String browserName, boolean isHeaded) {
-        produceInteractivePlwPage(browserName, isHeaded);
-        return page;
+    //region Initializing Page
+
+    private static void setPage() {
+        tlPage.set(getBrowserContext().newPage());
     }
+
+    private static Page getPage() {
+        return tlPage.get();
+    }
+
+    //endregion
 
     //endregion
 
