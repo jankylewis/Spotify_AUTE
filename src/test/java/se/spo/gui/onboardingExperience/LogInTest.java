@@ -81,9 +81,13 @@ public class LogInTest extends BaseService {
     @BeforeMethod
     public void testPreparation() {
         usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered);
-        logInPage = new LogInPage(page);
-        profPage = new ProfilePage(page);
-        homePage = new HomePage(page);
+//        logInPage = new LogInPage(page);
+//        profPage = new ProfilePage(page);
+//        homePage = new HomePage(page);
+
+        logInPage = new LogInPage(getPage());
+        profPage = new ProfilePage(getPage());
+        homePage = new HomePage(getPage());
     }
 
     @AfterMethod

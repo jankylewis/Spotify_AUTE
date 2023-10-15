@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TL Tests" parallel="tests" thread-count="2">
+    <test name="TL1">
+        <classes>
+            <class name="se.spo.gui.searchingExperience.ForTesting.ThreadLocalPracticing">
+                <methods>
+                    <include name="test01"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Tl2">
+        <classes>
+            <class name="se.spo.gui.searchingExperience.ForTesting.ThreadLocalPracticing">
+                <methods>
+                    <include name="test02"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
