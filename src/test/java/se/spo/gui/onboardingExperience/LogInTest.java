@@ -6,6 +6,7 @@ import se.business.LogInPage;
 import se.business.ProfilePage;
 import se.commonHandler.baseService.BaseService;
 import se.model.UserInformationModel;
+import se.spo.gui.BaseTestService;
 
 public class LogInTest extends BaseService {
 
@@ -23,6 +24,8 @@ public class LogInTest extends BaseService {
     @Test(priority = 1)
     public void logInSuccessfully() {
 
+        System.out.println("The thread ID for s Chrome is "+ Thread.currentThread().getId());
+
         //Performing logging-in to Spotify
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel);
 
@@ -37,6 +40,8 @@ public class LogInTest extends BaseService {
 
     @Test(priority = 2)
     public void logInUnsuccessfullyWithBadPwd() {
+
+        System.out.println("The thread ID for uns Chrome is "+ Thread.currentThread().getId());
 
         //Preparing an invalid password
         usrModel.setUserPassword(faker.produceCatchPhraseOfHowIMetYourMother() +
@@ -73,7 +78,7 @@ public class LogInTest extends BaseService {
 
     //region Test preparation and cleaning-up
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeMethod
     public void testPreparation() {
         usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered);
         logInPage = new LogInPage(page);
@@ -81,7 +86,7 @@ public class LogInTest extends BaseService {
         homePage = new HomePage(page);
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterMethod
     public void testCleaningUp() {
         if (wasSuccessfullyLoggedIn) {
             profPage.logOutOfSpotifyGateway();                  //User logged-off Spotify

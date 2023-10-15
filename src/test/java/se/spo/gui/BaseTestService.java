@@ -1,16 +1,18 @@
-package se.commonHandler.baseService;
+package se.spo.gui;
 
 import com.microsoft.playwright.Page;
+import org.testng.annotations.BeforeSuite;
 import se.business.BasePage;
 import se.commonHandler.ConstantContainer.WaitConstant;
+import se.commonHandler.baseService.BaseWaitHelper;
 import se.infrastructure.PlaywrightFactory;
 import se.utility.FakeDataUtil;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
-import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.GlobalVariableUtil.Environment;
+import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.PLUtil;
 
-public class BaseService {
+public class BaseTestService {
 
     /*
 
@@ -34,8 +36,6 @@ public class BaseService {
     public BaseWaitHelper waitHelper;
     public WaitConstant waitConst;
 
-    public ThreadLocal<Page> tlPage;
-
     //endregion
 
     //region Introducing initialized services
@@ -48,24 +48,17 @@ public class BaseService {
         waitHelper = new BaseWaitHelper(page);
 
         faker = new FakeDataUtil();
-
-        tlPage = new ThreadLocal<>();
     }
 
     //endregion
 
     //region Initializing browser
 
-    public BaseService() {
+    @BeforeSuite(alwaysRun = true)
+    public void testPreparation() {
         playwrightFactory = new PlaywrightFactory();
-//        page = playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
-//        basePage = new BasePage(page);
-
-        tlPage.set(playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless));
-
-        basePage = new BasePage(tlPage.get());
-
-        page = tlPage.get();
+        page = playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
+        basePage = new BasePage(page);
     }
 
     //endregion

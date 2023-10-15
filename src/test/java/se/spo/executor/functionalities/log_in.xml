@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Authentication Tests" parallel="true">
-    <test name="Log In" parallel="true">
+<suite name="Authentication Tests" parallel="methods" thread-count="4">
+    <test name="Log In" parallel="methods">
         <classes>
-            <class name="se.spo.gui.onboardingExperience.LogInTest"/>
+            <class name="se.spo.gui.onboardingExperience.LogInTest">
+                <methods>
+                    <include name="logInSuccessfully"></include>
+                    <include name="logInUnsuccessfullyWithBadPwd"></include>
+                </methods>
+<!--                <methods>-->
+<!--                    <include name="logInUnsuccessfullyWithBadPwd"></include>-->
+<!--                </methods>-->
+            </class>
         </classes>
     </test>
 </suite>
