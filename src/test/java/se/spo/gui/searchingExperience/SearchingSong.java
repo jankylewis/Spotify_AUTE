@@ -10,4 +10,9 @@ public class SearchingSong extends BaseTest {
 
     }
 
+    @Test
+    public void searchSongWithoutKeywords(){
+
+    }
+
 }

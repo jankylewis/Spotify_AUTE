@@ -20,8 +20,11 @@ public class BaseTest extends BaseService {
     //region Initializing instances
 
     {
-        logInPage = new LogInPage(page);
-        profPage = new ProfilePage(page);
+//        logInPage = new LogInPage(page);
+//        profPage = new ProfilePage(page);
+
+        logInPage = new LogInPage(getPage());
+        profPage = new ProfilePage(getPage());
     }
 
     //endregion

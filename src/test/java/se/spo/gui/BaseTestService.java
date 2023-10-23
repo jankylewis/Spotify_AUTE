@@ -1,8 +1,13 @@
-package se.commonHandler.baseService;
+package se.spo.gui;
 
 import com.microsoft.playwright.Page;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import se.business.BasePage;
 import se.commonHandler.ConstantContainer.WaitConstant;
+import se.commonHandler.baseService.BaseWaitHelper;
 import se.infrastructure.PlaywrightFactory;
 import se.utility.FakeDataUtil;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
@@ -10,7 +15,7 @@ import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.GlobalVariableUtil.Environment;
 import se.utility.PLUtil;
 
-public class BaseService {
+public class BaseTestService {
 
     /*
 
@@ -64,7 +69,8 @@ public class BaseService {
 
     //region Initializing browser
 
-    public BaseService() {
+    @BeforeClass
+    public void assemblyPreparation() {
 //        playwrightFactory = new PlaywrightFactory();
 //        page = playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
 //        basePage = new BasePage(page);

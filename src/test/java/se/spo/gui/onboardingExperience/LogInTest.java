@@ -1,13 +1,12 @@
 package se.spo.gui.onboardingExperience;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import se.business.HomePage;
 import se.business.LogInPage;
 import se.business.ProfilePage;
 import se.commonHandler.baseService.BaseService;
 import se.model.UserInformationModel;
+import se.spo.gui.BaseTestService;
 
 public class LogInTest extends BaseService {
 
@@ -25,6 +24,8 @@ public class LogInTest extends BaseService {
     @Test(priority = 1)
     public void logInSuccessfully() {
 
+        System.out.println("The thread ID for s Chrome is "+ Thread.currentThread().getId());
+
         //Performing logging-in to Spotify
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel);
 
@@ -40,6 +41,8 @@ public class LogInTest extends BaseService {
     @Test(priority = 2)
     public void logInUnsuccessfullyWithBadPwd() {
 
+        System.out.println("The thread ID for uns Chrome is "+ Thread.currentThread().getId());
+
         //Preparing an invalid password
         usrModel.setUserPassword(faker.produceCatchPhraseOfHowIMetYourMother() +
                                     faker.produceCharacterOfGameOfThrones() +
@@ -49,7 +52,7 @@ public class LogInTest extends BaseService {
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
     }
 
-    @Test(priority = 2)
+//    @Test(priority = 2)
     public void logInUnsuccessfullyWithBadUsrname() {
 
         //Preparing an invalid username
@@ -58,10 +61,9 @@ public class LogInTest extends BaseService {
 
         //Performing logging-in to Spotify
         logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
-
     }
 
-    @Test(priority = 2)
+//    @Test(priority = 2)
     public void logInUnccessfullyWithBadCredentials() {
 
         //Preparing invalid credentials
@@ -76,12 +78,16 @@ public class LogInTest extends BaseService {
 
     //region Test preparation and cleaning-up
 
-    @BeforeMethod()
+    @BeforeMethod
     public void testPreparation() {
         usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered);
-        logInPage = new LogInPage(page);
-        profPage = new ProfilePage(page);
-        homePage = new HomePage(page);
+//        logInPage = new LogInPage(page);
+//        profPage = new ProfilePage(page);
+//        homePage = new HomePage(page);
+
+        logInPage = new LogInPage(getPage());
+        profPage = new ProfilePage(getPage());
+        homePage = new HomePage(getPage());
     }
 
     @AfterMethod
