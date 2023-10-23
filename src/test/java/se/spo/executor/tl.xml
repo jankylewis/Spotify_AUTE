@@ -11,7 +11,7 @@
         </classes>
     </test>
 
-    <test name="Tl2">
+    <test name="TL2">
         <classes>
             <class name="se.spo.gui.searchingExperience.ForTesting.ThreadLocalPracticing">
                 <methods>

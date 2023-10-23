@@ -1,45 +1,47 @@
 package se.infrastructure;
 
 import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.Browser.NewContextOptions;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.BrowserContext;
 import org.jetbrains.annotations.NotNull;
+import se.utility.PLUtil.ViewportUtil;
+
+/*
+Plw Factory is a service used for initializing browser (called an Interactive Page) for each test
+ */
 
 public class PlaywrightFactory {
 
     //region Introducing objects
 
-    private static ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
-    private static ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
-    private static ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
-    private static ThreadLocal<Page> tlPage = new ThreadLocal<>();
-    protected static ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
-    private static ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
+    private ViewportUtil viewportUtil = new ViewportUtil();
 
     //endregion
 
-    //region Initializing browser
+    //region Introducing objects utilizing Thread Management
 
-    //Maximizing window
-//    private static Browser.NewContextOptions produceNewContextOptions() {
-//
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        return new Browser.NewContextOptions().setViewportSize(screenSize.width, screenSize.height);
-//    }
+    private ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
+    private ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
+    private ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
+    private ThreadLocal<Page> tlPage = new ThreadLocal<>();
+    protected ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
+    private ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
 
+    //endregion
 
-    //region Thread management
+    //region Playwright Page > Thread Management
 
     //region Initializing Playwright
 
-    private static void setPlaywright() {
+    private void setPlaywright() {
         tlPlaywright.set(Playwright.create());
     }
 
-    protected static Playwright getPlaywright() {
+    protected Playwright getPlaywright() {
         return tlPlaywright.get();
     }
 
@@ -47,19 +49,19 @@ public class PlaywrightFactory {
 
     //region Initializing BrowserType
 
-    private static void setChromeBrowserType() {
-        tlBrowserType.set(BrowserManagement.chromeBrowserType);
+    private void setChromeBrowserType() {
+        tlBrowserType.set(getPlaywright().chromium());
     }
 
-    private static void setFirefoxBrowserType() {
-        tlBrowserType.set(BrowserManagement.firefoxBrowserType);
+    private void setFirefoxBrowserType() {
+        tlBrowserType.set(getPlaywright().firefox());
     }
 
-    private static void setWebkitBrowserType() {
-        tlBrowserType.set(BrowserManagement.webkitBrowserType);
+    private void setWebkitBrowserType() {
+        tlBrowserType.set(getPlaywright().webkit());
     }
 
-    private static BrowserType getBrowserType() {
+    private BrowserType getBrowserType() {
         return tlBrowserType.get();
     }
 
@@ -67,13 +69,13 @@ public class PlaywrightFactory {
 
     //region Initializing LaunchOptions
 
-    private static void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
+    private void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
         tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
                             new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
                             new LaunchOptions().setHeadless(!isHeaded));
     }
 
-    private static LaunchOptions getLaunchOptions() {
+    private LaunchOptions getLaunchOptions() {
         return tlLaunchOptions.get();
     }
 
@@ -81,11 +83,11 @@ public class PlaywrightFactory {
 
     //region Initializing Browser
 
-    private static void setBrowser() {
+    private void setBrowser() {
         tlBrowser.set(getBrowserType().launch(getLaunchOptions()));
     }
 
-    private static Browser getBrowser() {
+    private Browser getBrowser() {
         return tlBrowser.get();
     }
 
@@ -93,11 +95,11 @@ public class PlaywrightFactory {
 
     //region Initializing BrowserContext
 
-    private static void setBrowserContext() {
+    private void setBrowserContext() {
         tlBrowserContext.set(getBrowser().newContext());
     }
 
-    private static BrowserContext getBrowserContext() {
+    private BrowserContext getBrowserContext() {
         return tlBrowserContext.get();
     }
 
@@ -105,7 +107,7 @@ public class PlaywrightFactory {
 
     //region Producing an interactive Playwright Page
 
-    private static void produceInteractivePlaywrightPage(@NotNull String browserName, boolean isHeaded) {
+    private void produceInteractivePlaywrightPage(@NotNull String browserName, boolean isHeaded) {
 
         //Producing Playwright
         setPlaywright();
@@ -143,19 +145,19 @@ public class PlaywrightFactory {
         //Ushering a Page
         produceInteractivePlaywrightPage(browserName, isHeaded);
 
-        //Generating an interactive Page
-        return getPage();
+        //Generating an Interactive Playwright Page (was maximized)
+        return viewportUtil.exaggerateViewport(getPage());
     }
 
     //endregion
 
     //region Initializing Page
 
-    private static void setPage() {
+    private void setPage() {
         tlPage.set(getBrowserContext().newPage());
     }
 
-    private static Page getPage() {
+    private Page getPage() {
         return tlPage.get();
     }
 

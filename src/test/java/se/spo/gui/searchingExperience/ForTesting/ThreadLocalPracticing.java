@@ -1,6 +1,7 @@
 package se.spo.gui.searchingExperience.ForTesting;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 
@@ -11,9 +12,9 @@ public class ThreadLocalPracticing extends BaseTL {
         page.navigate("https://www.spotify.com/vn-vi/signup");
         System.out.println("01 - Current thread id: " + Thread.currentThread().getId());
 
-        System.out.println("Current class: " + new Object(){}.getClass());
+//        System.out.println("Current class: " + new Object(){}.getClass());
 
-        System.out.println("Current TM name: " + threadHandler.getCurrentThread(Thread.currentThread(), threadHandler.getCurrentTestMethodName(getClass())).getName());
+//        System.out.println("Current TM name: " + threadHandler.getCurrentThread(Thread.currentThread(), threadHandler.getCurrentTestMethodName(getClass())).getName());
     }
 
     @Test
