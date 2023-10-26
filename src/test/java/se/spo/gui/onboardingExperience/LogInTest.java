@@ -1,102 +1,118 @@
 package se.spo.gui.onboardingExperience;
 
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import se.business.HomePage;
 import se.business.LogInPage;
 import se.business.ProfilePage;
-import se.commonHandler.baseService.BaseService;
 import se.model.UserInformationModel;
 import se.spo.gui.BaseTestService;
 
-public class LogInTest extends BaseService {
+public class LogInTest extends BaseTestService {
 
-    //Authenticating user's access
-    //Not inheriting BaseTest to test the log-in flows
+    //region Introducing objects
 
     private LogInPage logInPage;
-    private ProfilePage profPage;
+    private ProfilePage profilePage;
     private HomePage homePage;
     private UserInformationModel usrModel;
-    private Boolean wasSuccessfullyLoggedIn = false;
+    private Boolean wasSuccessfullyLoggedIn;
 
-    //region Verify User had a successful log-in experience
+    //endregion
 
-    @Test(priority = 1)
-    public void logInSuccessfully() {
+    //region Verifying User's log-in experience
 
-        System.out.println("The thread ID for s Chrome is "+ Thread.currentThread().getId());
+    @Test(priority = 1,
+            testName = "SW01: Verify User has successfully logged-in to the Spotify stream",
+            invocationCount = 1)
+    protected void spotifyUiTest_verifyUserHasSuccessfullyLoggedIn() {
 
         //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel);
+        logInPage.navigateToLogInPage()
+                .logInToSpotifyGateway(usrModel);
 
         //Verifying User has successfully logged-in
-        profPage.verifyUserSuccessfullyLoggedIn();
+        profilePage.verifyUserSuccessfullyLoggedIn();
+
         wasSuccessfullyLoggedIn = true;
     }
 
+    @Test(priority = 1,
+            testName = "SW02: Verify User has not successfully logged-in to the Spotify stream" +
+                    "when using an invalid password then got an error message")
+    protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadPassword() {
+
+        //Preparing an invalid-and-lengthy password
+        usrModel.setUserPassword(
+                faker.produceCatchPhraseOfHowIMetYourMother() +
+                        faker.produceCharacterOfGameOfThrones() +
+                        faker.produceQuoteOfGameOfThrones() +
+                        faker.produceCharacterOfLordOfTheRings() +
+                        faker.produceMarvinQuoteOfHitchHikersGuideToTheGalaxy() +
+                        faker.produceCharacterOfDragonBall()
+        );
+
+        //Performing logging-in to Spotify
+        logInPage.navigateToLogInPage()
+                .logInToSpotifyGateway(usrModel)
+                .verifyErrorMessagePresented();
+    }
+
+    @Test(priority = 1,
+            testName = "SW03: Verify User has not successfully logged-in to the Spotify stream" +
+                    "when using an invalid email then got an error message")
+    protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername() {
+
+        //Preparing an invalid-and-lengthy email
+        usrModel.setUserEmail(faker.produceSpellOfHarryPotter());
+
+        //Performing logging-in to Spotify
+        logInPage.navigateToLogInPage()
+                .logInToSpotifyGateway(usrModel)
+                .verifyErrorMessagePresented();
+    }
+
+    @Test(priority = 1,
+            testName = "SW04: Verify User has not successfully logged-in to the Spotify stream" +
+                    "when using improper credentials then got an error message")
+    protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadCredentials() {
+
+        //Preparing an invalid-and-lengthy email
+        usrModel.setUserEmail(faker.produceCharacterOfGameOfThrones());
+
+        //Performing logging-in to Spotify
+        logInPage.navigateToLogInPage()
+                .logInToSpotifyGateway(usrModel)
+                .verifyErrorMessagePresented();
+    }
+
     //endregion
 
-    //region Verify User has unsuccessfully logged-in with invalid credentials
-
-    @Test(priority = 2)
-    public void logInUnsuccessfullyWithBadPwd() {
-
-        System.out.println("The thread ID for uns Chrome is "+ Thread.currentThread().getId());
-
-        //Preparing an invalid password
-        usrModel.setUserPassword(faker.produceCatchPhraseOfHowIMetYourMother() +
-                                    faker.produceCharacterOfGameOfThrones() +
-                                    faker.produceQuoteOfGameOfThrones());
-
-        //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
-    }
-
-//    @Test(priority = 2)
-    public void logInUnsuccessfullyWithBadUsrname() {
-
-        //Preparing an invalid username
-        usrModel.setUserEmail((faker.produceCharacterOfLordOfTheRings() +
-                                faker.produceSpellOfHarryPotter()));
-
-        //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
-    }
-
-//    @Test(priority = 2)
-    public void logInUnccessfullyWithBadCredentials() {
-
-        //Preparing invalid credentials
-        usrModel.setUserEmail(faker.produceCharacterOfDragonBall());
-        usrModel.setUserPassword(faker.produceMarvinQuoteOfHitchHikersGuideToTheGalaxy());
-
-        //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage().logInToSpotifyGateway(usrModel).verifyErrorMessagePresented();
-    }
-
-    //endregion
-
-    //region Test preparation and cleaning-up
+    //region Test preparation and cleaning
 
     @BeforeMethod
-    public void testPreparation() {
-        usrModel = new UserInformationModel(gvuc.userEmail, gvuc.userPassword, gvuc.isRemembered);
-//        logInPage = new LogInPage(page);
-//        profPage = new ProfilePage(page);
-//        homePage = new HomePage(page);
+    protected void testPreparation() {
 
-        logInPage = new LogInPage(getPage());
-        profPage = new ProfilePage(getPage());
-        homePage = new HomePage(getPage());
+        usrModel = new UserInformationModel(gvuc.userEmail,
+                gvuc.userPassword,
+                gvuc.isRemembered);
+
+        logInPage = new LogInPage(page);
+        profilePage = new ProfilePage(page);
+        homePage = new HomePage(page);
     }
 
     @AfterMethod
-    public void testCleaningUp() {
-        if (wasSuccessfullyLoggedIn) {
-            profPage.logOutOfSpotifyGateway();                  //User logged-off Spotify
+    protected void testCleaning() {
+
+        //Logging-out of Spotify
+        if (wasSuccessfullyLoggedIn != null) {
+            profilePage.logOutOfSpotifyGateway();
             homePage.waitForLogInButtonPresented();
         }
     }
 
     //endregion
+
 }

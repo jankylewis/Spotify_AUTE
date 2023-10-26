@@ -3,6 +3,8 @@ package se.utility;
 import com.microsoft.playwright.Page;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.awt.Toolkit;
 import java.awt.Dimension;
 
@@ -85,7 +87,7 @@ public class PLUtil {           //PL means Java Programming Language
     //region Conversion Utilities
 
     public static class ConversionUtil {
-        public static Object convert(Object value, Class<?> parsedType) {
+        public static @NotNull @Unmodifiable Object convert(Object value, Class<?> parsedType) {
 
             Boolean isConvertedSuccessfully = false;
 

@@ -2,12 +2,7 @@ package se.utility;
 
 import se.utility.fileReader.BaseFileReader;
 
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-
 public class GlobalVariableUtil extends BaseFileReader {
-    private static String key;                  //For HashMap initializations
 
     //Nested class needs to be declared in static state
 
@@ -40,13 +35,6 @@ public class GlobalVariableUtil extends BaseFileReader {
         public String browserType = resourceReader.getPropertyFromGV("browser_type", filePath);
         public boolean isHeadless = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
 
-//        public HashMap browserType = new HashMap() {{
-//            put(key = "browser_type", resourceReader.getPropertyFromGV(key, filePath));
-//        }};
-//        public HashMap isHeadless = new HashMap() {{
-//            put(key = "is_headless", Boolean.parseBoolean(resourceReader.getPropertyFromGV(key, filePath)));
-//        }};
-
         //endregion
 
     }
@@ -69,24 +57,6 @@ public class GlobalVariableUtil extends BaseFileReader {
         public Boolean isRemembered = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_remembered", filePath));
 
         //endregion
-    }
-
-    //endregion
-
-    //region Adjusting Global Variable
-
-    public GlobalVariableUtil updatePropertyFromGV() {
-
-        return this;
-    }
-
-    //endregion
-
-    //region Restoring the Global Variable
-
-    public GlobalVariableUtil restorePropertyFromGV() {
-
-        return this;
     }
 
     //endregion

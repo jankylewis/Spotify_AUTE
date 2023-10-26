@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Authentication Tests" parallel="tests" thread-count="4">
+    <!--region Successful logged-in-->
+
+    <test name="Log In 1">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.LogInTest">
+                <methods>
+                    <include name="spotifyUiTest_verifyUserHasSuccessfullyLoggedIn"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!--endregion-->
+
+    <!--region Unsuccessful logged-in-->
+
+    <test name="Log In 2">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.LogInTest">
+                <methods>
+                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadPassword"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Log In 3">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.LogInTest">
+                <methods>
+                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Log In 4" parallel="none">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.LogInTest">
+                <methods>
+                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadCredentials"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!--endregion-->
+
+</suite>
