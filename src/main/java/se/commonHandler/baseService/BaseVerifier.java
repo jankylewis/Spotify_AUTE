@@ -2,6 +2,7 @@ package se.commonHandler.baseService;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.jetbrains.annotations.NotNull;
 
 public class BaseVerifier {
 
@@ -11,11 +12,11 @@ public class BaseVerifier {
         this.page = page;
     }
 
-    public void verifyElementVisible(Locator expLocator) {
+    public void verifyElementVisible(@NotNull Locator expLocator) {
          expLocator.isVisible();
     }
 
-    public boolean verifyStringsEqual(String expStr, String actStr) {
+    public boolean verifyStringsEqual(@NotNull String expStr, @NotNull String actStr) {
 
         if (expStr.trim().toLowerCase() == actStr.trim().toLowerCase()) {
             return true;

@@ -1,19 +1,32 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
-import se.commonHandler.baseService.BaseUIAction;
+import org.jetbrains.annotations.NotNull;
+import se.model.UserInformationModel;
+import se.pageObject.SignUpObject;
 
-public class SignUpPage {
+public class SignUpPage extends BasePage {
 
     private Page page;
+    private SignUpObject signUpObj;
 
     public SignUpPage(Page page) {
-        this.page = page;
+        super(page);
+
+        signUpObj = new SignUpObject(page);
+    }
+
+    public SignUpPage signUp(@NotNull UserInformationModel usrModel) {
+
+        baseUi.sendKeyToElement(signUpObj.TXT_EMAIL, usrModel.getUserEmail());
+        baseUi.clickOnElement(signUpObj.BTN_NEXT);
+
+        return this;
     }
 
     public SignUpPage navigateToSignUpPage() {
 
-        page.navigate("https://www.spotify.com/vn-vi/signup");
+        baseUi.navigateToUrl("https://www.spotify.com/vn-vi/signup");
 
         return this;
     }

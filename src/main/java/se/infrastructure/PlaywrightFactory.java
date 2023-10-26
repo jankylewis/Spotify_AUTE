@@ -1,17 +1,13 @@
 package se.infrastructure;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Browser.NewContextOptions;
-import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.BrowserContext;
 import org.jetbrains.annotations.NotNull;
 import se.utility.PLUtil.ViewportUtil;
 
 /*
-Plw Factory is a service used for initializing browser (called an Interactive Page) for each test
+    Plw Factory is a service used for initializing browser (called an Interactive Page)
+    for each test
  */
 
 public class PlaywrightFactory {
@@ -28,8 +24,8 @@ public class PlaywrightFactory {
     private ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
     private ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
     private ThreadLocal<Page> tlPage = new ThreadLocal<>();
-    protected ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
     private ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
+    protected ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
 
     //endregion
 
@@ -71,8 +67,8 @@ public class PlaywrightFactory {
 
     private void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
         tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
-                            new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
-                            new LaunchOptions().setHeadless(!isHeaded));
+                new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
+                new LaunchOptions().setHeadless(!isHeaded));
     }
 
     private LaunchOptions getLaunchOptions() {

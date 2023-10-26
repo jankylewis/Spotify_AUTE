@@ -1,117 +1,44 @@
 package se.spo.gui;
 
 import com.microsoft.playwright.Page;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import se.business.BasePage;
-import se.commonHandler.ConstantContainer.WaitConstant;
-import se.commonHandler.baseService.BaseWaitHelper;
+import se.commonHandler.baseService.BaseService;
 import se.infrastructure.PlaywrightFactory;
-import se.utility.FakeDataUtil;
-import se.utility.GlobalVariableUtil.BrowserConfiguration;
-import se.utility.GlobalVariableUtil.UserCredential;
-import se.utility.GlobalVariableUtil.Environment;
-import se.utility.PLUtil;
 
-public class BaseTestService {
-
-    /*
-
-    This class contains all the relevant services in project
-    that need to be initialized or handled
-
-    */
+public class BaseTestService extends BaseService {             //This service runs before each test class
 
     //region Introducing variables
 
-    public FakeDataUtil faker;
-    public PLUtil plUtil;
-    public Environment gve;
-    public static BrowserConfiguration gvbc;
-    public UserCredential gvuc;
-
-    public PlaywrightFactory playwrightFactory;
-    public static Page page;
-
-    public BasePage basePage;
-    public BaseWaitHelper waitHelper;
-    public WaitConstant waitConst;
-
-    private ThreadLocal<Page> tlPage = new ThreadLocal<>();
-    private static ThreadLocal<PlaywrightFactory> tlPlaywrightFactory = new ThreadLocal<>();
-
-    public ThreadLocal<Page> _tlPage = new ThreadLocal<>();
+    protected Page page;
+    private BasePage basePage;
+    private PlaywrightFactory playwrightFactory;
 
     //endregion
 
-    //region Introducing initialized services
+    protected Page produceInteractivePage() {
 
-    {
-        //Thread handlers
-//        tlPage = new ThreadLocal<>();
-//        tlPlaywrightFactory = new ThreadLocal<>();
+        if (playwrightFactory == null) {
+            playwrightFactory = new PlaywrightFactory();
+        }
 
-        //Global Environment fields
-        gve = new Environment();
-        gvbc = new BrowserConfiguration();
-        gvuc = new UserCredential();
-
-//        waitHelper = new BaseWaitHelper(page);
-        waitHelper = new BaseWaitHelper(tlPage.get());
-
-        //Utility files
-        faker = new FakeDataUtil();
+        //Producing a new Interactive Page
+        return playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
     }
 
-    //endregion
-
-    //region Initializing browser
-
-    @BeforeClass
-    public void assemblyPreparation() {
-//        playwrightFactory = new PlaywrightFactory();
-//        page = playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
-//        basePage = new BasePage(page);
-
-//        tlPage.set(playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless));
-
-        setPlaywrightFactory();
-        setPage();
-
-        basePage = new BasePage(getPage());
-
-//        page = tlPage.get();
+    @BeforeTest
+    protected void testInitialization() {
+        page = produceInteractivePage();
+        basePage = new BasePage(page);
     }
 
-    //endregion
 
-    public void setPage() {
-        tlPage.set(getPlaywrightFactory().initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless));
+    @AfterTest
+    protected void testTermination() {
+        System.out.println("Current Thread Id: " + Thread.currentThread().threadId());
+        System.out.println("Current Thread Name: " + Thread.currentThread().getName());
+        System.out.println("Current Thread Group: " + Thread.currentThread().getThreadGroup());
     }
 
-    public Page getPage() {
-
-//        Page pagez = page;
-
-        return tlPage.get();
-//        return pagez;
-    }
-
-    public void setTlPage() {
-        _tlPage.set(tlPage.get());
-    }
-
-    public Page getTlPage() {
-        return _tlPage.get();
-    }
-
-    public void setPlaywrightFactory() {
-        tlPlaywrightFactory.set(new PlaywrightFactory());
-    }
-
-    private static PlaywrightFactory getPlaywrightFactory() {
-        return tlPlaywrightFactory.get();
-    }
 }
