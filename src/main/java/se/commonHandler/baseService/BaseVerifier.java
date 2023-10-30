@@ -13,7 +13,7 @@ public class BaseVerifier {
     }
 
     public void verifyElementVisible(@NotNull Locator expLocator) {
-         expLocator.isVisible();
+        expLocator.isVisible();
     }
 
     public boolean verifyStringsEqual(@NotNull String expStr, @NotNull String actStr) {

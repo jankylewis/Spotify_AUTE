@@ -1,9 +1,5 @@
 package se.infrastructure;
 
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Playwright;
-
 public class BrowserManagement {
 
     //These browser type will be retrieved from settings files
