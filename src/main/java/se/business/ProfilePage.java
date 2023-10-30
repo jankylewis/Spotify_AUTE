@@ -21,6 +21,7 @@ public class ProfilePage extends BasePage implements IVerification {
     public void verifyUserSuccessfullyLoggedIn() {
         waitHelper.waitForElementVisible(profObject.BTN_PROFILE, true);
         baseVerifier.verifyElementVisible(profObject.BTN_PROFILE);
+
         verificationWentPassed();
     }
 

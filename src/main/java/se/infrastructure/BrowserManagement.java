@@ -1,14 +1,6 @@
 package se.infrastructure;
 
-import com.microsoft.playwright.BrowserType;
-
 public class BrowserManagement {
-
-    //region Introducing browser types
-
-    protected static BrowserType chromeBrowserType = PlaywrightFactory.playwright.chromium();
-    protected static BrowserType firefoxBrowserType = PlaywrightFactory.playwright.firefox();
-    protected static BrowserType webkitBrowserType = PlaywrightFactory.playwright.webkit();
 
     //These browser type will be retrieved from settings files
     protected static final String _chromiumBrowserType = "chromium";

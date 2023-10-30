@@ -1,12 +1,14 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
+import org.jetbrains.annotations.NotNull;
 import se.commonHandler.ConstantContainer.LocalPathConstant;
 import se.commonHandler.ConstantContainer.MessageConstant;
+import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.model.UserInformationModel;
 import se.pageObject.LogInObject;
 
-public class LogInPage extends BasePage {
+public class LogInPage extends BasePage implements IVerification {
 
     //region Initializing log-in objects
 
@@ -22,7 +24,7 @@ public class LogInPage extends BasePage {
 
     //region Taking UI actions
 
-    public LogInPage logInToSpotifyGateway(UserInformationModel usrModel) {
+    public LogInPage logInToSpotifyGateway(@NotNull UserInformationModel usrModel) {
 
         //Providing fields
         baseUi.sendKeyToElement(logInObj.TXT_EMAIL, usrModel.getUserEmail());
@@ -54,6 +56,18 @@ public class LogInPage extends BasePage {
     public void verifyErrorMessagePresented() {
         waitHelper.waitForElementVisible(logInObj.LBL_INVALID_CREDENTIALS, false);
         baseVerifier.verifyStringsEqual(MessageConstant.LBL_INVALID_CREDENTIALS, logInObj.LBL_INVALID_CREDENTIALS.textContent());
+
+        verificationWentPassed();
+    }
+
+    @Override
+    public void verificationWentPassed() {
+        assert true;
+    }
+
+    @Override
+    public void verificationWentFailed() {
+        assert false;
     }
 
     //endregion

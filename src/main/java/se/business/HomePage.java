@@ -6,6 +6,7 @@ import se.pageObject.HomeObject;
 public class HomePage extends BasePage {
 
     private HomeObject homeObj;
+
     public HomePage(Page page) {
         super(page);
 

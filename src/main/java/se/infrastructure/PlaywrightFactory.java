@@ -1,103 +1,161 @@
 package se.infrastructure;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.BrowserContext;
+import org.jetbrains.annotations.NotNull;
+import se.utility.PLUtil.ViewportUtil;
 
-import java.awt.*;
+/*
+    Plw Factory is a service used for initializing browser (called an Interactive Page)
+    for each test
+ */
 
 public class PlaywrightFactory {
 
-    //region Introducing playwright objects
+    //region Introducing objects
 
-    public static BrowserContext browserContext;
-    protected static Playwright playwright;
-    public static Browser browser;
-    protected static BrowserType browserType;
-    protected static LaunchOptions launchOptions;
-    protected static Page page;
+    private ViewportUtil viewportUtil = new ViewportUtil();
 
     //endregion
 
-    //region Initializing browser
+    //region Introducing objects utilizing Thread Management
 
-    //Maximizing window
-//    private static Browser.NewContextOptions produceNewContextOptions() {
-//
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        return new Browser.NewContextOptions().setViewportSize(screenSize.width, screenSize.height);
-//    }
+    private ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
+    private ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
+    private ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
+    private ThreadLocal<Page> tlPage = new ThreadLocal<>();
+    private ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
+    protected ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
 
-    protected static BrowserContext produceBrowserContext() {
-//        return browserContext = browser.newContext(produceNewContextOptions());
-        return browserContext = browser.newContext();
+    //endregion
+
+    //region Playwright Page > Thread Management
+
+    //region Initializing Playwright
+
+    private void setPlaywright() {
+        tlPlaywright.set(Playwright.create());
     }
 
-    protected static Page producePlaywrightPage() {
-        return page = browserContext.newPage();
+    protected Playwright getPlaywright() {
+        return tlPlaywright.get();
     }
 
-    protected static LaunchOptions produceLaunchOptions(String browserName, boolean isHeaded) {
+    //endregion
 
-        //Specifically handling for chrome browser type
-        return launchOptions = browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded);
+    //region Initializing BrowserType
+
+    private void setChromeBrowserType() {
+        tlBrowserType.set(getPlaywright().chromium());
     }
 
-    protected static Playwright producePlaywright() {
-        return playwright = Playwright.create();
+    private void setFirefoxBrowserType() {
+        tlBrowserType.set(getPlaywright().firefox());
     }
 
-    private static BrowserType produceChromeBrowserType() {
-        return browserType = BrowserManagement.chromeBrowserType;
+    private void setWebkitBrowserType() {
+        tlBrowserType.set(getPlaywright().webkit());
     }
 
-    private static BrowserType produceFirefoxBrowserType() {
-        return browserType = BrowserManagement.firefoxBrowserType;
+    private BrowserType getBrowserType() {
+        return tlBrowserType.get();
     }
 
-    private static BrowserType produceWebkitBrowserType() {
-        return browserType = BrowserManagement.webkitBrowserType;
+    //endregion
+
+    //region Initializing LaunchOptions
+
+    private void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
+        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded));
     }
 
-    //region Launching a new browser
+    private LaunchOptions getLaunchOptions() {
+        return tlLaunchOptions.get();
+    }
 
-    private static Page produceInteractivePlwPage(String browserName, boolean isHeaded) throws IllegalArgumentException {
+    //endregion
 
-        producePlaywright();
+    //region Initializing Browser
 
-        switch (browserName.toLowerCase()) {
-            case BrowserManagement._chromiumBrowserType:
-                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
-                break;
+    private void setBrowser() {
+        tlBrowser.set(getBrowserType().launch(getLaunchOptions()));
+    }
+
+    private Browser getBrowser() {
+        return tlBrowser.get();
+    }
+
+    //endregion
+
+    //region Initializing BrowserContext
+
+    private void setBrowserContext() {
+        tlBrowserContext.set(getBrowser().newContext());
+    }
+
+    private BrowserContext getBrowserContext() {
+        return tlBrowserContext.get();
+    }
+
+    //endregion
+
+    //region Producing an interactive Playwright Page
+
+    private void produceInteractivePlaywrightPage(@NotNull String browserName, boolean isHeaded) {
+
+        //Producing Playwright
+        setPlaywright();
+
+        //Normalizing browserName
+        browserName = browserName.toLowerCase().trim();
+
+        switch (browserName) {
             case BrowserManagement._chromeBrowserType:
-                browser = produceChromeBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setChromeBrowserType();                             //Producing BrowserType with Chrome browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Chrome browser
+                setBrowser();                                       //Producing Browser
                 break;
             case BrowserManagement._firefoxBrowserType:
-                browser = produceFirefoxBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setFirefoxBrowserType();                            //Producing BrowserType with Firefox browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Firefox browser
+                setBrowser();                                       //Producing Browser
                 break;
             case BrowserManagement._webkitBrowserType:
-                browser = produceWebkitBrowserType().launch(produceLaunchOptions(browserName, isHeaded));
+                setWebkitBrowserType();                             //Producing BrowserType with Webkit browser
+                setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Webkit browser
+                setBrowser();                                       //Producing Browser
                 break;
-            default:
-                throw new IllegalArgumentException("Your desired browser was invalid, please provide another browser type!");
         }
 
-        produceBrowserContext();
+        //Producing BrowserContext
+        setBrowserContext();
 
-        producePlaywrightPage();
+        //Producing Page
+        setPage();
+    }
 
-        return page;
+    public Page initializeInteractiveBrowser(String browserName, boolean isHeaded) {
+
+        //Ushering a Page
+        produceInteractivePlaywrightPage(browserName, isHeaded);
+
+        //Generating an Interactive Playwright Page (was maximized)
+        return viewportUtil.exaggerateViewport(getPage());
     }
 
     //endregion
 
-    public Page initializeBrowser(String browserName, boolean isHeaded) {
-        produceInteractivePlwPage(browserName, isHeaded);
-        return page;
+    //region Initializing Page
+
+    private void setPage() {
+        tlPage.set(getBrowserContext().newPage());
     }
+
+    private Page getPage() {
+        return tlPage.get();
+    }
+
+    //endregion
 
     //endregion
 
