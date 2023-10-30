@@ -1,8 +1,8 @@
 package se.commonHandler.baseService;
 
 import se.utility.FakeDataUtil;
-import se.utility.GlobalVariableUtil.Environment;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
+import se.utility.GlobalVariableUtil.Environment;
 import se.utility.GlobalVariableUtil.UserCredential;
 import se.utility.PLUtil;
 

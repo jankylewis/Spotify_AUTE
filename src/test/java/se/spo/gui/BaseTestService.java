@@ -19,9 +19,9 @@ public class BaseTestService extends BaseService {             //This service ru
 
     protected Page produceInteractivePage() {
 
-        if (playwrightFactory == null) {
-            playwrightFactory = new PlaywrightFactory();
-        }
+        playwrightFactory = playwrightFactory == null ?
+                new PlaywrightFactory() :
+                playwrightFactory;
 
         //Producing a new Interactive Page
         return playwrightFactory.initializeInteractiveBrowser(gvbc.browserType, !gvbc.isHeadless);
@@ -32,7 +32,6 @@ public class BaseTestService extends BaseService {             //This service ru
         page = produceInteractivePage();
         basePage = new BasePage(page);
     }
-
 
     @AfterTest
     protected void testTermination() {

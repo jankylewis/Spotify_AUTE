@@ -66,9 +66,7 @@ public class PlaywrightFactory {
     //region Initializing LaunchOptions
 
     private void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
-        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ?
-                new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) :
-                new LaunchOptions().setHeadless(!isHeaded));
+        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded));
     }
 
     private LaunchOptions getLaunchOptions() {
