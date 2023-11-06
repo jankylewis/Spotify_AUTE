@@ -10,7 +10,7 @@ import se.utility.PLUtil.ViewportUtil;
     for each test
  */
 
-public class PlaywrightFactory {
+public final class PlaywrightFactory {
 
     //region Introducing objects
 
@@ -20,12 +20,12 @@ public class PlaywrightFactory {
 
     //region Introducing objects utilizing Thread Management
 
-    private ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
-    private ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
-    private ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
-    private ThreadLocal<Page> tlPage = new ThreadLocal<>();
-    private ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
-    protected ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
+    private static final ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
+    private static final ThreadLocal<BrowserType> tlBrowserType = new ThreadLocal<>();
+    private static final ThreadLocal<LaunchOptions> tlLaunchOptions = new ThreadLocal<>();
+    private static final ThreadLocal<Page> tlPage = new ThreadLocal<>();
+    private static final ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
+    protected static final ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
 
     //endregion
 
@@ -66,7 +66,7 @@ public class PlaywrightFactory {
     //region Initializing LaunchOptions
 
     private void setLaunchOptions(@NotNull String browserName, boolean isHeaded) {
-        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserManagement._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded));
+        tlLaunchOptions.set(browserName.equalsIgnoreCase(BrowserEnumeration._chromeBrowserType) ? new LaunchOptions().setChannel(browserName).setHeadless(!isHeaded) : new LaunchOptions().setHeadless(!isHeaded));
     }
 
     private LaunchOptions getLaunchOptions() {
@@ -110,17 +110,17 @@ public class PlaywrightFactory {
         browserName = browserName.toLowerCase().trim();
 
         switch (browserName) {
-            case BrowserManagement._chromeBrowserType:
+            case BrowserEnumeration._chromeBrowserType:
                 setChromeBrowserType();                             //Producing BrowserType with Chrome browser
                 setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Chrome browser
                 setBrowser();                                       //Producing Browser
                 break;
-            case BrowserManagement._firefoxBrowserType:
+            case BrowserEnumeration._firefoxBrowserType:
                 setFirefoxBrowserType();                            //Producing BrowserType with Firefox browser
                 setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Firefox browser
                 setBrowser();                                       //Producing Browser
                 break;
-            case BrowserManagement._webkitBrowserType:
+            case BrowserEnumeration._webkitBrowserType:
                 setWebkitBrowserType();                             //Producing BrowserType with Webkit browser
                 setLaunchOptions(browserName, isHeaded);            //Producing LaunchOptions with Webkit browser
                 setBrowser();                                       //Producing Browser

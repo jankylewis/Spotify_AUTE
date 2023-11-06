@@ -26,12 +26,12 @@ public class PLUtil {           //PL means Java Programming Language
             return Pair.with(width, height);
         }
 
-        public Pair<Integer, Integer> getDeviceScreenSize() {
+        public static Pair<Integer, Integer> getDeviceScreenSize() {
             Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
             return Pair.with((int)dimension.getWidth(), (int)dimension.getHeight());
         }
 
-        public Page exaggerateViewport(@NotNull Page exaggeratedPage) {
+        public static Page exaggerateViewport(@NotNull Page exaggeratedPage) {
 
             //Forcing to generate a default tuple of screen size
             Pair<Integer, Integer> tupleOfWidthAndHeight = getDeviceScreenSize();
