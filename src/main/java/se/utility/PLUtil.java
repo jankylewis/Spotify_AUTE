@@ -2,6 +2,7 @@ package se.utility;
 
 import com.microsoft.playwright.Page;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -26,12 +27,13 @@ public class PLUtil {           //PL means Java Programming Language
             return Pair.with(width, height);
         }
 
-        public static Pair<Integer, Integer> getDeviceScreenSize() {
+        public static @NotNull Pair<Integer, Integer> getDeviceScreenSize() {
             Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
             return Pair.with((int)dimension.getWidth(), (int)dimension.getHeight());
         }
 
-        public static Page exaggerateViewport(@NotNull Page exaggeratedPage) {
+        @Contract("_ -> param1")
+        public static @NotNull Page exaggerateViewport(@NotNull Page exaggeratedPage) {
 
             //Forcing to generate a default tuple of screen size
             Pair<Integer, Integer> tupleOfWidthAndHeight = getDeviceScreenSize();

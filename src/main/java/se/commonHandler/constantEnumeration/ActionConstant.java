@@ -1,4 +1,4 @@
-package se.commonHandler.ConstantContainer;
+package se.commonHandler.constantEnumeration;
 
 import com.microsoft.playwright.Locator.ClearOptions;
 import com.microsoft.playwright.Locator.FillOptions;

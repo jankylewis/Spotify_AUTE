@@ -1,9 +1,9 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
-import se.commonHandler.ConstantContainer.MessageConstant;
-import se.commonHandler.ConstantContainer.LocalPathConstant;
-import se.commonHandler.ConstantContainer.WaitConstant;
+import se.commonHandler.constantEnumeration.MessageConstant;
+import se.commonHandler.constantEnumeration.LocalPathConstant;
+import se.commonHandler.constantEnumeration.WaitConstant;
 import se.commonHandler.baseService.BaseUIAction;
 import se.commonHandler.baseService.BaseVerifier;
 import se.commonHandler.baseService.BaseWaitHelper;

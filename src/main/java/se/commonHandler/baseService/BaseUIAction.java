@@ -3,8 +3,8 @@ package se.commonHandler.baseService;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.ConstantContainer.ActionConstant;
-import se.commonHandler.ConstantContainer.WaitConstant;
+import se.commonHandler.constantEnumeration.ActionConstant;
+import se.commonHandler.constantEnumeration.WaitConstant;
 
 import java.awt.*;
 

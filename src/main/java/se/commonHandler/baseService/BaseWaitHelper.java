@@ -9,7 +9,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import com.microsoft.playwright.Locator.WaitForOptions;
 
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.ConstantContainer.WaitConstant;
+import se.commonHandler.constantEnumeration.WaitConstant;
 
 
 public class BaseWaitHelper {
