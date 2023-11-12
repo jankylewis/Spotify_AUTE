@@ -28,13 +28,15 @@ public class BaseUIAction {
 
     // endregion
 
+    {
+       waitConst = new WaitConstant();
+    }
+
     public void resizeDynamicViewport() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         int screenWidth = (int)screenSize.getWidth();
         int screenHeight = (int)screenSize.getHeight();
-
-        
     }
 
     public void resizeDynamicViewport(double width, double height) {
@@ -62,7 +64,15 @@ public class BaseUIAction {
     }
 
     public void clickOnElement(Locator expLocator) {
-        waitHelper.waitForElementVisible(expLocator, false);
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(actionConst.getClearByForced(actionConst.clickOpts))
+                .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
+    }
+
+    public void clickOnElement(Locator expLocator, boolean isLongWaitUsed) {
+        waitHelper.waitForElementVisible(expLocator, isLongWaitUsed);
 
         expLocator.click(actionConst.clickOpts
                 .setForce(actionConst.getClearByForced(actionConst.clickOpts))
@@ -71,6 +81,18 @@ public class BaseUIAction {
 
     public void clickOnElementWithDelay(Locator expLocator, Double delayTimeOut) {           //Giving a hard-coded delay
         waitHelper.waitForElementVisible(expLocator, false);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(actionConst.getClearByForced(actionConst.clickOpts))
+                .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts))
+                .setDelay(delayTimeOut));
+    }
+
+    public void clickOnElementWithDelay(Locator expLocator,
+                                        Double delayTimeOut,
+                                        boolean isLongWaitUsed) {                           //Giving a hard-coded delay
+
+        waitHelper.waitForElementVisible(expLocator, isLongWaitUsed);
 
         expLocator.click(actionConst.clickOpts
                 .setForce(actionConst.getClearByForced(actionConst.clickOpts))

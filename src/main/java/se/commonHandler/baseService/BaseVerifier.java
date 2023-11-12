@@ -25,9 +25,13 @@ public class BaseVerifier {
         }
     }
 
+    //region IVerfications
+
     public interface IVerification {
         void verificationWentPassed();
 
         void verificationWentFailed();
     }
+
+    //endregion
 }

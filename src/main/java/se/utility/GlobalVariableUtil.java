@@ -11,7 +11,7 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private String filePath = "./src/main/java/se/globalVariable/environment.properties";   //Providing environment's path
+        private String filePath = "./src/main/java/se/globalVariable/environment.properties";       //Providing environment's path
         private ResourceReader resourceReader = new ResourceReader();
         public String baseUrl = resourceReader.getPropertyFromGV("base_url", filePath);
         public String publicUrl = resourceReader.getPropertyFromGV("public_url", filePath);
@@ -29,11 +29,14 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private String filePath = "./src/main/java/se/globalVariable/browser_configuration.properties";   //Providing browser config's path
-        private ResourceReader resourceReader = new ResourceReader();
+        private static String filePath = "./src/main/java/se/globalVariable/browser_configuration.properties";   //Providing browser config's path
+        private static ResourceReader resourceReader = new ResourceReader();
 
-        public String browserType = resourceReader.getPropertyFromGV("browser_type", filePath);
+        public static String browserType = resourceReader.getPropertyFromGV("browser_type", filePath);
         public boolean isHeadless = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
+
+        public static final String BROWSER_TYPE = resourceReader.getPropertyFromGV("browser_type", filePath);
+        public static final Boolean HEADLESS = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
 
         //endregion
 

@@ -38,7 +38,7 @@
         </classes>
     </test>
 
-    <test name="Log In 4" parallel="none">
+    <test name="Log In 4">
         <classes>
             <class name="se.spo.gui.onboardingExperience.LogInTest">
                 <methods>

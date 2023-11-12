@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestSS" parallel="tests" thread-count="4">
+
+    <test name="Test01">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.PTest">
+                <methods>
+                    <include name="test01"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Test02">
+        <classes>
+            <class name="se.spo.gui.onboardingExperience.PTest">
+                <methods>
+                    <include name="test02"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

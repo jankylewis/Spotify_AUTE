@@ -4,32 +4,31 @@ import com.microsoft.playwright.Page;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.pageObject.ProfileObject;
 
-public class ProfilePage extends BasePage implements IVerification {
-    private ProfileObject profObject;
+public class ProfilePage extends ProfileObject implements IVerification {
 
     public ProfilePage(Page page) {
         super(page);
-
-        profObject = new ProfileObject(page);
     }
 
     public void verifySpotifyLogoPresented() {
-        waitHelper.waitForElementVisible(profObject.BTN_SPOTIFY_LOGO, true);
-        baseVerifier.verifyElementVisible(profObject.BTN_SPOTIFY_LOGO);
+        waitHelper.waitForElementVisible(findLocator(BTN_SPOTIFY_LOGO), true);
+        baseVerifier.verifyElementVisible(findLocator(BTN_SPOTIFY_LOGO));
     }
 
     public void verifyUserSuccessfullyLoggedIn() {
-        waitHelper.waitForElementVisible(profObject.BTN_PROFILE, true);
-        baseVerifier.verifyElementVisible(profObject.BTN_PROFILE);
+        waitHelper.waitForElementVisible(findLocator(BTN_PROFILE), true);
+        baseVerifier.verifyElementVisible(findLocator(BTN_PROFILE));
 
         verificationWentPassed();
     }
 
     public ProfilePage logOutOfSpotifyGateway() {
-        baseUi.clickOnElement(profObject.BTN_PROFILE);
-        baseUi.clickOnElement(profObject.BTN_LOG_OUT);
+        baseUi.clickOnElement(findLocator(BTN_PROFILE));
+        baseUi.clickOnElement(findLocator(BTN_LOG_OUT));
         return this;
     }
+
+    //region IVerifications
 
     @Override
     public void verificationWentPassed() {
@@ -40,4 +39,6 @@ public class ProfilePage extends BasePage implements IVerification {
     public void verificationWentFailed() {
         assert false;
     }
+
+    //endregion
 }
