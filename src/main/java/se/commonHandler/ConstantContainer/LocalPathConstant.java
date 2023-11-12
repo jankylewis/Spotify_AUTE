@@ -1,7 +1,8 @@
 package se.commonHandler.ConstantContainer;
 
-public class LocalPathConstant {
+public final class LocalPathConstant {
 
-    public static final String LOGINPATH = "login";
+    public final String LOG_IN_PATH = "login";
+    public final String SIGN_UP_PATH = "signup";
 
 }

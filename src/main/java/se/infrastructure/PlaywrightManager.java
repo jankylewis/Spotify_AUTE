@@ -10,7 +10,9 @@ public final class PlaywrightManager {            //This service generates Playw
 
     private static final ThreadLocal<Page> TL_PAGE = new ThreadLocal<>();
     private static final ThreadLocal<BrowserContext> TL_BROWSER_CONTEXT = new ThreadLocal<>();
-    private static final ThreadLocal<Playwright> TL_PLAYWRIGHT = new ThreadLocal<>();
+
+    //Initially generating a new Playwright instance
+    private static final ThreadLocal<Playwright> TL_PLAYWRIGHT = ThreadLocal.withInitial(Playwright::create);
 
     //endregion
 
@@ -38,11 +40,7 @@ public final class PlaywrightManager {            //This service generates Playw
 
     //endregion
 
-    //region Initializing Playwright
-
-    static void setPlaywright() {
-        TL_PLAYWRIGHT.set(Playwright.create());
-    }
+    //region Getting Playwright instance
 
     static Playwright getPlaywright() {
         return TL_PLAYWRIGHT.get();

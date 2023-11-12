@@ -29,8 +29,7 @@ public class LogInTest extends BaseTestService {
     protected void spotifyUiTest_verifyUserHasSuccessfullyLoggedIn() {
 
         //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage()
-                .logInToSpotifyGateway(usrModel);
+        logInPage.logInToSpotifyGateway(usrModel);
 
         //Verifying User has successfully logged-in
         profilePage.verifyUserSuccessfullyLoggedIn();
@@ -54,8 +53,7 @@ public class LogInTest extends BaseTestService {
         );
 
         //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage()
-                .logInToSpotifyGateway(usrModel)
+        logInPage.logInToSpotifyGateway(usrModel)
                 .verifyErrorMessagePresented();
     }
 
@@ -68,8 +66,7 @@ public class LogInTest extends BaseTestService {
         usrModel.setUserEmail(faker.produceSpellOfHarryPotter());
 
         //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage()
-                .logInToSpotifyGateway(usrModel)
+        logInPage.logInToSpotifyGateway(usrModel)
                 .verifyErrorMessagePresented();
     }
 
@@ -82,8 +79,7 @@ public class LogInTest extends BaseTestService {
         usrModel.setUserEmail(faker.produceCharacterOfGameOfThrones());
 
         //Performing logging-in to Spotify
-        logInPage.navigateToLogInPage()
-                .logInToSpotifyGateway(usrModel)
+        logInPage.logInToSpotifyGateway(usrModel)
                 .verifyErrorMessagePresented();
     }
 
@@ -101,6 +97,8 @@ public class LogInTest extends BaseTestService {
         logInPage = new LogInPage(page);
         profilePage = new ProfilePage(page);
         homePage = new HomePage(page);
+
+        logInPage.navigateToLogInPage();
     }
 
     @AfterMethod

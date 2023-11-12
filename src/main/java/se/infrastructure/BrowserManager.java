@@ -38,10 +38,7 @@ public final class BrowserManager {         //This service manages Browser-relat
 
     static void setLaunchOptions() {
         TL_LAUNCH_OPTIONS.set(
-                BROWSER_TYPE.equalsIgnoreCase(
-                        BrowserEnumeration._chromeBrowserType) ?
-                        new LaunchOptions().setChannel(BROWSER_TYPE).setHeadless(HEADLESS) :
-                        new LaunchOptions().setHeadless(HEADLESS));
+                new LaunchOptions().setHeadless(HEADLESS).setChannel(BROWSER_TYPE));
     }
 
     private static LaunchOptions getLaunchOptions() {

@@ -1,9 +1,9 @@
 package se.commonHandler.ConstantContainer;
 
-public class MessageConstant {
+public final class MessageConstant {
 
     //Log-in flow
 
-    public static final String LBL_INVALID_CREDENTIALS = "Incorrect username or password.";
+    public final String LBL_INVALID_CREDENTIALS = "Incorrect username or password.";
 
 }

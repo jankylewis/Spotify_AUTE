@@ -1,15 +1,15 @@
 package se.pageObject;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import se.business.BasePage;
 
-public class ProfileObject extends BaseObject {
+public class ProfileObject extends BasePage {
 
     public ProfileObject(Page page) {
         super(page);
     }
 
-    public Locator BTN_SPOTIFY_LOGO = page.locator("xpath=//a[@data-tracking and not(@data-ga-action) and contains(@class, 'mh-header-primary')]");
-    public Locator BTN_PROFILE = page.locator("xpath=//button[contains(@class, 'mh-header-primary') and contains(@aria-controls, 'profile')]");
-    public Locator BTN_LOG_OUT= page.locator("xpath=//div[contains(@id, 'profileMenu')]//a[contains(@class, 'subtle')]");
+    public final String BTN_SPOTIFY_LOGO = "xpath=//a[@data-tracking and not(@data-ga-action) and contains(@class, 'mh-header-primary')]";
+    public final String BTN_PROFILE = "xpath=//button[contains(@class, 'mh-header-primary') and contains(@aria-controls, 'profile')]";
+    public final String BTN_LOG_OUT= "xpath=//div[contains(@id, 'profileMenu')]//a[contains(@class, 'subtle')]";
 }

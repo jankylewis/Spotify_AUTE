@@ -1,14 +1,14 @@
 package se.pageObject;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import se.business.BasePage;
 
-public class HomeObject extends BaseObject {
+public class HomeObject extends BasePage {
 
     public HomeObject(Page page) {
         super(page);
     }
 
-    public Locator LBL_MADEFORUSERNAME = page.locator("\"xpath=//section[contains(@aria-label, 'Made For Jan')]//a[contains(text(), 'Made For Jan')]\"");
-    public Locator BTN_LOG_IN = page.locator("xpath=//button[contains(@data-testid, 'login-button')]");
+    public final String LBL_MADEFORUSERNAME = "xpath=//section[contains(@aria-label, 'Made For Jan')]//a[contains(text(), 'Made For Jan')]";
+    public final String BTN_LOG_IN = "xpath=//button[contains(@data-testid, 'login-button')]";
 }

@@ -1,17 +1,17 @@
 package se.pageObject;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import se.business.BasePage;
 
-public class LogInObject extends BaseObject {
+public class LogInObject extends BasePage {
 
     public LogInObject(Page page) {
         super(page);
     }
 
-    public Locator TXT_EMAIL = page.locator("id=login-username");
-    public Locator TXT_PASSWORD = page.locator("id=login-password");
-    public Locator TG_REMEMBER_ME = page.locator("xpath=//input[@id = 'login-remember']");;
-    public Locator BTN_LOG_IN = page.locator("id=login-button");
-    public Locator LBL_INVALID_CREDENTIALS = page.locator("xpath=.//div[contains(@data-encore-id, 'banner')]//span");
+    public final String TXT_EMAIL = "id=login-username";
+    public final String TXT_PASSWORD = "id=login-password";
+    public final String TG_REMEMBER_ME = "xpath=//input[@id = 'login-remember']";
+    public final String BTN_LOG_IN = "id=login-button";
+    public final String LBL_INVALID_CREDENTIALS ="xpath=.//div[contains(@data-encore-id, 'banner')]//span";
 }
