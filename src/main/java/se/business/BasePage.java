@@ -1,13 +1,13 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
+import se.commonHandler.ConstantContainer.MessageConstant;
+import se.commonHandler.ConstantContainer.LocalPathConstant;
 import se.commonHandler.ConstantContainer.WaitConstant;
 import se.commonHandler.baseService.BaseUIAction;
 import se.commonHandler.baseService.BaseVerifier;
 import se.commonHandler.baseService.BaseWaitHelper;
 import se.pageObject.BaseObject;
-import se.pageObject.CommonObject;
-import se.utility.GlobalVariableUtil.BrowserConfiguration;
 import se.utility.GlobalVariableUtil.Environment;
 import se.utility.GlobalVariableUtil.UserCredential;
 
@@ -17,20 +17,22 @@ public class BasePage extends BaseObject {
 
     protected Environment gvE;
     protected UserCredential gvUC;
-    protected BrowserConfiguration gvBC;
-    protected Page page;                                    //Initializing page at first
+    protected Page page;
     protected BaseUIAction baseUi;
     protected BaseVerifier baseVerifier;
     protected BaseWaitHelper waitHelper;
-    protected CommonObject commonObject;
     protected WaitConstant waitConst;
+    protected MessageConstant msgConst;
+    protected LocalPathConstant localPathConst;
 
     //region Retrieving global variables
 
     {
         gvE = new Environment();
-        gvBC = new BrowserConfiguration();
         gvUC = new UserCredential();
+        msgConst = new MessageConstant();
+        localPathConst = new LocalPathConstant();
+        waitConst = new WaitConstant();
     }
 
     //endregion
@@ -44,8 +46,6 @@ public class BasePage extends BaseObject {
         baseUi = new BaseUIAction(page);
         baseVerifier = new BaseVerifier(page);
         waitHelper = new BaseWaitHelper(page);
-
-        commonObject = new CommonObject(page);
     }
 
     public BasePage navigateToBaseUrl() {
@@ -54,8 +54,8 @@ public class BasePage extends BaseObject {
     }
 
     public BasePage logOutOfSpotifyGateway() {
-        baseUi.clickOnElement(commonObject.BTN_ACCOUNT_MENU);
-        baseUi.clickOnElement(commonObject.BTN_LOG_OUT);
+        baseUi.clickOnElement(findLocator(BTN_ACCOUNT_MENU));
+        baseUi.clickOnElement(findLocator(BTN_LOG_OUT));
         return this;
     }
 }

@@ -11,7 +11,7 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private String filePath = "./src/main/java/se/globalVariable/environment.properties";   //Providing environment's path
+        private String filePath = "./src/main/java/se/globalVariable/environment.properties";       //Providing environment's path
         private ResourceReader resourceReader = new ResourceReader();
         public String baseUrl = resourceReader.getPropertyFromGV("base_url", filePath);
         public String publicUrl = resourceReader.getPropertyFromGV("public_url", filePath);

@@ -1,23 +1,18 @@
 package se.business;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.ConstantContainer.LocalPathConstant;
-import se.commonHandler.ConstantContainer.MessageConstant;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.model.UserInformationModel;
 import se.pageObject.LogInObject;
 
-public class LogInPage extends BasePage implements IVerification {
+public class LogInPage extends LogInObject implements IVerification {
 
     //region Initializing log-in objects
 
-    private LogInObject logInObj;
-
     public LogInPage(Page page) {
         super(page);
-
-        logInObj = new LogInObject(page);
     }
 
     //endregion
@@ -27,20 +22,23 @@ public class LogInPage extends BasePage implements IVerification {
     public LogInPage logInToSpotifyGateway(@NotNull UserInformationModel usrModel) {
 
         //Providing fields
-        baseUi.sendKeyToElement(logInObj.TXT_EMAIL, usrModel.getUserEmail());
-        baseUi.sendKeyToElement(logInObj.TXT_PASSWORD, usrModel.getUserPassword());
+        baseUi.sendKeyToElement(findLocator(TXT_EMAIL), usrModel.getUserEmail());
+        baseUi.sendKeyToElement(findLocator(TXT_PASSWORD), usrModel.getUserPassword());
 
         //Handling User's auto-login
-        baseUi.clickOnElementWithSelected(logInObj.TG_REMEMBER_ME.locator("//following::span/span[not(@data-encore-id)]"), usrModel.getUserRemembered());
+        baseUi.clickOnElementWithSelected(
+                findLocator(TG_REMEMBER_ME).locator("//following::span/span[not(@data-encore-id)]"),
+                usrModel.getUserRemembered()
+        );
 
         //Signing-in
-        baseUi.clickOnElementWithDelay(logInObj.BTN_LOG_IN, Double.valueOf(waitConst.TIMEOUT1S));
+        baseUi.clickOnElementWithDelay(findLocator(BTN_LOG_IN), Double.valueOf(waitConst.TIMEOUT1S));
 
         return this;
     }
 
     public LogInPage navigateToLogInPage() {
-        baseUi.navigateToUrl(gvE.baseUrl + gvE.endPointLocalization + LocalPathConstant.LOGINPATH);
+        baseUi.navigateToUrl(gvE.baseUrl + gvE.endPointLocalization + localPathConst.LOG_IN_PATH);
         return this;
     }
 
@@ -49,16 +47,20 @@ public class LogInPage extends BasePage implements IVerification {
     //region Making verifications on successful log-in
 
     public void verifyAccountMenuPresented() {
-        waitHelper.waitForElementVisible(commonObject.BTN_ACCOUNT_MENU, true);
-        baseVerifier.verifyElementVisible(commonObject.BTN_ACCOUNT_MENU);
+        waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
+        baseVerifier.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
     }
 
     public void verifyErrorMessagePresented() {
-        waitHelper.waitForElementVisible(logInObj.LBL_INVALID_CREDENTIALS, false);
-        baseVerifier.verifyStringsEqual(MessageConstant.LBL_INVALID_CREDENTIALS, logInObj.LBL_INVALID_CREDENTIALS.textContent());
+        Locator invalidCredentialsLbl = findLocator(LBL_INVALID_CREDENTIALS);
+
+        waitHelper.waitForElementVisible(invalidCredentialsLbl, false);
+        baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
 
         verificationWentPassed();
     }
+
+    //region IVerifications
 
     @Override
     public void verificationWentPassed() {
@@ -69,6 +71,8 @@ public class LogInPage extends BasePage implements IVerification {
     public void verificationWentFailed() {
         assert false;
     }
+
+    //endregion
 
     //endregion
 }

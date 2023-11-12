@@ -8,15 +8,21 @@ import com.microsoft.playwright.Page.WaitForSelectorOptions;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.microsoft.playwright.Locator.WaitForOptions;
 
+import org.jetbrains.annotations.NotNull;
 import se.commonHandler.ConstantContainer.WaitConstant;
 
 
 public class BaseWaitHelper {
 
     private Page page;
+    private WaitConstant waitConst;
 
     public BaseWaitHelper(Page page) {
         this.page = page;
+    }
+
+    {
+        waitConst = new WaitConstant();
     }
 
     //region Introducing vars
@@ -31,10 +37,16 @@ public class BaseWaitHelper {
 
     //region Wait section goes here
 
-    public void waitForElementVisible(Locator expLocator, boolean isLongWait) {
+    public void waitForElementVisible(@NotNull Locator expLocator) {
+
+        //Waiting for locator to be visible with time-out
+        expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE));
+    }
+
+    public void waitForElementVisible(@NotNull Locator expLocator, boolean isLongWait) {
 
         //Time-out settings
-        int selTimeOut = isLongWait == true ? WaitConstant.MAXTIMEOUT : WaitConstant.TIMEOUT3S;
+        int selTimeOut = isLongWait == true ? waitConst.MAXTIMEOUT : waitConst.TIMEOUT3S;
 
         //Waiting for locator to be visible with time-out
         expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE).setTimeout(selTimeOut));

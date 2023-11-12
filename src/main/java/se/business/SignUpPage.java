@@ -5,29 +5,20 @@ import org.jetbrains.annotations.NotNull;
 import se.model.UserInformationModel;
 import se.pageObject.SignUpObject;
 
-public class SignUpPage extends BasePage {
-
-    private Page page;
-    private SignUpObject signUpObj;
+public class SignUpPage extends SignUpObject {
 
     public SignUpPage(Page page) {
         super(page);
-
-        signUpObj = new SignUpObject(page);
     }
 
     public SignUpPage signUp(@NotNull UserInformationModel usrModel) {
-
-        baseUi.sendKeyToElement(signUpObj.TXT_EMAIL, usrModel.getUserEmail());
-        baseUi.clickOnElement(signUpObj.BTN_NEXT);
-
+        baseUi.sendKeyToElement(findLocator(TXT_EMAIL), usrModel.getUserEmail());
+        baseUi.clickOnElement(findLocator(BTN_NEXT));
         return this;
     }
 
     public SignUpPage navigateToSignUpPage() {
-
-        baseUi.navigateToUrl("https://www.spotify.com/vn-vi/signup");
-
+        baseUi.navigateToUrl(gvE.baseUrl + gvE.endPointLocalization + localPathConst.SIGN_UP_PATH);
         return this;
     }
 
