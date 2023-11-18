@@ -1,0 +1,50 @@
+<!--region Logging to console -->
+
+
+
+<!--endregion-->
+
+<!--region Logging to file within ONE file -->
+
+<Configuration status="warn">
+
+    <Properties>
+        <Property name="basePath">C:/Spotify/Spotify_Logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="fileLogger"
+                     fileName="${basePath}/spotifyLogs.log"
+                     filePattern="${basePath}/app-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} %p %logger{40} - %msg%n
+                </pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+
+            <!-- Max 10 files will be created everyday -->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${basePath}" maxDepth="10">
+
+                    <!-- Delete all files older than 30 days -->
+                    <IfLastModified age="1d" />
+
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="info" additivity="true">
+            <appender-ref ref="fileLogger" />
+        </Root>
+
+    </Loggers>
+
+</Configuration>
+
+<!--endregion-->

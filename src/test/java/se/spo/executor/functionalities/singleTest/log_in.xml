@@ -16,38 +16,38 @@
 
     <!--endregion-->
 
-    <!--region Unsuccessful logged-in-->
+<!--    &lt;!&ndash;region Unsuccessful logged-in&ndash;&gt;-->
 
-    <test name="Log In 2">
-        <classes>
-            <class name="se.spo.gui.onboardingExperience.LogInTest">
-                <methods>
-                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadPassword"></include>
-                </methods>
-            </class>
-        </classes>
-    </test>
+<!--    <test name="Log In 2">-->
+<!--        <classes>-->
+<!--            <class name="se.spo.gui.onboardingExperience.LogInTest">-->
+<!--                <methods>-->
+<!--                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadPassword"></include>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="Log In 3">
-        <classes>
-            <class name="se.spo.gui.onboardingExperience.LogInTest">
-                <methods>
-                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername"></include>
-                </methods>
-            </class>
-        </classes>
-    </test>
+<!--    <test name="Log In 3">-->
+<!--        <classes>-->
+<!--            <class name="se.spo.gui.onboardingExperience.LogInTest">-->
+<!--                <methods>-->
+<!--                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername"></include>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="Log In 4">
-        <classes>
-            <class name="se.spo.gui.onboardingExperience.LogInTest">
-                <methods>
-                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadCredentials"></include>
-                </methods>
-            </class>
-        </classes>
-    </test>
+<!--    <test name="Log In 4">-->
+<!--        <classes>-->
+<!--            <class name="se.spo.gui.onboardingExperience.LogInTest">-->
+<!--                <methods>-->
+<!--                    <include name="spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadCredentials"></include>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <!--endregion-->
+<!--    &lt;!&ndash;endregion&ndash;&gt;-->
 
 </suite>

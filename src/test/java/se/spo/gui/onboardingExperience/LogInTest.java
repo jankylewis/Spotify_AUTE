@@ -1,5 +1,7 @@
 package se.spo.gui.onboardingExperience;
 
+import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -8,6 +10,7 @@ import se.business.LogInPage;
 import se.business.ProfilePage;
 import se.model.UserInformationModel;
 import se.spo.gui.BaseTestService;
+import java.lang.reflect.Method;
 
 public class LogInTest extends BaseTestService {
 
@@ -28,10 +31,10 @@ public class LogInTest extends BaseTestService {
             invocationCount = 1)
     protected void spotifyUiTest_verifyUserHasSuccessfullyLoggedIn() {
 
-        //Performing logging-in to Spotify
+        LOGGER.info("Performing logging-in to Spotify");
         logInPage.logInToSpotifyGateway(usrModel);
 
-        //Verifying User has successfully logged-in
+        LOGGER.info("Verifying User has successfully logged-in");
         profilePage.verifyUserSuccessfullyLoggedIn();
 
         wasSuccessfullyLoggedIn = true;
@@ -88,7 +91,12 @@ public class LogInTest extends BaseTestService {
     //region Test preparation and cleaning
 
     @BeforeMethod
-    protected void testPreparation() {
+    protected void testPreparation(ITestContext iTestContext, ITestResult iTestResult) {
+
+        String x = iTestResult.getName();
+        String x1 = iTestResult.getTestName();
+        String x2 = iTestResult.getHost();
+        String x3 = iTestContext.getName();
 
         usrModel = new UserInformationModel(gvuc.userEmail,
                 gvuc.userPassword,

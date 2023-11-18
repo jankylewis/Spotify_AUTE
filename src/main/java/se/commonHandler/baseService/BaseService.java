@@ -1,8 +1,10 @@
 package se.commonHandler.baseService;
 
+import org.apache.logging.log4j.Logger;
 import se.utility.FakeDataUtil;
 import se.utility.GlobalVariableUtil.Environment;
 import se.utility.GlobalVariableUtil.UserCredential;
+import se.utility.LoggingUtil;
 
 public class BaseService {
 
@@ -11,6 +13,7 @@ public class BaseService {
     public FakeDataUtil faker;
     public Environment gve;
     public UserCredential gvuc;
+    public Logger LOGGER = LoggingUtil.LOGGER;
 
     //endregion
 

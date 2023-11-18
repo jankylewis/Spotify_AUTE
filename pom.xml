@@ -16,7 +16,7 @@
 
     <dependencies>
 
-        <!--region-->
+        <!--region Dependencies listing-->
 
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
@@ -49,6 +49,29 @@
             <artifactId>javatuples</artifactId>
             <version>1.2</version>
         </dependency>
+
+        <!--region Logging frameworks used-->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.17.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--endregion-->
 
         <!--endregion-->
 

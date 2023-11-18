@@ -38,7 +38,9 @@ public class LogInPage extends LogInObject implements IVerification {
     }
 
     public LogInPage navigateToLogInPage() {
-        baseUi.navigateToUrl(gvE.baseUrl + gvE.endPointLocalization + localPathConst.LOG_IN_PATH);
+        baseUi.navigateToUrl(gvE.baseUrl +
+                gvE.endPointLocalization +
+                localPathConst.LOG_IN_PATH);
         return this;
     }
 
