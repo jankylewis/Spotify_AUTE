@@ -25,7 +25,11 @@ public class BaseVerifier {
         }
     }
 
-    //region IVerfications
+    //region Verification services
+
+    public interface IErrorVerification {
+        void verifyErrorMessagePresented();
+    }
 
     public interface IVerification {
         void verificationWentPassed();

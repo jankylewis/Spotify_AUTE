@@ -48,4 +48,17 @@ public final class PlaywrightManager {            //This service generates Playw
 
     //endregion
 
+    //region Cleaning all opened Threads
+
+    public static void disposingThreads() {
+        getBrowserContext().close();
+        getPage().close();
+        getPlaywright().close();
+        TL_BROWSER_CONTEXT.remove();
+        TL_PAGE.remove();
+        TL_PLAYWRIGHT.remove();
+    }
+
+    //endregion
+
 }

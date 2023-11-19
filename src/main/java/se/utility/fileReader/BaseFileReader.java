@@ -9,12 +9,15 @@ import java.util.ResourceBundle;
 public class BaseFileReader {
 
     public static class ResourceReader {                                //Enclosing class needs to be declared in static state
+
         public ResourceBundle resourceBundle;
 
         //region Getting property's value from Global Variable resources
 
         public String getPropertyFromGV(final String key, final String filePath) {
+
             try {
+                
                 String expValue = null;
 
                 if (resourceBundle == null) {
@@ -24,6 +27,7 @@ public class BaseFileReader {
                 expValue = resourceBundle.getString(key);               //Getting value accordingly to the desired key
 
                 return expValue;
+
             } catch (IOException ioEx) {
                 throw new RuntimeException("Error found: " + ioEx.getMessage() + " with causes from " + ioEx.getCause());
             } catch (MissingResourceException mrEx) {

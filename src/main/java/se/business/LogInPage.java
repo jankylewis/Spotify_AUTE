@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.model.UserInformationModel;
 import se.pageObject.LogInObject;
+import se.utility.GlobalVariableUtil.Environment;
 
 public class LogInPage extends LogInObject implements IVerification {
 
@@ -32,15 +33,17 @@ public class LogInPage extends LogInObject implements IVerification {
         );
 
         //Signing-in
-        baseUi.clickOnElementWithDelay(findLocator(BTN_LOG_IN), Double.valueOf(waitConst.TIMEOUT1S));
+        baseUi.clickOnElement(findLocator(BTN_LOG_IN), Double.valueOf(waitConst.TIMEOUT1S));
 
         return this;
     }
 
     public LogInPage navigateToLogInPage() {
-        baseUi.navigateToUrl(gvE.baseUrl +
-                gvE.endPointLocalization +
+
+        baseUi.navigateToUrl(Environment.baseUrl +
+                Environment.endPointLocalization +
                 localPathConst.LOG_IN_PATH);
+
         return this;
     }
 

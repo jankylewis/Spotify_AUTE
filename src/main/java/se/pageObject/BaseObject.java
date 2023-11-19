@@ -24,8 +24,9 @@ public class BaseObject {
 
         do {
             foundLocator = page.locator(expLocator);
+            timesOfRetrying--;
         }
-        while (timesOfRetrying < 0);
+        while (timesOfRetrying > 0);
 
         return foundLocator;
     }
