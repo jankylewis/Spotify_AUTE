@@ -10,19 +10,20 @@ public final class MessageConstant {
 
     //region Sign-up flows
 
-    //Sign-up Page > Step 1
+    //Sign-up Page > pre Step
 
     public final String LBL_INVALID_USERNAME = "This email is invalid. Make sure it's written like example@email.com";
 
-    //Sign-up Page > Step 2
+    //Sign-up Page > Step 1
 
     public final String LBL_INVALID_PASSWORD = "Password should contain at least 8 characters.";
 
-    //Sign-up Page > Step 3
+    //Sign-up Page > Step 2
 
     public final String LBL_REQUIRED_DISPLAYED_NAME = "Enter a name for your profile.";
     public final String LBL_REQUIRED_DOB = "Please enter your date of birth.";
     public final String LBL_REQUIRED_GENDER = "Select your gender.";
+    public final String LBL_INVALID_BIRTHDATE = "Please enter the day of your birth date by entering a number between 1 and 31.";
 
     //endregion
 

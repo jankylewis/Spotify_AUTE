@@ -7,18 +7,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class SignUpObject extends BasePage {
-    public SignUpObject(Page page) {
+public class RegistrationObject extends BasePage {
+    public RegistrationObject(Page page) {
         super(page);
     }
 
     public final String BTN_NEXT = "//button[contains(@data-encore-id, 'buttonPrimary')]";
 
-    //region At first step
+    //region At pre step
 
-    public class SignUpObjectAtFirstStep extends SignUpObject {
+    public class RegistrationObjectAtPreStep extends RegistrationObject {
 
-        public SignUpObjectAtFirstStep(Page page) {
+        public RegistrationObjectAtPreStep(Page page) {
             super(page);
         }
 
@@ -28,11 +28,11 @@ public class SignUpObject extends BasePage {
 
     //endregion
 
-    //region At second step
+    //region At first step
 
-    public class SignUpObjectAtSecondStep extends SignUpObject {
+    public class RegistrationObjectAtFirstStep extends RegistrationObject {
 
-        public SignUpObjectAtSecondStep(Page page) {
+        public RegistrationObjectAtFirstStep(Page page) {
             super(page);
         }
         public final String TXT_PASSWORD = "//input[contains(@id, 'new-password')]";
@@ -41,11 +41,11 @@ public class SignUpObject extends BasePage {
 
     //endregion
 
-    //region At third step
+    //region At second step
 
-    public class SignUpObjectAtThirdStep extends SignUpObject {
+    public class RegistrationObjectAtSecondStep extends RegistrationObject {
 
-        public SignUpObjectAtThirdStep(Page page) {
+        public RegistrationObjectAtSecondStep(Page page) {
             super(page);
         }
 
@@ -88,6 +88,20 @@ public class SignUpObject extends BasePage {
         public final String LBL_BIRTHDATE_DAY_ERRMSG = "//div[contains(@id, 'birthdate-error-day_invalid')]";
         public final String LBL_BIRTHDATE_MONTH_ERRMSG = "//div[contains(@id, 'birthdate-error-month_invalid')]";
         public final String LBL_BIRTHDATE_ERRMSG = "//div[contains(@id, 'birthdate-error-invalid')]";
+    }
+
+    //endregion
+
+    //region At third step
+
+    public class RegistrationObjectAtThirdStep extends RegistrationObject {
+
+        public RegistrationObjectAtThirdStep(Page page) {
+            super(page);
+        }
+
+        public final String CHK_MARKETING = "//label[contains(@for, 'checkbox-marketing')]//span";
+        public final String CHK_PRIVACY = "//label[contains(@for, 'checkbox-privacy')]//span";
     }
 
     //endregion

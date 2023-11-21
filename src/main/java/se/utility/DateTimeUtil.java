@@ -105,5 +105,4 @@ public class DateTimeUtil {
             throw new IllegalArgumentException("The desired month did not match any values!");
         }
     }
-
 }

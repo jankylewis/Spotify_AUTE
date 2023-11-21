@@ -1,5 +1,6 @@
 package se.commonHandler.baseService;
 
+import com.microsoft.playwright.Keyboard;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
@@ -32,17 +33,6 @@ public class BaseUIAction {
        waitConst = new WaitConstant();
     }
 
-    public void resizeDynamicViewport() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int screenWidth = (int)screenSize.getWidth();
-        int screenHeight = (int)screenSize.getHeight();
-    }
-
-    public void resizeDynamicViewport(double width, double height) {
-
-    }
-
     public void navigateToUrl(String expUrl) {
         page.navigate(expUrl, waitHelper.navOpts.setWaitUntil(waitConst.DOMCONTENTWAITER));
     }
@@ -69,6 +59,13 @@ public class BaseUIAction {
         expLocator.click(actionConst.clickOpts
                 .setForce(actionConst.getClearByForced(actionConst.clickOpts))
                 .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
+    }
+
+    public void clickOnElementByForcing(Locator expLocator) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(true));
     }
 
     public void clickOnElement(Locator expLocator, boolean isLongWaitUsed) {
@@ -134,5 +131,9 @@ public class BaseUIAction {
                     .setForce(actionConst.getClearByForced(actionConst.clickOpts))
                     .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
         }
+    }
+
+    public void pressKey(String expKey) {
+        page.keyboard().press(expKey);
     }
 }

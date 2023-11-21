@@ -1,0 +1,226 @@
+package se.business;
+
+import com.microsoft.playwright.ElementHandle;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import org.jetbrains.annotations.NotNull;
+import se.commonHandler.baseService.BaseVerifier.IErrorVerification;
+import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.model.UserInformationModel;
+import se.pageObject.RegistrationObject;
+import se.utility.GlobalVariableUtil.Environment;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class RegistrationPage extends RegistrationObject implements IVerification {
+
+    public RegistrationPage(Page page) {
+        super(page);
+    }
+
+    //region At Pre-step
+
+    public class RegistrationAtPreStep extends RegistrationObjectAtPreStep implements IErrorVerification {
+
+        public RegistrationAtPreStep(Page page) {
+            super(page);
+        }
+
+        public RegistrationAtPreStep inputUsrEmail(String usrEmail) {
+            baseUi.sendKeyToElement(findLocator(TXT_EMAIL), usrEmail);
+            return this;
+        }
+
+        @Override
+        public void verifyErrorMessagePresented() {
+
+            Locator invalidEmailAddressLbl = findLocator(LBL_USERNAME_ERRMSG);
+
+            waitHelper.waitForElementVisible(invalidEmailAddressLbl);
+            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_USERNAME, invalidEmailAddressLbl.textContent());
+
+            verificationWentPassed();
+        }
+    }
+
+    //endregion
+
+    //region At First-step
+
+    public class RegistrationAtFirstStep extends RegistrationObjectAtFirstStep implements IErrorVerification {
+
+        public RegistrationAtFirstStep(Page page) {
+            super(page);
+        }
+
+        public RegistrationAtFirstStep inputPassword(String usrPwd) {
+            baseUi.sendKeyToElement(findLocator(TXT_PASSWORD), usrPwd);
+            return this;
+        }
+
+        @Override
+        public void verifyErrorMessagePresented() {
+
+            Locator invalidPwdLbl = findLocator(LBL_PASSWORD_ERRMSG);
+
+            waitHelper.waitForElementVisible(invalidPwdLbl);
+            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_PASSWORD, invalidPwdLbl.textContent());
+
+            verificationWentPassed();
+        }
+    }
+
+    //endregion
+
+    //region At Second-step
+
+    public class RegistrationAtSecondStep extends RegistrationObjectAtSecondStep implements IErrorVerification {
+
+        public RegistrationAtSecondStep(Page page) {
+            super(page);
+        }
+
+        public RegistrationAtSecondStep inputDisplayedName(String displayedName) {
+            baseUi.sendKeyToElement(findLocator(TXT_DISPLAYED_NAME), displayedName);
+            return this;
+        }
+
+        public RegistrationAtSecondStep selectGenderByClicking(String gender) {
+            baseUi.clickOnElementByForcing(findLocator(RBTN_GENDER(gender)));
+            return this;
+        }
+
+        public RegistrationAtSecondStep selectGenderByKeyboard(@NotNull String gender) {
+
+            List<String> listOfUiGenders = Arrays.asList(
+                    "man", "woman", "non-binary", "something else", "prefer not to say");
+
+            //RBTN_GENDER might not work => utilizing keyboard
+            SelectGender:
+            for (int i = 0; i < listOfUiGenders.size(); i++) {
+                if (i == 0 && gender == listOfUiGenders.get(i)) {
+                    baseUi.pressKey("Tab");
+                    baseUi.pressKey(" ");           //Pressing Space-bar
+
+                    break;
+                }
+
+                for (int tabI = 1; tabI < listOfUiGenders.size(); tabI++) {
+
+                    if (gender == listOfUiGenders.get(tabI)) {
+                        baseUi.pressKey("Tab");
+                        for (int arrowI = 0; arrowI < tabI; arrowI++) {
+                            baseUi.pressKey("ArrowRight");
+                        }
+
+                        break SelectGender;                 //Terminating action
+                    }
+                }
+            }
+
+            return this;
+        }
+
+        private RegistrationAtSecondStep inputBirthDate(int birthDate) {
+            baseUi.sendKeyToElement(findLocator(TXT_BIRTHDATE), String.valueOf(birthDate));
+            return this;
+        }
+
+        public RegistrationAtSecondStep selectBirthMonth(String birthMonth) {
+            baseUi.selectDropdown(findLocator(DDL_BIRTHMONTH), birthMonth);
+            return this;
+        }
+
+        public RegistrationAtSecondStep inputBirthYear(int birthYear) {
+            baseUi.sendKeyToElement(findLocator(TXT_BIRTHYEAR), String.valueOf(birthYear));
+            return this;
+        }
+
+        public RegistrationAtSecondStep fulfillThirdStep(@NotNull UserInformationModel usrModel) {
+
+            inputDisplayedName(usrModel.getDisplayedName());
+            selectBirthMonth(String.valueOf(usrModel.getBirthMonth()));
+            inputBirthDate(usrModel.getBirthDate());
+            inputBirthYear(usrModel.getBirthYear());
+//            selectGenderByKeyboard(usrModel.getGender());
+            selectGenderByClicking(usrModel.getGender());
+            clickOnNextBtn();
+
+            return this;
+        }
+
+        public void verifyErrorMessagePresentedAtBirthDateField() {
+            Locator invalidBirthDateErrMsg = findLocator(LBL_BIRTHDATE_DAY_ERRMSG);
+
+            waitHelper.waitForElementVisible(invalidBirthDateErrMsg);
+
+            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent());
+        }
+
+        @Override
+        public void verifyErrorMessagePresented() {
+            Locator displayedNameRequiredMsgLbl = findLocator(LBL_DISPLAYED_NAME_ERRMSG);
+            Locator dobRequiredMsgLbl = findLocator(LBL_BIRTHDATE_ERRMSG);
+            Locator genderRequiredMsgLbl = findLocator(LBL_GENDER_ERRMSG);
+
+            waitHelper.waitForElementVisible(displayedNameRequiredMsgLbl);
+
+            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_DISPLAYED_NAME, displayedNameRequiredMsgLbl.textContent());
+            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_DOB, dobRequiredMsgLbl.textContent());
+            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_GENDER, genderRequiredMsgLbl.textContent());
+
+            verificationWentPassed();
+        }
+    }
+
+    //endregion
+
+    public class RegistrationAtThirdStep extends RegistrationObjectAtThirdStep{
+
+        public RegistrationAtThirdStep(Page page) {
+            super(page);
+        }
+
+        public RegistrationAtThirdStep tickMarketingCheckbox() {
+
+            ElementHandle marketingChk = findListOfLocator(CHK_MARKETING).get(0);
+            Locator x = (Locator) marketingChk;
+
+            return this;
+        }
+
+        public RegistrationObjectAtThirdStep tickPrivacyCheckbox() {
+
+            return this;
+        }
+    }
+
+    public RegistrationPage clickOnNextBtn() {
+        baseUi.clickOnElement(findLocator(BTN_NEXT), Double.valueOf(waitConst.MINTIMEOUT));
+        return this;
+    }
+
+    public RegistrationPage navigateToSignUpPage() {
+
+        baseUi.navigateToUrl(Environment.baseUrl +
+                Environment.endPointLocalization +
+                localPathConst.SIGN_UP_PATH);
+
+        return this;
+    }
+
+    //region IVerification
+
+    @Override
+    public void verificationWentPassed() {
+        assert true;
+    }
+
+    @Override
+    public void verificationWentFailed() {
+        assert false;
+    }
+
+    //endregion
+}

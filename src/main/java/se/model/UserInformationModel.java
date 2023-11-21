@@ -1,5 +1,7 @@
 package se.model;
 
+import java.io.Serializable;
+
 public class UserInformationModel {         //This UserInformationModel was generated for Log-in and Sign-up functionalities
 
     private String userEmail;
@@ -11,6 +13,7 @@ public class UserInformationModel {         //This UserInformationModel was gene
     private int birthDate;
     private int birthMonth;
     private int birthYear;
+    private String gender;
 
     public UserInformationModel(String usrEmail, String usrPwd, boolean usrRemembered) {
         this.userEmail = usrEmail;
@@ -18,20 +21,47 @@ public class UserInformationModel {         //This UserInformationModel was gene
         this.isRemembered = usrRemembered;
     }
 
-    //Being used for Sign-up flows
+    //region Being used for Sign-up flows
     public UserInformationModel(String usrEmail,
                                 String usrPwd,
                                 String displayedName,
                                 int birthDate,
                                 int birthMonth,
-                                int birthYear) {
+                                int birthYear,
+                                String gender) {
         this.userEmail = usrEmail;
         this.userPassword = usrPwd;
         this.displayedName = displayedName;
         this.birthDate = birthDate;
         this.birthMonth = birthMonth;
         this.birthYear = birthYear;
+        this.gender = gender;
     }
+
+    public UserInformationModel(String usrEmail) {
+        this.userEmail = usrEmail;
+    }
+
+    public UserInformationModel(String usrEmail, String usrPwd) {
+        this.userEmail = usrEmail;
+        this.userPassword = usrPwd;
+    }
+
+    public UserInformationModel(String usrEmail,
+                                String usrPwd,
+                                String displayedName,
+                                int birthMonth,
+                                int birthYear,
+                                String gender) {
+        this.userEmail = usrEmail;
+        this.userPassword = usrPwd;
+        this.displayedName = displayedName;
+        this.birthMonth = birthMonth;
+        this.birthYear = birthYear;
+        this.gender = gender;
+    }
+
+    //endregion
 
     public void setUserEmail(String usrEmail) {
         this.userEmail = usrEmail;
@@ -87,5 +117,13 @@ public class UserInformationModel {         //This UserInformationModel was gene
 
     public int getBirthYear() {
         return birthYear;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }
