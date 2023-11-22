@@ -1,7 +1,5 @@
 package se.model;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 
 public class UserInformationModel {         //This UserInformationModel was generated for Log-in and Sign-up functionalities
