@@ -6,7 +6,7 @@ import se.business.RegistrationPage;
 import se.business.RegistrationPage.RegistrationAtPreStep;
 import se.business.RegistrationPage.RegistrationAtFirstStep;
 import se.business.RegistrationPage.RegistrationAtSecondStep;
-import se.business.RegistrationPage.RegistrationAtThirdStep;
+import se.business.RegistrationPage.RegistrationAtLatters;
 import se.model.UserInformationModel;
 import se.spo.gui.BaseTestService;
 import se.utility.GlobalVariableUtil.UserCredential;
@@ -26,9 +26,11 @@ public class RegistrationTest extends BaseTestService {
     private RegistrationAtPreStep signUpAtPreStepPage;
     private RegistrationAtFirstStep signUpAtFirstStepPage;
     private RegistrationAtSecondStep signUpAtSecondStep;
-    private RegistrationAtThirdStep signUpAtThirdStep;
+    private RegistrationAtLatters signUpAtLatters;
     private Random randomizer;
     private int randomizedNumber;
+    private final List<String> listOfGenders = Arrays.asList(
+            "man", "woman", "non-binary", "something else", "prefer not to say");
 
     //endregion
 
@@ -102,8 +104,6 @@ public class RegistrationTest extends BaseTestService {
     protected void spotifyUiTest_verifyUserHasUnsuccessfullySignedUpWithEmptyDateOfBirth() {
 
         LOGGER.info("Preparing test data");
-        List<String> listOfGenders = Arrays.asList(
-                "man", "woman", "non-binary", "something else", "prefer not to say");
         LocalDate userBirthDate = LocalDate.parse(UserCredential.userDob, dateTimeUtil.DATE_FORMATTER);
         usrModel = new UserInformationModel(
                 randomizedNumber + faker.produceFakeEmail(),
@@ -125,13 +125,42 @@ public class RegistrationTest extends BaseTestService {
 
         LOGGER.info("Step: Step 3 > Inputting all fields except date of birth field");
         LOGGER.info("Step: Step 3 > Verifying that an error message at date of birth field came up!");
-        signUpAtSecondStep.inputDisplayedName(usrModel.getDisplayedName())
-                .selectBirthMonth(dateTimeUtil.processMonth(usrModel.getBirthMonth()))
-                .inputBirthYear(usrModel.getBirthYear())
-                .selectGenderByKeyboard(usrModel.getGender());
+        signUpAtSecondStep.fulfillThirdStep(usrModel, true)
+                .verifyErrorMessagePresentedAtBirthDateField();
+    }
 
-        registrationPage.clickOnNextBtn();
-        signUpAtSecondStep.verifyErrorMessagePresentedAtBirthDateField();
+    @Test(priority = 2,
+            testName = "SWSIGNUP_05: Step 3 > Verify User has signed-up unsuccessfully with a futuristic year",
+            invocationCount = 1,
+            enabled = true
+    )
+    protected void spotifyUiTest_verifyUserHasUnsuccessfullySignedUpWithFuturisticYear() {
+
+        LOGGER.info("Preparing test data");
+        LocalDate userBirthDate = LocalDate.parse(UserCredential.userDob, dateTimeUtil.DATE_FORMATTER);
+        usrModel = new UserInformationModel(
+                randomizedNumber + faker.produceFakeEmail(),
+                faker.producePassword(
+                        8, 16, true, true, true),
+                faker.produceFakeName(),
+                dateTimeUtil.getDayOfCurrentDate(userBirthDate),
+                dateTimeUtil.getMonthOfCurrentDate(userBirthDate),
+                dateTimeUtil.getCurrentDate().plusYears(1).getYear(),
+                listOfGenders.get(randomizer.nextInt(0, listOfGenders.size() - 1))
+        );
+
+        signUpAtSecondStep = registrationPage.new RegistrationAtSecondStep(page);
+
+        LOGGER.info("Step: Navigating to Step 3");
+        landOnTheSecondStep(
+                usrModel.getUserEmail(),
+                usrModel.getUserPassword()
+        );
+
+        LOGGER.info("Step: Step 3 > Inputting all fields except year of birth field");
+        LOGGER.info("Step: Step 3 > Verifying that an error message at year of birth field came up!");
+        signUpAtSecondStep.fulfillThirdStep(usrModel, true)
+                .verifyErrorMessagePresentedAtYearField();
     }
 
     //endregion
@@ -139,7 +168,7 @@ public class RegistrationTest extends BaseTestService {
     //region Verifying successful Registration flows
 
     @Test(priority = 1,
-            testName = "SWSIGNUP_05: Verify User has signed-up successfully",
+            testName = "SWSIGNUP_06: Verify User has signed-up successfully",
             groups = "singleThreaded"
     )
     protected void spotifyUiTest_verifyUserHasSuccessfullySignedUp() {
@@ -161,7 +190,7 @@ public class RegistrationTest extends BaseTestService {
         );
 
         signUpAtSecondStep = registrationPage.new RegistrationAtSecondStep(page);
-        signUpAtThirdStep = registrationPage.new RegistrationAtThirdStep(page);
+        signUpAtLatters = registrationPage.new RegistrationAtLatters(page);
 
         LOGGER.info("Step: Navigating to Step 3");
         landOnTheSecondStep(
@@ -170,8 +199,13 @@ public class RegistrationTest extends BaseTestService {
         );
 
         LOGGER.info("Step: Step 3 > Inputting valid values into all fields");
-        signUpAtSecondStep.fulfillThirdStep(usrModel);
-        signUpAtThirdStep.tickMarketingCheckbox();
+        signUpAtSecondStep.fulfillThirdStep(usrModel, true);
+        signUpAtLatters.tickMarketingCheckbox()
+                .tickPrivacyCheckbox()
+                .clickOnSignUpBtn()
+                .verifyHumanRecognitionLabelDisplayed();
+
+        signUpAtLatters.authenticateRecaptchaService();
     }
 
     //endregion

@@ -85,6 +85,7 @@ public class RegistrationObject extends BasePage {
         public final String LBL_GENDER_ERRMSG = "//div[contains(@id, 'gender-error-message')]";
 
         public final String LBL_BIRTHDATE_YEAR_ERRMSG = "//div[contains(@id, 'birthdate-error-year_invalid')]";
+        public final String LBL_BIRTHDATE_YEAR_TOO_YOUNG_ERRMSG = "//div[contains(@id, 'birthdate-error-too_young')]";
         public final String LBL_BIRTHDATE_DAY_ERRMSG = "//div[contains(@id, 'birthdate-error-day_invalid')]";
         public final String LBL_BIRTHDATE_MONTH_ERRMSG = "//div[contains(@id, 'birthdate-error-month_invalid')]";
         public final String LBL_BIRTHDATE_ERRMSG = "//div[contains(@id, 'birthdate-error-invalid')]";
@@ -92,16 +93,18 @@ public class RegistrationObject extends BasePage {
 
     //endregion
 
-    //region At third step
+    //region At the latters
 
-    public class RegistrationObjectAtThirdStep extends RegistrationObject {
+    public class RegistrationObjectAtLatters extends RegistrationObject {
 
-        public RegistrationObjectAtThirdStep(Page page) {
+        public RegistrationObjectAtLatters(Page page) {
             super(page);
         }
 
         public final String CHK_MARKETING = "//label[contains(@for, 'checkbox-marketing')]//span";
         public final String CHK_PRIVACY = "//label[contains(@for, 'checkbox-privacy')]//span";
+        public final String LBL_HUMAN_RECOGNITION = "//button[contains(@data-encore-id, 'buttonPrimary')]//preceding-sibling::h1";
+        public final String BTN_SIGN_UP = "//button[contains(@data-encore-id, 'buttonPrimary')]";
     }
 
     //endregion

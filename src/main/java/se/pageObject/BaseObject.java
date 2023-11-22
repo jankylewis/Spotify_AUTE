@@ -8,6 +8,7 @@ import com.microsoft.playwright.PlaywrightException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class BaseObject {
 
@@ -38,6 +39,33 @@ public class BaseObject {
         return foundLocator;
     }
 
+    public ElementHandle findFirstLocatorVisible(String expLocator) {
+
+        listOfFoundLocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundLocators = page.querySelectorAll(expLocator);
+
+            if (listOfFoundLocators.isEmpty()) {
+                timesOfRetrying--;
+            }
+            else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundLocators.stream()     //Getting first displayed element
+                .filter(ElementHandle::isVisible)
+                .toList()
+                .get(0);
+    }
+
     public List<ElementHandle> findListOfLocator(String expLocator) {
 
         listOfFoundLocators = new ArrayList<>();
@@ -45,10 +73,10 @@ public class BaseObject {
 
         do {
             if (timesOfRetrying == 1) {
-                throw new PlaywrightException("The desired element has not been found!");
+                throw new NoSuchElementException("The desired element has not been found!");
             }
 
-            listOfFoundLocators = page.querySelectorAll(expLocator + "ass");
+            listOfFoundLocators = page.querySelectorAll(expLocator);
 
             if (listOfFoundLocators.isEmpty()) {
                 timesOfRetrying--;

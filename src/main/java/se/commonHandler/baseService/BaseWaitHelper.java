@@ -1,5 +1,6 @@
 package se.commonHandler.baseService;
 
+import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.NavigateOptions;
@@ -41,6 +42,12 @@ public class BaseWaitHelper {
 
         //Waiting for locator to be visible with time-out
         expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE));
+    }
+
+    public void waitForElementVisible(@NotNull ElementHandle expLocator, String _expLocator) {
+
+        //Waiting for locator to be visible with time-out
+        expLocator.waitForSelector(_expLocator, new ElementHandle.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
     }
 
     public void waitForElementVisible(@NotNull Locator expLocator, boolean isLongWait) {

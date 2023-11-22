@@ -1,6 +1,5 @@
 package se.business;
 
-import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +74,10 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
     //region At Second-step
 
-    public class RegistrationAtSecondStep extends RegistrationObjectAtSecondStep implements IErrorVerification {
+    public class RegistrationAtSecondStep extends RegistrationObjectAtSecondStep
+            implements IErrorVerification {
+
+        private final String emptyString = "";
 
         public RegistrationAtSecondStep(Page page) {
             super(page);
@@ -87,7 +89,8 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
         }
 
         public RegistrationAtSecondStep selectGenderByClicking(String gender) {
-            baseUi.clickOnElementByForcing(findLocator(RBTN_GENDER(gender)));
+            baseUi.clickOnElementByForcing(findLocator(RBTN_GENDER(gender)),
+                    Double.valueOf(waitConst.MINTIMEOUT));
             return this;
         }
 
@@ -123,7 +126,8 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
         }
 
         private RegistrationAtSecondStep inputBirthDate(int birthDate) {
-            baseUi.sendKeyToElement(findLocator(TXT_BIRTHDATE), String.valueOf(birthDate));
+            baseUi.sendKeyToElement(findLocator(TXT_BIRTHDATE),
+                    birthDate != -1 ? String.valueOf(birthDate) : emptyString);
             return this;
         }
 
@@ -133,29 +137,46 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
         }
 
         public RegistrationAtSecondStep inputBirthYear(int birthYear) {
-            baseUi.sendKeyToElement(findLocator(TXT_BIRTHYEAR), String.valueOf(birthYear));
+            baseUi.sendKeyToElement(findLocator(TXT_BIRTHYEAR),
+                    birthYear != -1 ? String.valueOf(birthYear) : emptyString);
             return this;
         }
 
-        public RegistrationAtSecondStep fulfillThirdStep(@NotNull UserInformationModel usrModel) {
+        public RegistrationAtSecondStep fulfillThirdStep(@NotNull UserInformationModel usrModel,
+                                                         boolean isGenderSelectedByKeyboard) {
 
             inputDisplayedName(usrModel.getDisplayedName());
             selectBirthMonth(String.valueOf(usrModel.getBirthMonth()));
             inputBirthDate(usrModel.getBirthDate());
             inputBirthYear(usrModel.getBirthYear());
-//            selectGenderByKeyboard(usrModel.getGender());
-            selectGenderByClicking(usrModel.getGender());
+
+            if (isGenderSelectedByKeyboard) {
+                selectGenderByKeyboard(usrModel.getGender());
+            } else {
+                selectGenderByClicking(usrModel.getGender());
+            }
+
             clickOnNextBtn();
 
             return this;
+        }
+
+        public void verifyErrorMessagePresentedAtYearField() {
+            Locator invalidBirthYearErrMsg = findLocator(LBL_BIRTHDATE_YEAR_TOO_YOUNG_ERRMSG);
+
+            waitHelper.waitForElementVisible(invalidBirthYearErrMsg);
+            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_BIRTHYEAR, invalidBirthYearErrMsg.textContent());
+
+            verificationWentPassed();
         }
 
         public void verifyErrorMessagePresentedAtBirthDateField() {
             Locator invalidBirthDateErrMsg = findLocator(LBL_BIRTHDATE_DAY_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidBirthDateErrMsg);
-
             baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent());
+
+            verificationWentPassed();
         }
 
         @Override
@@ -176,25 +197,43 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
     //endregion
 
-    public class RegistrationAtThirdStep extends RegistrationObjectAtThirdStep{
+    //region At the latters
 
-        public RegistrationAtThirdStep(Page page) {
+    public class RegistrationAtLatters extends RegistrationObjectAtLatters {
+
+        public RegistrationAtLatters(Page page) {
             super(page);
         }
 
-        public RegistrationAtThirdStep tickMarketingCheckbox() {
+        public RegistrationAtLatters tickMarketingCheckbox() {
+            baseUi.clickOnElement(findFirstLocatorVisible(CHK_MARKETING));
+            return this;
+        }
 
-            ElementHandle marketingChk = findListOfLocator(CHK_MARKETING).get(0);
-            Locator x = (Locator) marketingChk;
+        public RegistrationAtLatters tickPrivacyCheckbox() {
+            baseUi.clickOnElement(findFirstLocatorVisible(CHK_PRIVACY));
+            return this;
+        }
+
+        public RegistrationAtLatters clickOnSignUpBtn() {
+            baseUi.clickOnElement(findLocator(BTN_SIGN_UP));
+            return this;
+        }
+
+        public RegistrationAtLatters authenticateRecaptchaService() {
+
+            //Code shall be added here
 
             return this;
         }
 
-        public RegistrationObjectAtThirdStep tickPrivacyCheckbox() {
-
-            return this;
+        public void verifyHumanRecognitionLabelDisplayed() {
+            baseVerifier.verifyStringsEqual(msgConst.LBL_HUMAN_RECOGNITION,
+                    findLocator(LBL_HUMAN_RECOGNITION).textContent());
         }
     }
+
+    //endregion
 
     public RegistrationPage clickOnNextBtn() {
         baseUi.clickOnElement(findLocator(BTN_NEXT), Double.valueOf(waitConst.MINTIMEOUT));

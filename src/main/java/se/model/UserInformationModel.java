@@ -1,5 +1,7 @@
 package se.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 
 public class UserInformationModel {         //This UserInformationModel was generated for Log-in and Sign-up functionalities
@@ -10,9 +12,9 @@ public class UserInformationModel {         //This UserInformationModel was gene
 
     //Sign-up flows
     private String displayedName;
-    private int birthDate;
+    private int birthDate = -1;     //Forcing a default value
     private int birthMonth;
-    private int birthYear;
+    private int birthYear = -1;     //Forcing a default value
     private String gender;
 
     public UserInformationModel(String usrEmail, String usrPwd, boolean usrRemembered) {

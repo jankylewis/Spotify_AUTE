@@ -24,7 +24,13 @@ public final class MessageConstant {
     public final String LBL_REQUIRED_DOB = "Please enter your date of birth.";
     public final String LBL_REQUIRED_GENDER = "Select your gender.";
     public final String LBL_INVALID_BIRTHDATE = "Please enter the day of your birth date by entering a number between 1 and 31.";
+    public final String LBL_INVALID_BIRTHYEAR = "You’re too young to create a Spotify account.";
 
     //endregion
 
+    //region Sign-up page > Latters
+
+    public final String LBL_HUMAN_RECOGNITION = "We need to make sure that you're a human";
+
+    //endregion
 }

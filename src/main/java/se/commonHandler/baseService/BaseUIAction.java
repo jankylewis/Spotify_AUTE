@@ -1,5 +1,6 @@
 package se.commonHandler.baseService;
 
+import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Keyboard;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -61,11 +62,23 @@ public class BaseUIAction {
                 .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
     }
 
+    public void clickOnElement(@NotNull ElementHandle expLocator) {
+        expLocator.click();
+    }
+
     public void clickOnElementByForcing(Locator expLocator) {
         waitHelper.waitForElementVisible(expLocator);
 
         expLocator.click(actionConst.clickOpts
                 .setForce(true));
+    }
+
+    public void clickOnElementByForcing(Locator expLocator, Double delayTimeOut) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(true)
+                .setDelay(delayTimeOut));
     }
 
     public void clickOnElement(Locator expLocator, boolean isLongWaitUsed) {
