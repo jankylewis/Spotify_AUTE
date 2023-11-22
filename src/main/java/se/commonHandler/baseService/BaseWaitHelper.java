@@ -10,12 +10,8 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import com.microsoft.playwright.Locator.WaitForOptions;
 
 import org.javatuples.Pair;
-import org.javatuples.Tuple;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.constantEnumeration.WaitConstant;
-
-import java.util.HashMap;
-
 
 public class BaseWaitHelper {
 
