@@ -11,11 +11,11 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private String filePath = "./src/main/java/se/globalVariable/environment.properties";       //Providing environment's path
-        private ResourceReader resourceReader = new ResourceReader();
-        public String baseUrl = resourceReader.getPropertyFromGV("base_url", filePath);
-        public String publicUrl = resourceReader.getPropertyFromGV("public_url", filePath);
-        public String endPointLocalization = resourceReader.getPropertyFromGV("end_point_localization", filePath);
+        private static final String filePath = "./src/main/java/se/globalVariable/environment.properties";       //Providing environment's path
+        private static final ResourceReader resourceReader = new ResourceReader();
+        public static final String baseUrl = resourceReader.getPropertyFromGV("base_url", filePath);
+        public static final String publicUrl = resourceReader.getPropertyFromGV("public_url", filePath);
+        public static final String endPointLocalization = resourceReader.getPropertyFromGV("end_point_localization", filePath);
 
         //endregion
 
@@ -29,12 +29,8 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private static String filePath = "./src/main/java/se/globalVariable/browser_configuration.properties";   //Providing browser config's path
-        private static ResourceReader resourceReader = new ResourceReader();
-
-        public static String browserType = resourceReader.getPropertyFromGV("browser_type", filePath);
-        public boolean isHeadless = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
-
+        private static final String filePath = "./src/main/java/se/globalVariable/browser_configuration.properties";   //Providing browser config's path
+        private static final ResourceReader resourceReader = new ResourceReader();
         public static final String BROWSER_TYPE = resourceReader.getPropertyFromGV("browser_type", filePath);
         public static final Boolean HEADLESS = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
 
@@ -50,14 +46,15 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private String filePath = "./src/main/java/se/globalVariable/user_credential.properties";   //Providing user infor's path
-        private ResourceReader resourceReader = new ResourceReader();
+        private static final String filePath = "./src/main/java/se/globalVariable/user_credential.properties";   //Providing user infor's path
+        private static final ResourceReader resourceReader = new ResourceReader();
 
-        public String userNation = resourceReader.getPropertyFromGV("user_nation", filePath);
-        public String userDob = resourceReader.getPropertyFromGV("user_dob", filePath);
-        public String userEmail = resourceReader.getPropertyFromGV("user_email", filePath);
-        public String userPassword = resourceReader.getPropertyFromGV("user_password", filePath);
-        public Boolean isRemembered = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_remembered", filePath));
+        public static final String userNation = resourceReader.getPropertyFromGV("user_nation", filePath);
+        public static final String userDob = resourceReader.getPropertyFromGV("user_dob", filePath);
+        public static final String userEmail = resourceReader.getPropertyFromGV("user_email", filePath);
+        public static final String userPassword = resourceReader.getPropertyFromGV("user_password", filePath);
+        public static final Boolean isRemembered = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_remembered", filePath));
+        public static final String userGender = resourceReader.getPropertyFromGV("user_gender", filePath);
 
         //endregion
     }

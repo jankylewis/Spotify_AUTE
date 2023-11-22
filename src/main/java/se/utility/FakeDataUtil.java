@@ -6,7 +6,7 @@ public class FakeDataUtil {
 
     private Faker faker = new Faker();
 
-    //region Producing fake names
+    //region Producing fake credentials
 
     public String produceFakeName() {
         return faker.name().fullName();
@@ -20,11 +20,35 @@ public class FakeDataUtil {
         return faker.name().lastName();
     }
 
-    //endregion
-
     public String produceUsername() {
         return faker.name().username();
     }
+
+    public String produceFakeEmail() {
+        return faker.internet().emailAddress();
+    }
+
+    public String producePassword() {
+        return faker.internet().password();
+    }
+
+    public String producePassword(int minLength, int maxLength) {
+        return faker.internet().password(minLength, maxLength);
+    }
+
+    public String producePassword(int minthLength,
+                                  int maxLength,
+                                  Boolean isDigitsIncluded,
+                                  Boolean isUppercaseIncluded,
+                                  Boolean isSpecialCharsIncluded) {
+
+        return faker.internet().password(
+                minthLength, maxLength, isUppercaseIncluded, isSpecialCharsIncluded, isDigitsIncluded);
+    }
+
+    //endregion
+
+    //region Producing fictional characters
 
     public String produceCharacterOfGameOfThrones() {
         return faker.gameOfThrones().character();
@@ -53,4 +77,6 @@ public class FakeDataUtil {
     public String produceMarvinQuoteOfHitchHikersGuideToTheGalaxy() {
         return faker.hitchhikersGuideToTheGalaxy().marvinQuote();
     }
+
+    //endregion
 }

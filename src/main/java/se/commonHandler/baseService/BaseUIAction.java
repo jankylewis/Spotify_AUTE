@@ -1,5 +1,7 @@
 package se.commonHandler.baseService;
 
+import com.microsoft.playwright.ElementHandle;
+import com.microsoft.playwright.Keyboard;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
@@ -32,17 +34,6 @@ public class BaseUIAction {
        waitConst = new WaitConstant();
     }
 
-    public void resizeDynamicViewport() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int screenWidth = (int)screenSize.getWidth();
-        int screenHeight = (int)screenSize.getHeight();
-    }
-
-    public void resizeDynamicViewport(double width, double height) {
-
-    }
-
     public void navigateToUrl(String expUrl) {
         page.navigate(expUrl, waitHelper.navOpts.setWaitUntil(waitConst.DOMCONTENTWAITER));
     }
@@ -71,6 +62,25 @@ public class BaseUIAction {
                 .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
     }
 
+    public void clickOnElement(@NotNull ElementHandle expLocator) {
+        expLocator.click();
+    }
+
+    public void clickOnElementByForcing(Locator expLocator) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(true));
+    }
+
+    public void clickOnElementByForcing(Locator expLocator, Double delayTimeOut) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.click(actionConst.clickOpts
+                .setForce(true)
+                .setDelay(delayTimeOut));
+    }
+
     public void clickOnElement(Locator expLocator, boolean isLongWaitUsed) {
         waitHelper.waitForElementVisible(expLocator, isLongWaitUsed);
 
@@ -79,7 +89,7 @@ public class BaseUIAction {
                 .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
     }
 
-    public void clickOnElementWithDelay(Locator expLocator, Double delayTimeOut) {           //Giving a hard-coded delay
+    public void clickOnElement(Locator expLocator, Double delayTimeOut) {           //Giving a hard-coded delay
         waitHelper.waitForElementVisible(expLocator, false);
 
         expLocator.click(actionConst.clickOpts
@@ -88,9 +98,9 @@ public class BaseUIAction {
                 .setDelay(delayTimeOut));
     }
 
-    public void clickOnElementWithDelay(Locator expLocator,
-                                        Double delayTimeOut,
-                                        boolean isLongWaitUsed) {                           //Giving a hard-coded delay
+    public void clickOnElement(Locator expLocator,
+                               Double delayTimeOut,
+                               boolean isLongWaitUsed) {                           //Giving a hard-coded delay
 
         waitHelper.waitForElementVisible(expLocator, isLongWaitUsed);
 
@@ -100,12 +110,24 @@ public class BaseUIAction {
                 .setDelay(delayTimeOut));
     }
 
+    public void clickOnRadioButton(Locator expLocator) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.check();
+    }
+
+    public void selectDropdown(Locator expLocator, String expOption) {
+        waitHelper.waitForElementVisible(expLocator);
+
+        expLocator.selectOption(expOption);
+    }
+
     public void hoverElement(Locator expLocator) {
         waitHelper.waitForElementVisible(expLocator, false);
         expLocator.hover();
     }
 
-    public void clickOnElementWithRetrying(@NotNull Locator expLocator, int expCounter) {
+    public void clickOnElement(@NotNull Locator expLocator, int expCounter) {
         waitHelper.waitForElementVisible(expLocator, false);
 
         expLocator.click(actionConst.clickOpts
@@ -122,5 +144,9 @@ public class BaseUIAction {
                     .setForce(actionConst.getClearByForced(actionConst.clickOpts))
                     .setNoWaitAfter(actionConst.getNoWaitAfter(actionConst.clickOpts)));
         }
+    }
+
+    public void pressKey(String expKey) {
+        page.keyboard().press(expKey);
     }
 }
