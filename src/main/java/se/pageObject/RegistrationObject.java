@@ -61,7 +61,7 @@ public class RegistrationObject extends BasePage {
             List<String> listOfElementGenders = Arrays.asList(
                     "male", "female", "non_binary", "other", "prefer_not_to_say");
 
-            int index = -1;     //Forcing a default value
+            int index;
             for (String _gender : listOfUiGenders) {
                 if (Objects.equals(gender, _gender)) {
 
