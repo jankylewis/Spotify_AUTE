@@ -57,7 +57,7 @@ public class SearchSongPage extends SearchSongObject
         Locator topSongLbl = findLocator(LBL_TOP_RESULT(verifiedSearchKey));
 
         //Songs section (4 songs)
-        
+
 
         //Featuring of the top-result song section (2 songs)
 
