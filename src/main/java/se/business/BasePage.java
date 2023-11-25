@@ -9,14 +9,11 @@ import se.commonHandler.baseService.BaseVerifier;
 import se.commonHandler.baseService.BaseWaitHelper;
 import se.pageObject.BaseObject;
 import se.utility.GlobalVariableUtil.Environment;
-import se.utility.GlobalVariableUtil.UserCredential;
 
 public class BasePage extends BaseObject {
 
     //region Introducing fields
 
-    protected Environment gvE;
-    protected UserCredential gvUC;
     protected Page page;
     protected BaseUIAction baseUi;
     protected BaseVerifier baseVerifier;
@@ -28,8 +25,6 @@ public class BasePage extends BaseObject {
     //region Retrieving global variables
 
     {
-        gvE = new Environment();
-        gvUC = new UserCredential();
         msgConst = new MessageConstant();
         localPathConst = new LocalPathConstant();
         waitConst = new WaitConstant();
@@ -49,7 +44,7 @@ public class BasePage extends BaseObject {
     }
 
     public BasePage navigateToBaseUrl() {
-        baseUi.navigateToUrl(gvE.baseUrl);
+        baseUi.navigateToUrl(Environment.baseUrl);
         return this;
     }
 

@@ -5,6 +5,9 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class BrowserManager {         //This service manages Browser-related objects
 
     //region Introducing objects
@@ -38,7 +41,21 @@ public final class BrowserManager {         //This service manages Browser-relat
 
     static void setLaunchOptions() {
         TL_LAUNCH_OPTIONS.set(
-                new LaunchOptions().setHeadless(HEADLESS).setChannel(BROWSER_TYPE));
+                new LaunchOptions()
+                        .setHeadless(HEADLESS)
+                        .setChannel(BROWSER_TYPE)
+                        .setArgs(List.of(
+                                "--window-position=-1900,50",
+                                "--remote-debugging-port=0",
+                                "--disable-dev-shm-usage",
+                                "--enable-automation",
+                                "--enable-crash-reporter",
+                                "--force-dark-mode"
+//                                "--make-chrome-default"
+//                                "--force-headless-for-tests"
+//                                "--ignore-certificate-errors-spki-list",
+//                                "--incognito"
+                        )));
     }
 
     private static LaunchOptions getLaunchOptions() {

@@ -1,7 +1,6 @@
 package se.spo.gui.onboardingExperience;
 
-import org.testng.ITestContext;
-import org.testng.ITestResult;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -10,7 +9,7 @@ import se.business.LogInPage;
 import se.business.ProfilePage;
 import se.model.UserInformationModel;
 import se.spo.gui.BaseTestService;
-import java.lang.reflect.Method;
+import se.utility.GlobalVariableUtil.UserCredential;
 
 public class LogInTest extends BaseTestService {
 
@@ -19,33 +18,47 @@ public class LogInTest extends BaseTestService {
     private LogInPage logInPage;
     private ProfilePage profilePage;
     private HomePage homePage;
+    @NotNull
     private UserInformationModel usrModel;
     private Boolean wasSuccessfullyLoggedIn;
 
     //endregion
 
-    //region Verifying User's log-in experience
+    //region Verifying User's Log-in experience
 
     @Test(priority = 1,
-            testName = "SW01: Verify User has successfully logged-in to the Spotify stream",
+            testName = "SWLOGIN_01: Verify User has successfully logged-in to the Spotify stream",
             invocationCount = 1)
     protected void spotifyUiTest_verifyUserHasSuccessfullyLoggedIn() {
-
-        LOGGER.info("Performing logging-in to Spotify");
+        LOGGER.info("Step: Performing logging-in to Spotify");
         logInPage.logInToSpotifyGateway(usrModel);
 
-        LOGGER.info("Verifying User has successfully logged-in");
+        LOGGER.info("Step: Verifying User has successfully logged-in");
         profilePage.verifyUserSuccessfullyLoggedIn();
 
         wasSuccessfullyLoggedIn = true;
     }
 
     @Test(priority = 1,
-            testName = "SW02: Verify User has not successfully logged-in to the Spotify stream" +
+            testName = "SWLOGIN_03: Verify User has not successfully logged-in to the Spotify stream" +
+                    "when using an invalid email then got an error message")
+    protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername() {
+
+        LOGGER.info("Step: Preparing an invalid-and-lengthy email");
+        usrModel.setUserEmail(faker.produceSpellOfHarryPotter());
+
+        LOGGER.info("Step: Performing logging-in to Spotify");
+        LOGGER.info("Step: Verifying that an ERROR came up!");
+        logInPage.logInToSpotifyGateway(usrModel)
+                .verifyErrorMessagePresented();
+    }
+
+    @Test(priority = 1,
+            testName = "SWLOGIN_02: Verify User has not successfully logged-in to the Spotify stream" +
                     "when using an invalid password then got an error message")
     protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadPassword() {
 
-        //Preparing an invalid-and-lengthy password
+        LOGGER.info("Step: Preparing an invalid-and-lengthy password");
         usrModel.setUserPassword(
                 faker.produceCatchPhraseOfHowIMetYourMother() +
                         faker.produceCharacterOfGameOfThrones() +
@@ -55,33 +68,22 @@ public class LogInTest extends BaseTestService {
                         faker.produceCharacterOfDragonBall()
         );
 
-        //Performing logging-in to Spotify
+        LOGGER.info("Step: Performing logging-in to Spotify");
+        LOGGER.info("Step: Verifying that an ERROR came up!");
         logInPage.logInToSpotifyGateway(usrModel)
                 .verifyErrorMessagePresented();
     }
 
     @Test(priority = 1,
-            testName = "SW03: Verify User has not successfully logged-in to the Spotify stream" +
-                    "when using an invalid email then got an error message")
-    protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadUsername() {
-
-        //Preparing an invalid-and-lengthy email
-        usrModel.setUserEmail(faker.produceSpellOfHarryPotter());
-
-        //Performing logging-in to Spotify
-        logInPage.logInToSpotifyGateway(usrModel)
-                .verifyErrorMessagePresented();
-    }
-
-    @Test(priority = 1,
-            testName = "SW04: Verify User has not successfully logged-in to the Spotify stream" +
+            testName = "SWLOGIN_04: Verify User has not successfully logged-in to the Spotify stream" +
                     "when using improper credentials then got an error message")
     protected void spotifyUiTest_verifyUserHasUnsuccessfullyLoggedInWithBadCredentials() {
 
-        //Preparing an invalid-and-lengthy email
+        LOGGER.info("Step: Preparing an invalid-and-lengthy email");
         usrModel.setUserEmail(faker.produceCharacterOfGameOfThrones());
 
-        //Performing logging-in to Spotify
+        LOGGER.info("Step: Performing logging-in to Spotify");
+        LOGGER.info("Step: Verifying that an ERROR came up!");
         logInPage.logInToSpotifyGateway(usrModel)
                 .verifyErrorMessagePresented();
     }
@@ -91,28 +93,25 @@ public class LogInTest extends BaseTestService {
     //region Test preparation and cleaning
 
     @BeforeMethod
-    protected void testPreparation(ITestContext iTestContext, ITestResult iTestResult) {
+    protected void testPreparation() {
 
-        String x = iTestResult.getName();
-        String x1 = iTestResult.getTestName();
-        String x2 = iTestResult.getHost();
-        String x3 = iTestContext.getName();
-
-        usrModel = new UserInformationModel(gvuc.userEmail,
-                gvuc.userPassword,
-                gvuc.isRemembered);
+        LOGGER.info("Preparing a User Information Model");
+        usrModel = new UserInformationModel(UserCredential.userEmail,
+                UserCredential.userPassword,
+                UserCredential.isRemembered);
 
         logInPage = new LogInPage(page);
         profilePage = new ProfilePage(page);
         homePage = new HomePage(page);
 
+        LOGGER.info("Navigating to Log-in Page");
         logInPage.navigateToLogInPage();
     }
 
     @AfterMethod
     protected void testCleaning() {
 
-        //Logging-out of Spotify
+        LOGGER.info("Logging-out of Spotify");
         if (wasSuccessfullyLoggedIn != null) {
             profilePage.logOutOfSpotifyGateway();
             homePage.waitForLogInButtonPresented();

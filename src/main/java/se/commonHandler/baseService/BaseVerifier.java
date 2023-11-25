@@ -16,21 +16,35 @@ public class BaseVerifier {
         expLocator.isVisible();
     }
 
-    public boolean verifyStringsEqual(@NotNull String expStr, @NotNull String actStr) {
+    public boolean verifyStringEquality(@NotNull String expStr, @NotNull String actStr) {
 
         if (expStr.trim().toLowerCase() == actStr.trim().toLowerCase()) {
             return true;
         } else {
-            return false;
+            throw new AssertionError(
+                    "Expected string [" + expStr + "] did not match actual string [" + actStr + "]");
         }
     }
 
-    //region IVerfications
+    public boolean verifyExpectedStringContained(@NotNull String expStr, @NotNull String actStr) {
+        if (actStr.trim().toLowerCase().contains(expStr.trim().toLowerCase())) {
+            return true;
+        } else {
+            throw new AssertionError(
+                    "Actual string [" + actStr + "] did not contain expected string [" + expStr + "]");
+        }
+    }
+
+    //region Verification services
+
+    public interface IErrorVerification {
+        void verifyErrorMessagePresented();
+    }
 
     public interface IVerification {
-        void verificationWentPassed();
+        void verificationWentPassed();      //Using this abstract void to assert a PASSED script
 
-        void verificationWentFailed();
+        void verificationWentFailed();      //Using this abstract void to assert a script went FAILED (being used if needed)
     }
 
     //endregion

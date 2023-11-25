@@ -18,7 +18,7 @@ public class WaitConstant {
     //region Timeout by milliseconds
 
     public final int MAXTIMEOUT = 30000;
-    public final int MINTIMEOUT = 200;
+    public final int MINTIMEOUT = 500;
     public final int TIMEOUT1S = 1000;
     public final int TIMEOUT3S = 3000;
     public final int TIMEOUT5S = 5000;
