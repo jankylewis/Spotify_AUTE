@@ -13,7 +13,8 @@ public class BaseObject {
 
     protected Page page;
     private Locator foundLocator;
-    private List<ElementHandle> listOfFoundLocators;
+    private List<ElementHandle> listOfFoundELocators;
+    private List<Locator> listOfFoundLocators;
 
     public BaseObject(Page page) {
         this.page = page;
@@ -50,8 +51,7 @@ public class BaseObject {
         return foundLocator;
     }
 
-    protected ElementHandle findFirstLocatorVisible(String expLocator) {
-
+    protected List<Locator> findListOfLocators(String expLocator) {
         listOfFoundLocators = new ArrayList<>();
         int timesOfRetrying = 3;
 
@@ -60,45 +60,68 @@ public class BaseObject {
                 throw new NoSuchElementException("The desired element has not been found!");
             }
 
-            listOfFoundLocators = page.querySelectorAll(expLocator);
+            listOfFoundLocators = page.locator(expLocator).all();
 
             if (listOfFoundLocators.isEmpty()) {
                 timesOfRetrying--;
-            }
-            else {
-                break;
-            }
-        }
-        while (timesOfRetrying > 0);
-
-        return listOfFoundLocators.stream()             //Getting the FIRST displayed element
-                .filter(ElementHandle::isVisible)
-                .toList()
-                .get(0);
-    }
-
-    protected List<ElementHandle> findListOfLocator(String expLocator) {
-
-        listOfFoundLocators = new ArrayList<>();
-        int timesOfRetrying = 3;
-
-        do {
-            if (timesOfRetrying == 1) {
-                throw new NoSuchElementException("The desired element has not been found!");
-            }
-
-            listOfFoundLocators = page.querySelectorAll(expLocator);
-
-            if (listOfFoundLocators.isEmpty()) {
-                timesOfRetrying--;
-            }
-            else {
+            } else {
                 break;
             }
         }
         while (timesOfRetrying > 0);
 
         return listOfFoundLocators;
+    }
+
+    protected ElementHandle findFirstLocatorVisible(String expLocator) {
+
+        listOfFoundELocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundELocators = page.querySelectorAll(expLocator);
+
+            if (listOfFoundELocators.isEmpty()) {
+                timesOfRetrying--;
+            }
+            else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundELocators.stream()             //Getting the FIRST displayed element
+                .filter(ElementHandle::isVisible)
+                .toList()
+                .get(0);
+    }
+
+    protected List<ElementHandle> findListOfELocators(String expLocator) {
+
+        listOfFoundELocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundELocators = page.querySelectorAll(expLocator);
+
+            if (listOfFoundELocators.isEmpty()) {
+                timesOfRetrying--;
+            }
+            else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundELocators;
     }
 
     //endregion

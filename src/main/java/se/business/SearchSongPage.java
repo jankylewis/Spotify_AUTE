@@ -1,5 +1,6 @@
 package se.business;
 
+import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
@@ -7,8 +8,14 @@ import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.model.SearchSongModel.ETab;
 import se.pageObject.SearchSongObject;
 import se.utility.GlobalVariableUtil;
+import se.utility.ParallelUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class SearchSongPage extends SearchSongObject
         implements IVerification {
@@ -51,16 +58,18 @@ public class SearchSongPage extends SearchSongObject
 
     //region Verifications section
 
-    private void verifySongNameAtAllTab(final String verifiedSearchKey) {
+    private void verifySongNameAtAllTab(final String verifiedSearchKey) throws Exception {
+
+        boolean isSuccessfullyVerified;
 
         //Top result card (1 song)
         Locator topSongLbl = findLocator(LBL_TOP_RESULT(verifiedSearchKey));
 
         //Songs section (4 songs)
-
+        List<Locator> listOfSongLbls = findListOfLocators(LBL_SONGS);
 
         //Featuring of the top-result song section (2 songs)
-
+        List<Locator> listOfFeaturedSongLbls = findListOfLocators(LBL_FEATURED_SONGS);
 
         //Artists section (4 artists)
 
@@ -81,10 +90,25 @@ public class SearchSongPage extends SearchSongObject
 
 
         //Verification
-        if (baseVerifier.verifyExpectedStringContained(verifiedSearchKey, topSongLbl.textContent())) {
+        ParallelUtil.parallelizeFunctions(Arrays.asList(
+                () -> baseVerifier.verifyExpectedStringContained(verifiedSearchKey, topSongLbl.textContent()),
+                () -> verifyListOfTextsContained(verifiedSearchKey, listOfSongLbls),
+                () -> verifyListOfTextsContained(verifiedSearchKey + "a1", listOfFeaturedSongLbls)
+        ));
+
+        isSuccessfullyVerified = true;
+        if (isSuccessfullyVerified) {
             verificationWentPassed();
         }
+    }
 
+    private boolean verifyListOfTextsContained(String verifiedKey, @NotNull List<Locator> listOfLocators) {
+
+        for (Locator l : listOfLocators) {
+            baseVerifier.verifyExpectedStringContained(verifiedKey, l.textContent());
+        }
+
+        return true;
     }
 
     private void verifySongNameAtArtistsTab(final String verifiedSearchKey) {
@@ -115,7 +139,7 @@ public class SearchSongPage extends SearchSongObject
     }
 
     public void verifySongNameMatchedKeyword(@NotNull ETab verifiedTab,
-                                             final String verifiedSearchKey) {
+                                             final String verifiedSearchKey) throws Exception {
 
         switch (verifiedTab) {
             case ALL -> verifySongNameAtAllTab(verifiedSearchKey);
@@ -127,8 +151,6 @@ public class SearchSongPage extends SearchSongObject
             case PROFILES -> verifySongNameAtProfilesTab(verifiedSearchKey);
             case PLAYLISTS -> verifySongNameAtPlaylistsTab(verifiedSearchKey);
         }
-
-        verificationWentPassed();
     }
 
     //region IVerification

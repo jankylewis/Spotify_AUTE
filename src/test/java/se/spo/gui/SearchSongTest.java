@@ -21,7 +21,7 @@ public class SearchSongTest extends BaseTestService {
             priority = 1,
             testName = "SWSEARCH_01: Verify User has successfully searched his desired songs"
     )
-    protected void spotifyUiTest_verifyUserSearchedSongsSuccessfully() {
+    protected void spotifyUiTest_verifyUserSearchedSongsSuccessfully() throws Exception {
 
         searchPage.navigateToSearchSongPage()
                 .searchSong(searchKey = "what")

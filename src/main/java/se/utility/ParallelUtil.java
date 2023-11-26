@@ -1,5 +1,6 @@
 package se.utility;
 
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -7,33 +8,39 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ParallelUtil {
 
-//    public static void main(String[] args) throws Exception {
-//        List<Runnable> listOfTasks = new ArrayList<>();
-//
-//        listOfTasks.add(() -> {
-//            System.out.println("task 1 started");
-//                                try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//            System.out.println("task 1 completed");
-//        });
-//
-//        listOfTasks.add(() -> {
-//        System.out.println("task 2 started");
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        System.out.println("task 2 completed");
-//        });
-//
-//        parallelizeTasks(listOfTasks);
-//    }
+    private static <T> T executeFunction(@NotNull Callable<T> func) throws Exception {
+        return func.call();
+    }
 
-    public static void parallelizeTasks(List<Runnable> listOfTasks) {
+    public static <T> void parallelizeFunctions(@NotNull List<Callable<T>> listOfFuncs) throws InterruptedException {
+
+        List<Callable<T>> listOfTasks = new ArrayList<>();
+
+        for (Callable<T> func : listOfFuncs) {
+            Callable<T> _func = () -> executeFunction(func);
+
+            //Adding all tasks to a list
+            listOfTasks.add(_func);
+        }
+
+        ExecutorService executor = Executors.newFixedThreadPool(listOfFuncs.size());
+
+        //Starting threads accordingly to the number of threads that has been defined
+        List<Future<T>> listOfFutures = executor.invokeAll(listOfTasks);
+
+        //Throwing exceptions if any
+        listOfFutures.stream().filter(x -> {
+            try {
+                return x.get().equals(false) || x.state() != Future.State.SUCCESS;
+            } catch (InterruptedException | ExecutionException ieEx) {
+                throw new RuntimeException(ieEx);
+            }
+        }).toList();
+    }
+
+    //region Running tasks in parallel as runnable objects
+
+    public static void parallelizeTasks(@NotNull List<Runnable> listOfTasks) {
 
         AtomicBoolean processing = new AtomicBoolean(true);
 
@@ -54,57 +61,12 @@ public class ParallelUtil {
         while (processing.get()){}                  //Program runs continuously
     }
 
-//    public static void main(String[] args) throws Exception {
-//
-//        AtomicBoolean processing = new AtomicBoolean(true);
-//
-//        new Executor.ParallelBuilder()
-//                .add(() -> {
-//                    System.out.println("TASK 1 Start");
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println("TASK 1 Complete");
-//                })
-//                .add(() -> {
-//                    System.out.println("TASK 2 Start");
-//                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println("TASK 2 Complete");
-//                })
-//                .add(() -> {
-//                    System.out.println("TASK 3 Start");
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println("TASK 3 Complete");
-//                })
-//                .callback(() -> {
-//                    System.out.println("All TASK COMPLETED");
-//                    processing.set(false);
-//                })
-//                .build()
-//                .execute();
-//
-//        while (processing.get()) {
-//            // program runs continuously
-//        }
-//        System.out.println("Program Terminates");
-//    }
-
     public static class Executor extends Thread {
         private ConcurrentLinkedQueue<Worker> workers;
         private Callback callback;
         private CountDownLatch latch;
 
-        private Executor(List<Runnable> tasks, Callback callback) {
+        private Executor(@NotNull List<Runnable> tasks, Callback callback) {
             super();
             this.callback = callback;
             workers = new ConcurrentLinkedQueue<>();
@@ -191,4 +153,7 @@ public class ParallelUtil {
             latch.countDown();
         }
     }
+
+    //endregion
 }
+
