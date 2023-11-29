@@ -26,7 +26,7 @@ public class BaseVerifier {
         }
     }
 
-    public boolean verifyExpectedStringContained(@NotNull String expStr, @NotNull String actStr) {
+    public Boolean verifyExpectedStringContained(@NotNull String expStr, @NotNull String actStr) {
         if (actStr.trim().toLowerCase().contains(expStr.trim().toLowerCase())) {
             return true;
         } else {

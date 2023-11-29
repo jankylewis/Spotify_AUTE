@@ -31,5 +31,13 @@ public class SearchSongObject extends BasePage {
     }
     protected final String LBL_SONGS = "//section[contains(@aria-label, 'Songs')]//a[contains(@href, 'track')]";
     protected final String LBL_FEATURED_SONGS = "//section[contains(@aria-label, 'Featuring')]//a";
-
+    protected final String LBL_ARTISTS = "//section[contains(@aria-label, 'Artists')]//a";
+    protected final String LBL_ALBUMS = "//section[contains(@aria-label, 'Albums')]//a[@title]";
+    protected final String LBL_PLAYLISTS = "//section[contains(@aria-label, 'Playlists')]//a[@title]";
+    protected final String LBL_PODCASTS = "//section[contains(@aria-label, 'Podcasts')]//a";
+    protected final String LBL_EPISODES = "//section[contains(@aria-label, 'Episodes')]//a";
+    protected final String LBL_PROFILES = "//section[contains(@aria-label, 'Profiles')]//a";
+    protected final String LBL_GENRES_AND_MOODS = "//section[contains(@aria-label, 'Genres')]//a";
 }
+
+

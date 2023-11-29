@@ -2,6 +2,7 @@ package se.utility;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,7 +13,10 @@ public class ParallelUtil {
         return func.call();
     }
 
-    public static <T> void parallelizeFunctions(@NotNull List<Callable<T>> listOfFuncs) throws InterruptedException {
+    public static <T> void parallelizeFunctions(@NotNull List<Callable<T>> listOfFuncs,
+                                                long timeOut,
+                                                TimeUnit timeUnit)
+            throws InterruptedException {
 
         List<Callable<T>> listOfTasks = new ArrayList<>();
 
@@ -23,21 +27,42 @@ public class ParallelUtil {
             listOfTasks.add(_func);
         }
 
-        ExecutorService executor = Executors.newFixedThreadPool(listOfFuncs.size());
+        final ExecutorService THREAD_LAUNCHER = Executors.newFixedThreadPool(listOfFuncs.size());
 
         //Starting threads accordingly to the number of threads that has been defined
-        List<Future<T>> listOfFutures = executor.invokeAll(listOfTasks);
+        List<Future<T>> listOfFutures = THREAD_LAUNCHER.invokeAll(listOfTasks);
 
         //Throwing exceptions if any
         listOfFutures.stream().filter(x -> {
             try {
-                return x.get().equals(false) || x.state() != Future.State.SUCCESS;
+                return x.state() != Future.State.SUCCESS || x.get().equals(false);
             } catch (InterruptedException | ExecutionException ieEx) {
                 throw new RuntimeException(ieEx);
             }
         }).toList();
+
+        listOfFutures.clear();
     }
 
+    public static <T> void parallelTasks(@NotNull Collection<Runnable> tasks) {
+
+        //Defining number of threads processed
+        final ExecutorService THREAD_LAUNCHER =
+                Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        try {
+            CountDownLatch LATCH_COUNTER = new CountDownLatch(tasks.size());
+            for (final Runnable task : tasks) {
+                THREAD_LAUNCHER.execute(task);
+                LATCH_COUNTER.countDown();
+            }
+            LATCH_COUNTER.await();          //Waiting for all task to be completed
+        } catch (InterruptedException iEx) {
+            throw new RuntimeException(iEx);
+        } finally {
+            THREAD_LAUNCHER.shutdown();
+        }
+    }
     //region Running tasks in parallel as runnable objects
 
     public static void parallelizeTasks(@NotNull List<Runnable> listOfTasks) {

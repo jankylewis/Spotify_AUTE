@@ -5,7 +5,6 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import se.utility.GlobalVariableUtil.BrowserConfiguration;
 
-import java.util.Arrays;
 import java.util.List;
 
 public final class BrowserManager {         //This service manages Browser-related objects
@@ -45,7 +44,7 @@ public final class BrowserManager {         //This service manages Browser-relat
                         .setHeadless(HEADLESS)
                         .setChannel(BROWSER_TYPE)
                         .setArgs(List.of(
-                                "--window-position=-1900,50",
+                                // "--window-position=-1900,50",
                                 "--remote-debugging-port=0",
                                 "--disable-dev-shm-usage",
                                 "--enable-automation",

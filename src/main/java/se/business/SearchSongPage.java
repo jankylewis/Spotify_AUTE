@@ -1,21 +1,16 @@
 package se.business;
 
-import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseWaitHelper;
 import se.model.SearchSongModel.ETab;
 import se.pageObject.SearchSongObject;
 import se.utility.GlobalVariableUtil;
 import se.utility.ParallelUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
+import java.util.*;
 
 public class SearchSongPage extends SearchSongObject
         implements IVerification {
@@ -42,6 +37,9 @@ public class SearchSongPage extends SearchSongObject
     public SearchSongPage switchToTab(@NotNull ETab tab) {
         baseUi.clickOnElement(
                 findLocator(LNK_TAB(getTabIndex(tab.getEValue()))));
+
+        BaseWaitHelper.forcedWait(3000);
+
         return this;
     }
 
@@ -68,33 +66,49 @@ public class SearchSongPage extends SearchSongObject
         //Songs section (4 songs)
         List<Locator> listOfSongLbls = findListOfLocators(LBL_SONGS);
 
-        //Featuring of the top-result song section (2 songs)
-        List<Locator> listOfFeaturedSongLbls = findListOfLocators(LBL_FEATURED_SONGS);
-
         //Artists section (4 artists)
-
+        List<Locator> listOfArtists = findListOfLocators(LBL_ARTISTS);
 
         //Albums section (4 albums)
-
+        List<Locator> listOfAlbums = findListOfLocators(LBL_ALBUMS);
 
         //Playlists section (4 playlists)
-
+        List<Locator> listOfPlaylists = findListOfLocators(LBL_PLAYLISTS);
 
         //Podcasts section (4 podcasts) > Podcasts' Episodes section (4 eps)
-
+        List<Locator> listOfPodcasts = findListOfLocators(LBL_PODCASTS);
+        List<Locator> listOfEpisodes = findListOfLocators(LBL_EPISODES);
 
         //Profiles section (4 profiles)
-
+        List<Locator> listOfProfiles = findListOfLocators(LBL_PROFILES);
 
         //Genres & Moods section (4 cards)
+        List<Locator> listOfGenresAndMoods = findListOfLocators(LBL_GENRES_AND_MOODS);
 
+        //Getting data for verification
+        String topSongTxt = topSongLbl.textContent();
+        Collection<String> songTxts = baseUi.getTextsFromLocators(listOfSongLbls);
+        Collection<String> artistTxts = baseUi.getTextsFromLocators(listOfArtists);
+        Collection<String> albumTxts = baseUi.getTextsFromLocators(listOfAlbums);
+        Collection<String> playlistTxts = baseUi.getTextsFromLocators(listOfPlaylists);
+        Collection<String> podcastTxts = baseUi.getTextsFromLocators(listOfPodcasts);
+        Collection<String> episodeTxts = baseUi.getTextsFromLocators(listOfEpisodes);
+        Collection<String> profileTxts = baseUi.getTextsFromLocators(listOfProfiles);
+        Collection<String> genresNMoodTxts = baseUi.getTextsFromLocators(listOfGenresAndMoods);
+
+        Collection<Runnable> tasks = new ArrayList<>();
+        tasks.add(() -> baseVerifier.verifyExpectedStringContained(verifiedSearchKey, topSongTxt));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, songTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, artistTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, albumTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, playlistTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, podcastTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, episodeTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, profileTxts));
+        tasks.add(() -> verifyTextsContained(verifiedSearchKey, genresNMoodTxts));
 
         //Verification
-        ParallelUtil.parallelizeFunctions(Arrays.asList(
-                () -> baseVerifier.verifyExpectedStringContained(verifiedSearchKey, topSongLbl.textContent()),
-                () -> verifyListOfTextsContained(verifiedSearchKey, listOfSongLbls),
-                () -> verifyListOfTextsContained(verifiedSearchKey + "a1", listOfFeaturedSongLbls)
-        ));
+        ParallelUtil.parallelTasks(tasks);
 
         isSuccessfullyVerified = true;
         if (isSuccessfullyVerified) {
@@ -102,10 +116,10 @@ public class SearchSongPage extends SearchSongObject
         }
     }
 
-    private boolean verifyListOfTextsContained(String verifiedKey, @NotNull List<Locator> listOfLocators) {
+    private @NotNull Boolean verifyTextsContained(String verifiedKey, @NotNull Collection<String> actTexts) {
 
-        for (Locator l : listOfLocators) {
-            baseVerifier.verifyExpectedStringContained(verifiedKey, l.textContent());
+        for (String actText : actTexts) {
+            baseVerifier.verifyExpectedStringContained(verifiedKey, actText);
         }
 
         return true;

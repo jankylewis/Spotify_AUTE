@@ -9,6 +9,8 @@ import se.commonHandler.constantEnumeration.ActionConstant;
 import se.commonHandler.constantEnumeration.WaitConstant;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class BaseUIAction {
 
@@ -148,5 +150,16 @@ public class BaseUIAction {
 
     public void pressKey(String expKey) {
         page.keyboard().press(expKey);
+    }
+
+    public Collection<String> getTextsFromLocators(@NotNull Collection<Locator> expLocators) {
+
+        Collection<String> actTexts = new ArrayList<>();
+
+        for (Locator locator : expLocators) {
+            actTexts.add(locator.textContent());
+        }
+
+        return actTexts;
     }
 }

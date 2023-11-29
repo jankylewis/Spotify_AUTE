@@ -28,7 +28,7 @@ public class SearchSongTest extends BaseTestService {
                 .switchToTab(ETab.ALL)
                 .verifySongNameMatchedKeyword(ETab.ALL, searchKey);
 
-        BaseWaitHelper.forcedWait(4000);
+//        BaseWaitHelper.forcedWait(4000);
 
     }
 
