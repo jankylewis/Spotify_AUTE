@@ -8,6 +8,7 @@ import com.microsoft.playwright.PlaywrightException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class BaseObject {
 
@@ -71,6 +72,30 @@ public class BaseObject {
         while (timesOfRetrying > 0);
 
         return listOfFoundLocators;
+    }
+
+    protected List<Locator> findListOfLocators(String expLocator, int numberOfLocatorsTaken) {
+        listOfFoundLocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundLocators = page.locator(expLocator).all();
+
+            if (listOfFoundLocators.isEmpty()) {
+                timesOfRetrying--;
+            } else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundLocators.stream()
+                .limit(numberOfLocatorsTaken)
+                .toList();
     }
 
     protected ElementHandle findFirstLocatorVisible(String expLocator) {

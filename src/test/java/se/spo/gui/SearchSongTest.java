@@ -19,17 +19,26 @@ public class SearchSongTest extends BaseTestService {
 
     @Test(
             priority = 1,
-            testName = "SWSEARCH_01: Verify User has successfully searched his desired songs"
+            testName = "SWSEARCH_01: All Tab > Verify User has successfully searched his desired songs"
     )
-    protected void spotifyUiTest_verifyUserSearchedSongsSuccessfully() throws Exception {
+    protected void spotifyUiTest_verifyUserSearchedSongsSuccessfullyAtAllTab() throws InterruptedException {
 
         searchPage.navigateToSearchSongPage()
                 .searchSong(searchKey = "what")
                 .switchToTab(ETab.ALL)
                 .verifySongNameMatchedKeyword(ETab.ALL, searchKey);
+    }
 
-//        BaseWaitHelper.forcedWait(4000);
+    @Test(
+            priority = 2,
+            testName = "SWSEARCH_02: Artists Tab > Verify User has successfully searched his desired songs"
+    )
+    protected void spotifyUiTest_verifyUserSearchedSongsSuccessfullyAtArtistsTab() throws InterruptedException {
 
+        searchPage.navigateToSearchSongPage()
+                .searchSong(searchKey = "what")
+                .switchToTab(ETab.ARTISTS)
+                .verifySongNameMatchedKeyword(ETab.ARTISTS, searchKey);
     }
 
     //endregion
