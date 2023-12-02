@@ -11,11 +11,12 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private static final String filePath = "./src/main/java/se/globalVariable/environment.properties";       //Providing environment's path
-        private static final ResourceReader resourceReader = new ResourceReader();
-        public static final String baseUrl = resourceReader.getPropertyFromGV("base_url", filePath);
-        public static final String publicUrl = resourceReader.getPropertyFromGV("public_url", filePath);
-        public static final String endPointLocalization = resourceReader.getPropertyFromGV("end_point_localization", filePath);
+        //Providing environment's path
+        private static final String FILEPATH = "./src/main/java/se/globalVariable/environment.properties";
+        private static final ResourceReader RESOURCE_READER = new ResourceReader();
+        public static final String BASE_URL = RESOURCE_READER.getPropertyFromGV("base_url", FILEPATH);
+        public static final String PUBLIC_URL = RESOURCE_READER.getPropertyFromGV("public_url", FILEPATH);
+        public static final String END_POINT_LOCALIZATION = RESOURCE_READER.getPropertyFromGV("end_point_localization", FILEPATH);
 
         //endregion
 
@@ -29,10 +30,10 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private static final String filePath = "./src/main/java/se/globalVariable/browser_configuration.properties";   //Providing browser config's path
-        private static final ResourceReader resourceReader = new ResourceReader();
-        public static final String BROWSER_TYPE = resourceReader.getPropertyFromGV("browser_type", filePath);
-        public static final Boolean HEADLESS = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_headless", filePath));
+        //Providing browser config's path
+        private static final String FILE_PATH = "./src/main/java/se/globalVariable/browser_configuration.properties";
+        public static final String BROWSER_TYPE = ResourceReader.getPropertyFromGV("browser_type", FILE_PATH);
+        public static final Boolean HEADLESS = Boolean.parseBoolean(ResourceReader.getPropertyFromGV("is_headless", FILE_PATH));
 
         //endregion
 
@@ -46,17 +47,33 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        private static final String filePath = "./src/main/java/se/globalVariable/user_credential.properties";   //Providing user infor's path
-        private static final ResourceReader resourceReader = new ResourceReader();
-
-        public static final String userNation = resourceReader.getPropertyFromGV("user_nation", filePath);
-        public static final String userDob = resourceReader.getPropertyFromGV("user_dob", filePath);
-        public static final String userEmail = resourceReader.getPropertyFromGV("user_email", filePath);
-        public static final String userPassword = resourceReader.getPropertyFromGV("user_password", filePath);
-        public static final Boolean isRemembered = Boolean.parseBoolean(resourceReader.getPropertyFromGV("is_remembered", filePath));
-        public static final String userGender = resourceReader.getPropertyFromGV("user_gender", filePath);
+        //Providing user infor's path
+        private static final String FILE_PATH = "./src/main/java/se/globalVariable/user_credential.properties";
+        public static final String USER_NATION = ResourceReader.getPropertyFromGV("user_nation", FILE_PATH);
+        public static final String USER_DOB = ResourceReader.getPropertyFromGV("user_dob", FILE_PATH);
+        public static final String USER_EMAIL = ResourceReader.getPropertyFromGV("user_email", FILE_PATH);
+        public static final String USER_PASSWORD = ResourceReader.getPropertyFromGV("user_password", FILE_PATH);
+        public static final Boolean REMEMBERED = Boolean.parseBoolean(ResourceReader.getPropertyFromGV("is_remembered", FILE_PATH));
+        public static final String USER_GENDER = ResourceReader.getPropertyFromGV("user_gender", FILE_PATH);
 
         //endregion
+    }
+
+    //endregion
+
+    //region Variables come from script_configuration.properties
+
+    public static class ScriptConfiguration {
+
+        //region Introducing global variables
+
+        //Providing user infor's path
+        private static final String FILE_PATH = "./src/main/java/se/globalVariable/script_configuration.properties";
+        public static final Boolean RECORDED = Boolean.parseBoolean(ResourceReader.getPropertyFromGV("is_recorded", FILE_PATH));
+        public static final Boolean SCREENSHOTTED = Boolean.parseBoolean(ResourceReader.getPropertyFromGV("is_screenshotted", FILE_PATH));
+
+        //endregion
+
     }
 
     //endregion

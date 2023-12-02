@@ -1,5 +1,7 @@
 package se.utility.fileReader;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.MissingResourceException;
@@ -10,11 +12,11 @@ public class BaseFileReader {
 
     public static class ResourceReader {                                //Enclosing class needs to be declared in static state
 
-        public ResourceBundle resourceBundle;
+        public static ResourceBundle resourceBundle;
 
         //region Getting property's value from Global Variable resources
 
-        public String getPropertyFromGV(final String key, final String filePath) {
+        public static @NotNull String getPropertyFromGV(final String key, final String filePath) {
 
             try {
                 
@@ -28,10 +30,8 @@ public class BaseFileReader {
 
                 return expValue;
 
-            } catch (IOException ioEx) {
+            } catch (IOException | MissingResourceException ioEx) {
                 throw new RuntimeException("Error found: " + ioEx.getMessage() + " with causes from " + ioEx.getCause());
-            } catch (MissingResourceException mrEx) {
-                throw new RuntimeException("Error found: " + mrEx.getMessage() + " with causes from " + mrEx.getCause());
             }
         }
 
@@ -39,7 +39,7 @@ public class BaseFileReader {
 
         //region Generating Resource Bundle service
 
-        private ResourceBundle getResourceBundle(final String filePath) throws IOException, MissingResourceException {
+        private static ResourceBundle getResourceBundle(final String filePath) throws IOException, MissingResourceException {
 
             FileInputStream fis = new FileInputStream(filePath);        //Placing the file into resource firstly
 

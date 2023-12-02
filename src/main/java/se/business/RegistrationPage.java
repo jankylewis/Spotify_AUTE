@@ -246,8 +246,8 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
     public RegistrationPage navigateToSignUpPage() {
 
-        baseUi.navigateToUrl(Environment.baseUrl +
-                Environment.endPointLocalization +
+        baseUi.navigateToUrl(Environment.BASE_URL +
+                Environment.END_POINT_LOCALIZATION +
                 localPathConst.SIGN_UP_PATH);
 
         return this;
