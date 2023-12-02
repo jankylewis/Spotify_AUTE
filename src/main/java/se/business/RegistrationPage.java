@@ -37,9 +37,10 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
             Locator invalidEmailAddressLbl = findLocator(LBL_USERNAME_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidEmailAddressLbl);
-            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_USERNAME, invalidEmailAddressLbl.textContent());
 
-            verificationWentPassed();
+            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_USERNAME, invalidEmailAddressLbl.textContent())) {
+                verificationWentPassed();
+            }
         }
     }
 
@@ -64,9 +65,10 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
             Locator invalidPwdLbl = findLocator(LBL_PASSWORD_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidPwdLbl);
-            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_PASSWORD, invalidPwdLbl.textContent());
 
-            verificationWentPassed();
+            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_PASSWORD, invalidPwdLbl.textContent())) {
+                verificationWentPassed();
+            }
         }
     }
 
@@ -100,24 +102,25 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
                     "man", "woman", "non-binary", "something else", "prefer not to say");
 
             //RBTN_GENDER might not work => utilizing keyboard
-            SelectGender:
-            for (int i = 0; i < listOfUiGenders.size(); i++) {
-                if (i == 0 && gender == listOfUiGenders.get(i)) {
-                    baseUi.pressKey("Tab");
-                    baseUi.pressKey(" ");           //Pressing Space-bar
-
-                    break;
-                }
-
-                for (int tabI = 1; tabI < listOfUiGenders.size(); tabI++) {
-
-                    if (gender == listOfUiGenders.get(tabI)) {
+            SelectGender: {
+                for (int i = 0; i < listOfUiGenders.size(); i++) {
+                    if (i == 0 && gender == listOfUiGenders.get(i)) {
                         baseUi.pressKey("Tab");
-                        for (int arrowI = 0; arrowI < tabI; arrowI++) {
-                            baseUi.pressKey("ArrowRight");
-                        }
+                        baseUi.pressKey(" ");           //Pressing Space-bar
 
-                        break SelectGender;                 //Terminating action
+                        break;
+                    }
+
+                    for (int tabI = 1; tabI < listOfUiGenders.size(); tabI++) {
+
+                        if (gender == listOfUiGenders.get(tabI)) {
+                            baseUi.pressKey("Tab");
+                            for (int arrowI = 0; arrowI < tabI; arrowI++) {
+                                baseUi.pressKey("ArrowRight");
+                            }
+
+                            break SelectGender;                 //Terminating action
+                        }
                     }
                 }
             }
@@ -165,18 +168,19 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
             Locator invalidBirthYearErrMsg = findLocator(LBL_BIRTHDATE_YEAR_TOO_YOUNG_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidBirthYearErrMsg);
-            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_BIRTHYEAR, invalidBirthYearErrMsg.textContent());
 
-            verificationWentPassed();
+            if (baseVerifier.verifyExpectedStringContained(msgConst.LBL_INVALID_BIRTHYEAR, invalidBirthYearErrMsg.textContent())) {
+                verificationWentPassed();
+            }
         }
 
         public void verifyErrorMessagePresentedAtBirthDateField() {
             Locator invalidBirthDateErrMsg = findLocator(LBL_BIRTHDATE_DAY_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidBirthDateErrMsg);
-            baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent());
-
-            verificationWentPassed();
+            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent())) {
+                verificationWentPassed();
+            }
         }
 
         @Override
@@ -187,11 +191,11 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
             waitHelper.waitForElementVisible(displayedNameRequiredMsgLbl);
 
-            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_DISPLAYED_NAME, displayedNameRequiredMsgLbl.textContent());
-            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_DOB, dobRequiredMsgLbl.textContent());
-            baseVerifier.verifyStringsEqual(msgConst.LBL_REQUIRED_GENDER, genderRequiredMsgLbl.textContent());
-
-            verificationWentPassed();
+            if (baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_DISPLAYED_NAME, displayedNameRequiredMsgLbl.textContent()) &&
+                    baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_DOB, dobRequiredMsgLbl.textContent()) &&
+                    baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_GENDER, genderRequiredMsgLbl.textContent())) {
+                verificationWentPassed();
+            }
         }
     }
 
@@ -228,7 +232,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
         }
 
         public void verifyHumanRecognitionLabelDisplayed() {
-            baseVerifier.verifyStringsEqual(msgConst.LBL_HUMAN_RECOGNITION,
+            baseVerifier.verifyStringEquality(msgConst.LBL_HUMAN_RECOGNITION,
                     findLocator(LBL_HUMAN_RECOGNITION).textContent());
         }
     }

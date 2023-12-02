@@ -3,6 +3,7 @@ package se.pageObject;
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.PlaywrightException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,33 +13,45 @@ public class BaseObject {
 
     protected Page page;
     private Locator foundLocator;
-    private List<ElementHandle> listOfFoundLocators;
+    private List<ElementHandle> listOfFoundELocators;
+    private List<Locator> listOfFoundLocators;
 
     public BaseObject(Page page) {
         this.page = page;
     }
 
-    public final String BTN_LOGO = "xpath=//a[img[@id = 'gh-logo']]";
-    public final String BTN_ACCOUNT_MENU = "xpath=//header//a[@data-encore-id='buttonPrimary']//following-sibling::button[@data-encore-id]";
-    public final String BTN_LOG_OUT = "xpath=//button[contains(@data-testid, 'logout')]z";
+    protected final String BTN_LOGO = "xpath=//a[img[@id = 'gh-logo']]";
+    protected final String BTN_ACCOUNT_MENU = "xpath=//header//a[@data-encore-id='buttonPrimary']//following-sibling::button[@data-encore-id]";
+    protected final String BTN_LOG_OUT = "xpath=//button[contains(@data-testid, 'logout')]z";
 
     //region Locating locators service
 
-    public Locator findLocator(String expLocator) {
+    protected Locator findLocator(String expLocator) {
 
         int timesOfRetrying = 3;
 
         do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
             foundLocator = page.locator(expLocator);
-            timesOfRetrying--;
+            try {
+                foundLocator.isVisible();
+                break;
+            }
+            catch (PlaywrightException plwEx) {
+                if (!(plwEx.getMessage().contains("DOMException"))) {
+                    throw plwEx;
+                }
+            }
         }
-        while (timesOfRetrying > 0);
+        while (timesOfRetrying-- > 0);
 
         return foundLocator;
     }
 
-    public ElementHandle findFirstLocatorVisible(String expLocator) {
-
+    protected List<Locator> findListOfLocators(String expLocator) {
         listOfFoundLocators = new ArrayList<>();
         int timesOfRetrying = 3;
 
@@ -47,45 +60,92 @@ public class BaseObject {
                 throw new NoSuchElementException("The desired element has not been found!");
             }
 
-            listOfFoundLocators = page.querySelectorAll(expLocator);
+            listOfFoundLocators = page.locator(expLocator).all();
 
             if (listOfFoundLocators.isEmpty()) {
                 timesOfRetrying--;
-            }
-            else {
-                break;
-            }
-        }
-        while (timesOfRetrying > 0);
-
-        return listOfFoundLocators.stream()     //Getting first displayed element
-                .filter(ElementHandle::isVisible)
-                .toList()
-                .get(0);
-    }
-
-    public List<ElementHandle> findListOfLocator(String expLocator) {
-
-        listOfFoundLocators = new ArrayList<>();
-        int timesOfRetrying = 3;
-
-        do {
-            if (timesOfRetrying == 1) {
-                throw new NoSuchElementException("The desired element has not been found!");
-            }
-
-            listOfFoundLocators = page.querySelectorAll(expLocator);
-
-            if (listOfFoundLocators.isEmpty()) {
-                timesOfRetrying--;
-            }
-            else {
+            } else {
                 break;
             }
         }
         while (timesOfRetrying > 0);
 
         return listOfFoundLocators;
+    }
+
+    protected List<Locator> findListOfLocators(String expLocator, int numberOfLocatorsTaken) {
+        listOfFoundLocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundLocators = page.locator(expLocator).all();
+
+            if (listOfFoundLocators.isEmpty()) {
+                timesOfRetrying--;
+            } else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundLocators.stream()
+                .limit(numberOfLocatorsTaken)
+                .toList();
+    }
+
+    protected ElementHandle findFirstLocatorVisible(String expLocator) {
+
+        listOfFoundELocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundELocators = page.querySelectorAll(expLocator);
+
+            if (listOfFoundELocators.isEmpty()) {
+                timesOfRetrying--;
+            }
+            else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundELocators.stream()             //Getting the FIRST displayed element
+                .filter(ElementHandle::isVisible)
+                .toList()
+                .get(0);
+    }
+
+    protected List<ElementHandle> findListOfELocators(String expLocator) {
+
+        listOfFoundELocators = new ArrayList<>();
+        int timesOfRetrying = 3;
+
+        do {
+            if (timesOfRetrying == 1) {
+                throw new NoSuchElementException("The desired element has not been found!");
+            }
+
+            listOfFoundELocators = page.querySelectorAll(expLocator);
+
+            if (listOfFoundELocators.isEmpty()) {
+                timesOfRetrying--;
+            }
+            else {
+                break;
+            }
+        }
+        while (timesOfRetrying > 0);
+
+        return listOfFoundELocators;
     }
 
     //endregion

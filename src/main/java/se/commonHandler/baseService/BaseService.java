@@ -5,7 +5,7 @@ import se.utility.DateTimeUtil;
 import se.utility.FakeDataUtil;
 import se.utility.LoggingUtil;
 
-public class BaseService {
+public class BaseService {      //This service is used for running test cases
 
     //region Introducing variables
 
@@ -24,3 +24,4 @@ public class BaseService {
 
     //endregion
 }
+

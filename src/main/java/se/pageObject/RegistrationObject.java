@@ -8,52 +8,52 @@ import java.util.List;
 import java.util.Objects;
 
 public class RegistrationObject extends BasePage {
-    public RegistrationObject(Page page) {
+    protected RegistrationObject(Page page) {
         super(page);
     }
 
-    public final String BTN_NEXT = "//button[contains(@data-encore-id, 'buttonPrimary')]";
+    protected final String BTN_NEXT = "//button[contains(@data-encore-id, 'buttonPrimary')]";
 
     //region At pre step
 
-    public class RegistrationObjectAtPreStep extends RegistrationObject {
+    protected class RegistrationObjectAtPreStep extends RegistrationObject {
 
-        public RegistrationObjectAtPreStep(Page page) {
+        protected RegistrationObjectAtPreStep(Page page) {
             super(page);
         }
 
-        public final String TXT_EMAIL = "//input[contains(@id, 'username')]";
-        public final String LBL_USERNAME_ERRMSG = "//div[contains(@id, 'username-error-message')]";
+        protected final String TXT_EMAIL = "//input[contains(@id, 'username')]";
+        protected final String LBL_USERNAME_ERRMSG = "//div[contains(@id, 'username-error-message')]";
     }
 
     //endregion
 
     //region At first step
 
-    public class RegistrationObjectAtFirstStep extends RegistrationObject {
+    protected class RegistrationObjectAtFirstStep extends RegistrationObject {
 
-        public RegistrationObjectAtFirstStep(Page page) {
+        protected RegistrationObjectAtFirstStep(Page page) {
             super(page);
         }
-        public final String TXT_PASSWORD = "//input[contains(@id, 'new-password')]";
-        public final String LBL_PASSWORD_ERRMSG = "//div[contains(@id, 'password-error-message')]";
+        protected final String TXT_PASSWORD = "//input[contains(@id, 'new-password')]";
+        protected final String LBL_PASSWORD_ERRMSG = "//div[contains(@id, 'password-error-message')]";
     }
 
     //endregion
 
     //region At second step
 
-    public class RegistrationObjectAtSecondStep extends RegistrationObject {
+    protected class RegistrationObjectAtSecondStep extends RegistrationObject {
 
-        public RegistrationObjectAtSecondStep(Page page) {
+        protected RegistrationObjectAtSecondStep(Page page) {
             super(page);
         }
 
-        public final String TXT_DISPLAYED_NAME = "//input[contains(@id, 'displayName')]";
-        public final String TXT_BIRTHDATE = "//input[contains(@id, 'day')]";
-        public final String DDL_BIRTHMONTH = "//select[contains(@id, 'month')]";
-        public final String TXT_BIRTHYEAR = "//input[contains(@id, 'year')]";
-        public final @NotNull String RBTN_GENDER(String gender) {
+        protected final String TXT_DISPLAYED_NAME = "//input[contains(@id, 'displayName')]";
+        protected final String TXT_BIRTHDATE = "//input[contains(@id, 'day')]";
+        protected final String DDL_BIRTHMONTH = "//select[contains(@id, 'month')]";
+        protected final String TXT_BIRTHYEAR = "//input[contains(@id, 'year')]";
+        protected final @NotNull String RBTN_GENDER(String gender) {
 
             List<String> listOfUiGenders = Arrays.asList(
                     "man", "woman", "non-binary", "something else", "prefer not to say");
@@ -81,30 +81,29 @@ public class RegistrationObject extends BasePage {
             throw new IllegalArgumentException("The desired gender was invalid!");
         }
 
-        public final String LBL_DISPLAYED_NAME_ERRMSG = "//div[contains(@id, 'displayname-error-message')]";
-        public final String LBL_GENDER_ERRMSG = "//div[contains(@id, 'gender-error-message')]";
-
-        public final String LBL_BIRTHDATE_YEAR_ERRMSG = "//div[contains(@id, 'birthdate-error-year_invalid')]";
-        public final String LBL_BIRTHDATE_YEAR_TOO_YOUNG_ERRMSG = "//div[contains(@id, 'birthdate-error-too_young')]";
-        public final String LBL_BIRTHDATE_DAY_ERRMSG = "//div[contains(@id, 'birthdate-error-day_invalid')]";
-        public final String LBL_BIRTHDATE_MONTH_ERRMSG = "//div[contains(@id, 'birthdate-error-month_invalid')]";
-        public final String LBL_BIRTHDATE_ERRMSG = "//div[contains(@id, 'birthdate-error-invalid')]";
+        protected final String LBL_DISPLAYED_NAME_ERRMSG = "//div[contains(@id, 'displayname-error-message')]";
+        protected final String LBL_GENDER_ERRMSG = "//div[contains(@id, 'gender-error-message')]";
+        protected final String LBL_BIRTHDATE_YEAR_ERRMSG = "//div[contains(@id, 'birthdate-error-year_invalid')]";
+        protected final String LBL_BIRTHDATE_YEAR_TOO_YOUNG_ERRMSG = "//div[contains(@id, 'birthdate-error-too_young')]";
+        protected final String LBL_BIRTHDATE_DAY_ERRMSG = "//div[contains(@id, 'birthdate-error-day_invalid')]";
+        protected final String LBL_BIRTHDATE_MONTH_ERRMSG = "//div[contains(@id, 'birthdate-error-month_invalid')]";
+        protected final String LBL_BIRTHDATE_ERRMSG = "//div[contains(@id, 'birthdate-error-invalid')]";
     }
 
     //endregion
 
     //region At the latters
 
-    public class RegistrationObjectAtLatters extends RegistrationObject {
+    protected class RegistrationObjectAtLatters extends RegistrationObject {
 
-        public RegistrationObjectAtLatters(Page page) {
+        protected RegistrationObjectAtLatters(Page page) {
             super(page);
         }
 
-        public final String CHK_MARKETING = "//label[contains(@for, 'checkbox-marketing')]//span";
-        public final String CHK_PRIVACY = "//label[contains(@for, 'checkbox-privacy')]//span";
-        public final String LBL_HUMAN_RECOGNITION = "//button[contains(@data-encore-id, 'buttonPrimary')]//preceding-sibling::h1";
-        public final String BTN_SIGN_UP = "//button[contains(@data-encore-id, 'buttonPrimary')]";
+        protected final String CHK_MARKETING = "//label[contains(@for, 'checkbox-marketing')]//span";
+        protected final String CHK_PRIVACY = "//label[contains(@for, 'checkbox-privacy')]//span";
+        protected final String LBL_HUMAN_RECOGNITION = "//button[contains(@data-encore-id, 'buttonPrimary')]//preceding-sibling::h1";
+        protected final String BTN_SIGN_UP = "//button[contains(@data-encore-id, 'buttonPrimary')]";
     }
 
     //endregion

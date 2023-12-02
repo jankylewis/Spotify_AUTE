@@ -23,6 +23,10 @@ public class BaseTestService extends BaseService {             //This service ru
         return PlaywrightFactory.produceInteractiveBrowser();
     }
 
+    public Page getPage() {
+        return page;
+    }
+
     @BeforeTest
     protected void testInitialization() {
         page = produceInteractivePage();

@@ -12,16 +12,26 @@ public class BaseVerifier {
         this.page = page;
     }
 
-    public void verifyElementVisible(@NotNull Locator expLocator) {
-        expLocator.isVisible();
+    public boolean verifyElementVisible(@NotNull Locator expLocator) {
+        return expLocator.isVisible();
     }
 
-    public boolean verifyStringsEqual(@NotNull String expStr, @NotNull String actStr) {
+    public boolean verifyStringEquality(@NotNull String expStr, @NotNull String actStr) {
 
-        if (expStr.trim().toLowerCase() == actStr.trim().toLowerCase()) {
+        if (expStr.toLowerCase().trim().equals(actStr.toLowerCase().trim())) {
             return true;
         } else {
-            return false;
+            throw new AssertionError(
+                    "Expected string [" + expStr + "] did not match actual string [" + actStr + "]");
+        }
+    }
+
+    public Boolean verifyExpectedStringContained(@NotNull String expStr, @NotNull String actStr) {
+        if (actStr.trim().toLowerCase().contains(expStr.trim().toLowerCase())) {
+            return true;
+        } else {
+            throw new AssertionError(
+                    "Actual string [" + actStr + "] did not contain expected string [" + expStr + "]");
         }
     }
 
@@ -32,9 +42,9 @@ public class BaseVerifier {
     }
 
     public interface IVerification {
-        void verificationWentPassed();
+        void verificationWentPassed();      //Using this abstract void to assert a PASSED script
 
-        void verificationWentFailed();
+        void verificationWentFailed();      //Using this abstract void to assert a script went FAILED (being used if needed)
     }
 
     //endregion

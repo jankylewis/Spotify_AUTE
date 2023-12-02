@@ -40,8 +40,14 @@ public class BaseWaitHelper {
 
     public void waitForElementVisible(@NotNull Locator expLocator) {
 
-        //Waiting for locator to be visible with time-out
+        //Waiting for locator to be visible
         expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE));
+    }
+
+    public void waitForElementAttached(@NotNull Locator expLocator) {
+
+        //Waiting for locator to be attached on DOM
+        expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.ATTACHED));
     }
 
     public void waitForElementVisible(@NotNull Pair<ElementHandle, String> pairOfElement) {
@@ -64,11 +70,12 @@ public class BaseWaitHelper {
 
     //region Hard-coded waiting
 
-    public void forcedWait(int millisecondsToWait) {
+    public static void forcedWait(int millisecondsToWait) {
         try {
             Thread.sleep(millisecondsToWait);
         } catch (Exception ex) {
-            throw new RuntimeException("Found an unexpected exception: " + ex.getCause() + " - " + ex.getMessage());
+            throw new RuntimeException("Found an unexpected exception: "
+                    + ex.getCause() + " - " + ex.getMessage());
         }
     }
 

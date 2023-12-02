@@ -54,13 +54,15 @@ public class LogInPage extends LogInObject implements IVerification {
     public void verifyAccountMenuPresented() {
         waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
         baseVerifier.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
+
+        verificationWentPassed();
     }
 
     public void verifyErrorMessagePresented() {
         Locator invalidCredentialsLbl = findLocator(LBL_INVALID_CREDENTIALS);
 
         waitHelper.waitForElementVisible(invalidCredentialsLbl, false);
-        baseVerifier.verifyStringsEqual(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
+        baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
 
         verificationWentPassed();
     }
