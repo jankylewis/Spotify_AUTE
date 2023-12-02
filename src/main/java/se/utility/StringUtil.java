@@ -1,9 +1,7 @@
 package se.utility;
 
-import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
