@@ -115,7 +115,7 @@ public class SearchSongTest extends BaseTestService {
 
     @Test(
             priority = 3,
-            testName = "SWSEARCH_09: Podcasts and Shows Tab > Verify User has successfully searched his desired songs",
+            testName = "SWSEARCH_09: Podcasts and Shows Tab > Verify User has unsuccessfully searched his desired songs",
             dataProvider = "FailedSearchData"
     )
     protected void spotifyUiTest_verifyUserSearchedSongsUnsuccessfullyAtPodcastsAndShowsTab(String searchKey) {
