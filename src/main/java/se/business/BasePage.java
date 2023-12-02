@@ -9,6 +9,7 @@ import se.commonHandler.baseService.BaseVerifier;
 import se.commonHandler.baseService.BaseWaitHelper;
 import se.pageObject.BaseObject;
 import se.utility.GlobalVariableUtil.Environment;
+import se.utility.StringUtil;
 
 public class BasePage extends BaseObject {
 

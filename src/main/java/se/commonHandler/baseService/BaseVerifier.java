@@ -12,13 +12,13 @@ public class BaseVerifier {
         this.page = page;
     }
 
-    public void verifyElementVisible(@NotNull Locator expLocator) {
-        expLocator.isVisible();
+    public boolean verifyElementVisible(@NotNull Locator expLocator) {
+        return expLocator.isVisible();
     }
 
     public boolean verifyStringEquality(@NotNull String expStr, @NotNull String actStr) {
 
-        if (expStr.trim().toLowerCase() == actStr.trim().toLowerCase()) {
+        if (expStr.toLowerCase().trim().equals(actStr.toLowerCase().trim())) {
             return true;
         } else {
             throw new AssertionError(

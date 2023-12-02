@@ -44,7 +44,7 @@ public final class BrowserManager {         //This service manages Browser-relat
                         .setHeadless(HEADLESS)
                         .setChannel(BROWSER_TYPE)
                         .setArgs(List.of(
-                                "--window-position=-1900,50",
+                                // "--window-position=-1900,50",
                                 "--remote-debugging-port=0",
                                 "--disable-dev-shm-usage",
                                 "--enable-automation",

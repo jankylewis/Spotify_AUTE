@@ -1,5 +1,10 @@
 package se.commonHandler.constantEnumeration;
 
+import org.jetbrains.annotations.NotNull;
+import se.utility.StringUtil;
+
+import java.util.Arrays;
+
 public final class MessageConstant {
 
     //region Log-in flows
@@ -31,6 +36,22 @@ public final class MessageConstant {
     //region Sign-up page > Latters
 
     public final String LBL_HUMAN_RECOGNITION = "We need to make sure that you're a human";
+
+    //endregion
+
+    //region Searches
+
+    public final String LBL_USE_DIFFERENT_KEYWORDS = "Please make sure your words are spelled correctly, or use fewer or different keywords.";
+    public String LBL_NO_RESULTS_FOUND(String searchKey) {
+
+        return StringUtil.appendStrings(Arrays.asList(
+                "No results found for",
+                "\"",
+                searchKey,
+                "\""
+        ));
+    }
+
 
     //endregion
 }

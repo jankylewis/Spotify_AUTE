@@ -10,6 +10,8 @@ public class SearchSongObject extends BasePage {
         super(page);
     }
 
+    protected final String LBL_USE_DIFFERENT_KEYWORDS = "//div[contains(@aria-live, 'polite')]//p";
+    protected final String LBL_NO_RESULTS_FOUND = "//div[contains(@aria-live, 'polite')]//h1";
     protected final String E_INFINITE_SCROLL_LIST = "//div[contains(@data-testid, 'infinite-scroll-list')]";
     protected final String TXT_SEARCH_SONG = "//input[contains(@data-testid, 'search-input')]";
     protected final @NotNull String LNK_TAB(int tabIndex) {

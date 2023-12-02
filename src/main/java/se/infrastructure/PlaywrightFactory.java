@@ -2,7 +2,7 @@ package se.infrastructure;
 
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.utility.PLUtil.ViewportUtil;
+import se.utility.JavaLangUtil.ViewportUtil;
 
 import java.security.InvalidParameterException;
 

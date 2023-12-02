@@ -1,5 +1,6 @@
 package se.business;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import se.model.SearchSongModel.ETab;
 import se.pageObject.SearchSongObject;
 import se.utility.GlobalVariableUtil;
 import se.utility.ParallelUtil;
+import se.utility.StringUtil;
 
 import java.util.*;
 
@@ -364,6 +366,20 @@ public class SearchSongPage extends SearchSongObject
             case GENRES_AND_MOODS -> new SearchSongAtGenresAndMoodsTab(page).verifySongNameAtGenresAndMoodsTab(verifiedSearchKey);
             case PROFILES -> new SearchSongAtProfilesTab(page).verifySongNameAtProfilesTab(verifiedSearchKey);
             case PLAYLISTS -> new SearchSongAtPlaylistsTab(page).verifySongNameAtPlaylistsTab(verifiedSearchKey);
+        }
+    }
+
+    public void verifyNoResultsMessageFound(String searchKey) {
+
+        Locator noResultsFoundLbl = findLocator(LBL_NO_RESULTS_FOUND);
+        Locator useDifferentKeywords = findLocator(LBL_USE_DIFFERENT_KEYWORDS);
+
+        if (baseVerifier.verifyElementVisible(noResultsFoundLbl) &&
+                baseVerifier.verifyStringEquality(msgConst.LBL_NO_RESULTS_FOUND(searchKey), noResultsFoundLbl.textContent()) &&
+                baseVerifier.verifyElementVisible(useDifferentKeywords) &&
+                baseVerifier.verifyStringEquality(msgConst.LBL_USE_DIFFERENT_KEYWORDS, useDifferentKeywords.textContent())) {
+
+            verificationWentPassed();
         }
     }
 

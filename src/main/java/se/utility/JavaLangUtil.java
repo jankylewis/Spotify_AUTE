@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 
-public class PLUtil {           //PL means Java Programming Language
+public class JavaLangUtil {
 
     //region Resizing viewport
 
