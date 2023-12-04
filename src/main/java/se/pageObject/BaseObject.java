@@ -8,7 +8,6 @@ import com.microsoft.playwright.PlaywrightException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class BaseObject {
 
@@ -150,5 +149,4 @@ public class BaseObject {
     }
 
     //endregion
-
 }

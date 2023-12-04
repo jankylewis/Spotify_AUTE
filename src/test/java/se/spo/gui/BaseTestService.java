@@ -49,5 +49,4 @@ public class BaseTestService extends BaseService {             //This service ru
                 Thread.currentThread().getName()
         )));
     }
-
 }
