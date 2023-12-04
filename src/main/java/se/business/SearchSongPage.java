@@ -22,7 +22,7 @@ public class SearchSongPage extends SearchSongObject
 
     public SearchSongPage navigateToSearchSongPage() {
 
-        baseUi.navigateToUrl(GlobalVariableUtil.Environment.publicUrl +
+        baseUi.navigateToUrl(GlobalVariableUtil.Environment.PUBLIC_URL +
                 localPathConst.SEARCH_SONG_PATH);
 
         return this;

@@ -96,9 +96,9 @@ public class LogInTest extends BaseTestService {
     protected void testPreparation() {
 
         LOGGER.info("Preparing a User Information Model");
-        usrModel = new UserInformationModel(UserCredential.userEmail,
-                UserCredential.userPassword,
-                UserCredential.isRemembered);
+        usrModel = new UserInformationModel(UserCredential.USER_EMAIL,
+                UserCredential.USER_PASSWORD,
+                UserCredential.REMEMBERED);
 
         logInPage = new LogInPage(page);
         profilePage = new ProfilePage(page);

@@ -40,8 +40,8 @@ public class LogInPage extends LogInObject implements IVerification {
 
     public LogInPage navigateToLogInPage() {
 
-        baseUi.navigateToUrl(Environment.baseUrl +
-                Environment.endPointLocalization +
+        baseUi.navigateToUrl(Environment.BASE_URL +
+                Environment.END_POINT_LOCALIZATION +
                 localPathConst.LOG_IN_PATH);
 
         return this;

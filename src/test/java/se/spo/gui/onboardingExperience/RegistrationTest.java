@@ -104,7 +104,7 @@ public class RegistrationTest extends BaseTestService {
     protected void spotifyUiTest_verifyUserHasUnsuccessfullySignedUpWithEmptyDateOfBirth() {
 
         LOGGER.info("Preparing test data");
-        LocalDate userBirthDate = LocalDate.parse(UserCredential.userDob, dateTimeUtil.DATE_FORMATTER);
+        LocalDate userBirthDate = LocalDate.parse(UserCredential.USER_DOB, dateTimeUtil.DATE_FORMATTER);
         usrModel = new UserInformationModel(
                 randomizedNumber + faker.produceFakeEmail(),
                 faker.producePassword(
@@ -137,7 +137,7 @@ public class RegistrationTest extends BaseTestService {
     protected void spotifyUiTest_verifyUserHasUnsuccessfullySignedUpWithFuturisticYear() {
 
         LOGGER.info("Preparing test data");
-        LocalDate userBirthDate = LocalDate.parse(UserCredential.userDob, dateTimeUtil.DATE_FORMATTER);
+        LocalDate userBirthDate = LocalDate.parse(UserCredential.USER_DOB, dateTimeUtil.DATE_FORMATTER);
         usrModel = new UserInformationModel(
                 randomizedNumber + faker.produceFakeEmail(),
                 faker.producePassword(
@@ -176,7 +176,7 @@ public class RegistrationTest extends BaseTestService {
         LOGGER.info("Preparing test data");
         List<String> listOfGenders = Arrays.asList(
                 "man", "woman", "non-binary", "something else", "prefer not to say");
-        LocalDate userBirthDate = LocalDate.parse(UserCredential.userDob, dateTimeUtil.DATE_FORMATTER);
+        LocalDate userBirthDate = LocalDate.parse(UserCredential.USER_DOB, dateTimeUtil.DATE_FORMATTER);
 
         usrModel = new UserInformationModel(
                 randomizedNumber + faker.produceFakeEmail(),

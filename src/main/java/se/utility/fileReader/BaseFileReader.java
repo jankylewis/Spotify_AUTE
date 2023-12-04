@@ -1,5 +1,7 @@
 package se.utility.fileReader;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.MissingResourceException;
@@ -8,7 +10,17 @@ import java.util.ResourceBundle;
 
 public class BaseFileReader {
 
-    public static class ResourceReader {                                //Enclosing class needs to be declared in static state
+    public static class ResourceReader {            //Enclosing class needs to be declared in static state
+
+        private ResourceReader(){}
+
+        private static class ResourceReaderHelper {
+            private static final ResourceReader INSTANCE = new ResourceReader();
+        }
+
+        public static ResourceReader getInstance() {
+            return ResourceReaderHelper.INSTANCE;
+        }
 
         public ResourceBundle resourceBundle;
 
@@ -17,21 +29,16 @@ public class BaseFileReader {
         public String getPropertyFromGV(final String key, final String filePath) {
 
             try {
-                
-                String expValue = null;
 
-                if (resourceBundle == null) {
-                    getResourceBundle(filePath);                        //Getting resources file
-                }
-
+                String expValue;
+                resourceBundle = getResourceBundle(filePath);           //Getting resources file
                 expValue = resourceBundle.getString(key);               //Getting value accordingly to the desired key
 
                 return expValue;
 
-            } catch (IOException ioEx) {
-                throw new RuntimeException("Error found: " + ioEx.getMessage() + " with causes from " + ioEx.getCause());
-            } catch (MissingResourceException mrEx) {
-                throw new RuntimeException("Error found: " + mrEx.getMessage() + " with causes from " + mrEx.getCause());
+            } catch (IOException | MissingResourceException generalEx) {
+                throw new RuntimeException(
+                        "Error found: " + generalEx.getMessage() + " with causes from " + generalEx.getCause());
             }
         }
 
@@ -39,13 +46,12 @@ public class BaseFileReader {
 
         //region Generating Resource Bundle service
 
-        private ResourceBundle getResourceBundle(final String filePath) throws IOException, MissingResourceException {
+        private @NotNull ResourceBundle getResourceBundle(final String filePath)
+                throws IOException, MissingResourceException {
 
             FileInputStream fis = new FileInputStream(filePath);        //Placing the file into resource firstly
 
-            resourceBundle = new PropertyResourceBundle(fis);           //Generating Resource Bundle by fis
-
-            return resourceBundle;
+            return new PropertyResourceBundle(fis);                     //Generating Resource Bundle by fis
         }
 
         //endregion

@@ -44,7 +44,7 @@ public class BasePage extends BaseObject {
     }
 
     public BasePage navigateToBaseUrl() {
-        baseUi.navigateToUrl(Environment.baseUrl);
+        baseUi.navigateToUrl(Environment.BASE_URL);
         return this;
     }
 

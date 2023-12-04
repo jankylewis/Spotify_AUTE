@@ -1,10 +1,13 @@
 package se.infrastructure;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.ScreenshotAnimations;
 import org.jetbrains.annotations.NotNull;
 import se.utility.JavaLangUtil.ViewportUtil;
 
+import java.nio.file.Paths;
 import java.security.InvalidParameterException;
+import java.util.Random;
 
 public final class PlaywrightFactory {
 
@@ -52,4 +55,11 @@ public final class PlaywrightFactory {
 
     //endregion
 
+    public static byte[] takeScreenshots() {
+        return PlaywrightManager.getPage().screenshot(
+                new Page.ScreenshotOptions()
+                        .setPath(Paths.get("./src/test/java/se/spo/gui/testScreenshots/captured_" + new Random().nextInt(1, 9000000) + ".jpeg"))
+                        .setAnimations(ScreenshotAnimations.ALLOW)
+                        .setQuality(100));
+    }
 }
