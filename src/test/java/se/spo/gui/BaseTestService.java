@@ -42,11 +42,7 @@ public class BaseTestService extends BaseService {             //This service ru
 
         PlaywrightManager.disposeThreads();
 
-        LOGGER.info(StringUtil.appendStrings(Arrays.asList(
-                "\rCurrent THREAD ID = ",
-                String.valueOf(Thread.currentThread().threadId()),
-                "\rCurrent THREAD NAME = ",
-                Thread.currentThread().getName()
-        )));
+        LOGGER.info("Current THREAD ID = " + Thread.currentThread().threadId());
+        LOGGER.info("Current THREAD NAME = " + Thread.currentThread().getName());
     }
 }
