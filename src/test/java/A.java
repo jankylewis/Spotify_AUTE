@@ -16,6 +16,7 @@ public class A {
 
         //Response scope
         Response res = rs.get("/1");
+//        res.prettyPrint();
         res.prettyPrint();
 //        res.getBody().
     }
