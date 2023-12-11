@@ -6,7 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import se.business.SearchSongPage;
-import se.model.SearchSongModel.ETab;
+import se.model.uiModel.SearchSongModel.ETab;
 
 public class SearchSongTest extends BaseTestService {
 

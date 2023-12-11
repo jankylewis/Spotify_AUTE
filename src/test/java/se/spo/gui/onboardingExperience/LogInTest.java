@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import se.business.HomePage;
 import se.business.LogInPage;
 import se.business.ProfilePage;
-import se.model.UserInformationModel;
+import se.model.uiModel.UserInformationModel;
 import se.spo.gui.BaseTestService;
 import se.utility.GlobalVariableUtil.UserCredential;
 

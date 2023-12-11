@@ -7,7 +7,7 @@ import se.business.RegistrationPage.RegistrationAtPreStep;
 import se.business.RegistrationPage.RegistrationAtFirstStep;
 import se.business.RegistrationPage.RegistrationAtSecondStep;
 import se.business.RegistrationPage.RegistrationAtLatters;
-import se.model.UserInformationModel;
+import se.model.uiModel.UserInformationModel;
 import se.spo.gui.BaseTestService;
 import se.utility.GlobalVariableUtil.UserCredential;
 
