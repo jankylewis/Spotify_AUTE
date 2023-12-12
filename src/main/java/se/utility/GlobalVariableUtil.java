@@ -96,7 +96,6 @@ public class GlobalVariableUtil extends BaseFileReader {
         public static final String CLIENT_APP = RESOURCE_READER.getPropertyFromGV("client_app", FILE_PATH);
 
         //endregion
-
     }
 
     //endregion

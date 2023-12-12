@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AuthenticationUtil {
 
-    private static final BaseRestUtil BASE_REST_UTIL = BaseRestUtil.INSTANCE;
+    private static final RestUtil REST_UTIL = RestUtil.INSTANCE;
     private static final String AUTHENTICATION_URI = "https://accounts.spotify.com/api/token";
 
     protected static String getAccessToken() {
@@ -23,13 +23,13 @@ public class AuthenticationUtil {
                         Pair.with("client_secret", authenticationModel.getClientSecret())
                 );
 
-        BASE_REST_UTIL.sendRequest(
+        REST_UTIL.sendInitialRequest(
                 AUTHENTICATION_URI,
                 requestedForm,
                 ContentType.URLENC,
-                BaseRestUtil.EMethod.POST
+                RestUtil.EMethod.POST
         );
 
-        return BASE_REST_UTIL.getPropertyValue("access_token");
+        return REST_UTIL.getPropertyValue("access_token");
     }
 }

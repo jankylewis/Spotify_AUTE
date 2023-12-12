@@ -18,6 +18,8 @@ public class AuthenticationModel {
         this.clientSecret = clientSecret;
     }
 
+    //region Getters & setters
+
     public String getClientId() {
         return clientId;
     }
@@ -41,4 +43,6 @@ public class AuthenticationModel {
     public void setGrantType(String grantType) {
         this.grantType = grantType;
     }
+
+    //endregion
 }

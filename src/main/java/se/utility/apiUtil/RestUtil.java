@@ -12,33 +12,39 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
-public class BaseRestUtil {
+public class RestUtil {
 
     //region Processing BaseRestUtil instance
 
-    protected static final BaseRestUtil INSTANCE = getInstance();
+    protected static final RestUtil INSTANCE = getInstance();
 
-    private BaseRestUtil() {}
+    private RestUtil() {}
 
-    private static BaseRestUtil getInstance() {
+    public static RestUtil getInstance() {
         return BaseRestUtilHelper._INSTANCE;
     }
 
     private static final class BaseRestUtilHelper {
-        private static final BaseRestUtil _INSTANCE = new BaseRestUtil();
+        private static final RestUtil _INSTANCE = new RestUtil();
     }
 
     //endregion
+
+    //region Introducing variables
 
     private final RequestSpecification requestSpecification = given();
     private Response response;
     private String _requestedUri;
     private JsonPath jsonPath;
 
-    private BaseRestUtil setRequestedUri(String requestedUri) {
+    //endregion
+
+    private RestUtil setRequestedUri(String requestedUri) {
         _requestedUri = requestedUri;
         return INSTANCE;
     }
+
+    //region Processing payloads
 
     private RequestSpecification buildUrlencodedForm(
             @NotNull Collection<Pair<Object, Object>> pairs
@@ -58,7 +64,9 @@ public class BaseRestUtil {
         return requestSpecification;
     }
 
-    //region Sending requests with methods
+    //endregion
+
+    //region Methods' sending services
 
     private Response sendGetRequest() {
         return response = requestSpecification.get(_requestedUri);
@@ -90,18 +98,43 @@ public class BaseRestUtil {
 
     //endregion
 
-    //Getting property value from response
-    protected String getPropertyValue(String property) {
-        jsonPath = new JsonPath(response.asPrettyString());
-        return jsonPath.get(property);
-    }
+    //region Processing requests
 
-    public BaseRestUtil sendRequest(
+    public RestUtil sendInitialRequest(
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
             @Nullable ContentType requestedContentType,
             EMethod requestedMethod
             ) {
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+
+        return INSTANCE;
+    }
+
+    public RestUtil sendAuthenticatedRequest(
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
 
         setAccessToken();
 
@@ -127,41 +160,26 @@ public class BaseRestUtil {
         return INSTANCE;
     }
 
-    public static void main(String[] args) {
+    //endregion
 
-        BaseRestUtil BRU = BaseRestUtil.getInstance();
-//        Collection<Pair<Object, Object>> form =
-//                List.of(
-//                        Pair.with("grant_type", "client_credentials"),
-//                        Pair.with("client_id", "ff4df67329594a35a57ad06dcd53605f"),
-//                        Pair.with("client_secret", "363912205fc049b3b49d6210c08182f8")
-//                );
-//
-//
-//        BRU.setRequestedUri("https://accounts.spotify.com/api/token");
-//        BRU.buildUrlencodedForm(form);
-//        Response res = BRU.sendPostRequest();
-//
-//        String x_ = BRU.getPropertyValue("access_token");
-//        System.out.print(x_);
+    private RestUtil setAccessToken() {
 
-//        JsonPath js = new JsonPath(res.prettyPrint());
-//        System.out.print(js.getString("expires_in"));
-
-        BRU.sendRequest(
-                "https://api.spotify.com/v1/browse/categories",
-                null,
-                null,
-                EMethod.GET
-        );
-    }
-
-    private BaseRestUtil setAccessToken() {
         String accessToken = AuthenticationUtil.getAccessToken();
-        requestSpecification.given()
+        requestSpecification
+                .given()
                 .header("Authorization", "Bearer " + accessToken);
+
         return INSTANCE;
     }
+
+    //region Processing responses
+
+    protected String getPropertyValue(String property) {
+        jsonPath = new JsonPath(response.asPrettyString());
+        return jsonPath.get(property);
+    }
+
+    //endregion
 
     //region API methods
 

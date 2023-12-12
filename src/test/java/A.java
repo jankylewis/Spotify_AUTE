@@ -41,7 +41,7 @@ public class A {
                 .formParam("client_secret", "363912205fc049b3b49d6210c08182f8");
         Response res = rs.post("https://accounts.spotify.com/api/token");
 
-        rs.contentType()
+//        rs.contentType();
 
         res.prettyPrint();
 
