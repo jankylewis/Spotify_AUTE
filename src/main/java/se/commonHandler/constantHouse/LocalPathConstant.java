@@ -1,4 +1,4 @@
-package se.commonHandler.constantEnumeration;
+package se.commonHandler.constantHouse;
 
 public final class LocalPathConstant {
 

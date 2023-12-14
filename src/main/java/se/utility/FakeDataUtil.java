@@ -2,6 +2,8 @@ package se.utility;
 
 import com.github.javafaker.Faker;
 
+import java.util.UUID;
+
 public class FakeDataUtil {
 
     private Faker faker = new Faker();
@@ -79,4 +81,8 @@ public class FakeDataUtil {
     }
 
     //endregion
+
+    public UUID produceFakeUuid() {
+        return UUID.randomUUID();
+    }
 }

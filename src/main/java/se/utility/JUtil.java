@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 
-public class JavaLangUtil {
+public class JUtil {            //J means Java language
 
     //region Resizing viewport
 
@@ -119,6 +119,15 @@ public class JavaLangUtil {
             } else {
                 throw new IllegalArgumentException("Your desired value was invalid! ");
             }
+        }
+
+        public static int identifyObjectType(Object identifiedValue) {
+
+            if (identifiedValue instanceof Integer) {
+                return 1;
+            }
+
+            return -1;
         }
     }
 

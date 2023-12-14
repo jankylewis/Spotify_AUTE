@@ -23,7 +23,7 @@ public class AuthenticationUtil {
                         Pair.with("client_secret", authenticationModel.getClientSecret())
                 );
 
-        REST_UTIL.sendInitialRequest(
+        REST_UTIL.sendBasicRequest(
                 AUTHENTICATION_URI,
                 requestedForm,
                 ContentType.URLENC,

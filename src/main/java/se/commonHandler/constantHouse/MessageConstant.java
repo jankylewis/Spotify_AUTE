@@ -1,6 +1,5 @@
-package se.commonHandler.constantEnumeration;
+package se.commonHandler.constantHouse;
 
-import org.jetbrains.annotations.NotNull;
 import se.utility.StringUtil;
 
 import java.util.Arrays;

@@ -8,6 +8,8 @@ public class BrowseCategoryModel {
         return categories;
     }
 
+    //region Getters & setters
+
     public void setCategories(List<Categories> categories) {
         this.categories = categories;
     }
@@ -52,14 +54,19 @@ public class BrowseCategoryModel {
         this.total = total;
     }
 
+    //endregion
+
     private List<Categories> categories;
     private int limit;
     private String next;
     private int offset;
     private Object previous;            //An unknown data type
     private int total;
-    private class Categories {
+
+    public class Categories {
         private String href;
+
+        //region Getters & setters
 
         public String getHref() {
             return href;
@@ -77,12 +84,16 @@ public class BrowseCategoryModel {
             this.items = items;
         }
 
+        //endregion
+
         private List<Items> items;
 
-        private class Items {
-            private String href;
-            private List<Icons> icons;
-            private String id;
+        public class Items {
+            public String href;
+            public List<Icons> icons;
+            public String id;
+
+            //region Getters & setters
 
             public String getHref() {
                 return href;
@@ -116,11 +127,16 @@ public class BrowseCategoryModel {
                 this.name = name;
             }
 
-            private String name;
-            private class Icons {
-                private int height;
-                private String url;
-                private int width;
+            //endregion
+
+            public String name;
+            public class Icons {
+
+                public int height;
+                public String url;
+                public int width;
+
+                //region Getters & setters
 
                 public int getHeight() {
                     return height;
@@ -145,6 +161,8 @@ public class BrowseCategoryModel {
                 public void setWidth(int width) {
                     this.width = width;
                 }
+
+                //endregion
             }
         }
     }

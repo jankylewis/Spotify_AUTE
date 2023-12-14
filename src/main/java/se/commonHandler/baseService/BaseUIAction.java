@@ -1,14 +1,12 @@
 package se.commonHandler.baseService;
 
 import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Keyboard;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.constantEnumeration.ActionConstant;
-import se.commonHandler.constantEnumeration.WaitConstant;
+import se.commonHandler.constantHouse.ActionConstant;
+import se.commonHandler.constantHouse.WaitConstant;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package se.commonHandler.constantEnumeration;
+package se.commonHandler.constantHouse;
 
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.microsoft.playwright.options.WaitUntilState;

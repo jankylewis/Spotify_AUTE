@@ -7,6 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import se.model.apiModel.responseModel.BrowseCategoryModel;
 
 import java.util.*;
 
@@ -14,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 public class RestUtil {
 
-    //region Processing BaseRestUtil instance
+    //region Processing RestUtil instance
 
     protected static final RestUtil INSTANCE = getInstance();
 
@@ -100,7 +101,39 @@ public class RestUtil {
 
     //region Processing requests
 
-    public RestUtil sendInitialRequest(
+    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
+
+        setAccessToken();
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+        return new HashMap<>(){{
+            put(INSTANCE, response);
+        }};
+    }
+
+    public RestUtil sendBasicRequest(
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
             @Nullable ContentType requestedContentType,
@@ -177,6 +210,14 @@ public class RestUtil {
     protected String getPropertyValue(String property) {
         jsonPath = new JsonPath(response.asPrettyString());
         return jsonPath.get(property);
+    }
+
+    public void _get() {
+        JsonPath js = response.jsonPath();
+        Object x = js.getJsonObject("items");
+
+        List<BrowseCategoryModel.Categories.Items> _x = js.getList("items", BrowseCategoryModel.Categories.Items.class);
+
     }
 
     //endregion
