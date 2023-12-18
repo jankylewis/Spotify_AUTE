@@ -3,11 +3,11 @@ package se.spo.api;
 import io.restassured.response.Response;
 import org.javatuples.Pair;
 import org.testng.annotations.Test;
-import se.requestProcessor.BrowseCategoryProcessor;
+import se.requestProcessor.CategoryProcessor;
 
-public class BrowseCategoryTest extends BaseApiTestService {
+public class CategoryBrowsingTest extends BaseApiTestService {
 
-    private BrowseCategoryProcessor browseCategoryProcessor = BrowseCategoryProcessor.INSTANCE;
+    private CategoryProcessor browseCategoryProcessor = CategoryProcessor.INSTANCE;
 
     @Test(
             priority = 2,
@@ -16,7 +16,7 @@ public class BrowseCategoryTest extends BaseApiTestService {
             groups = "singleThreaded"
     )
     protected synchronized void spotifyApiTest_VerifyApiProcessedRequestWithGreenResponseCode() {
-        Pair<BrowseCategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesSuccessfully();
+        Pair<CategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesSuccessfully();
         browseCategoryProcessor.verifyBrowseCategoriesRequestResponseSttCode(dataRetrieved.getValue1());
     }
 
@@ -26,16 +26,16 @@ public class BrowseCategoryTest extends BaseApiTestService {
             description = "Verify Api was UNSUCCESSFULLY processed when being hit by a request"
     )
     protected void spotifyApiTest_VerifyApiProcessedRequestWithBadResponseCode() {
-        Pair<BrowseCategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesUnsuccessfully();
+        Pair<CategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesUnsuccessfully();
         browseCategoryProcessor.verifyBrowseCategoriesRequestResponseSttCode(dataRetrieved.getValue1());
     }
 
-    @Test(
-            priority = 1,
-            testName = "SABROWSECATEGORIES_03",
-            description = ""
-    )
-    protected void spotifyApiTest_VerifyMusicTypeWasComprisedOfVietnameseMusic() {
-        
-    }
+//    @Test(
+//            priority = 1,
+//            testName = "SABROWSECATEGORIES_03",
+//            description = ""
+//    )
+//    protected void spotifyApiTest_VerifyMusicTypeWasComprisedOfVietnameseMusic() {
+//
+//    }
 }

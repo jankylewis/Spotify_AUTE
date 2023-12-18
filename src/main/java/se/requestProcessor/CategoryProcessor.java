@@ -8,43 +8,43 @@ import se.utility.apiUtil.RestUtil;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class BrowseCategoryProcessor extends BaseProcessor {
+public class CategoryProcessor extends BaseProcessor {
 
     //region Introducing constructors
 
-    private BrowseCategoryProcessor() {
+    private CategoryProcessor() {
         super();
     }
-    private BrowseCategoryProcessor(RestUtil restUtil) {
+    private CategoryProcessor(RestUtil restUtil) {
         super(restUtil);
     }
 
     //endregion
 
     //region Processing instance
-    public static final BrowseCategoryProcessor INSTANCE = getInstance();
+    public static final CategoryProcessor INSTANCE = getInstance();
 
-    private static BrowseCategoryProcessor getInstance() {
+    private static CategoryProcessor getInstance() {
         _requestProcessor = RestUtil.getInstance();
         return BrowseCategoryProcessorHelper._INSTANCE;
     }
 
     private static final class BrowseCategoryProcessorHelper {
-        private static final BrowseCategoryProcessor _INSTANCE =
-                new BrowseCategoryProcessor();
+        private static final CategoryProcessor _INSTANCE =
+                new CategoryProcessor();
     }
 
     //endregion
 
-    private final String browseCategoriesUri = "https://api.spotify.com/v1/browse/categories";
+    private final String categoriesBrowsingUri = "https://api.spotify.com/v1/browse/categories";
 
     //region Making requests to get list of browse categories
 
     //Blocking access to this method from others
-    public synchronized Pair<BrowseCategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
+    public synchronized Pair<CategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
-                browseCategoriesUri,
+                categoriesBrowsingUri,
                 null,
                 null,
                 RestUtil.EMethod.GET
@@ -53,10 +53,10 @@ public class BrowseCategoryProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
-    public Pair<BrowseCategoryProcessor, Response> getBrowseCategoriesUnsuccessfully() {
+    public Pair<CategoryProcessor, Response> getBrowseCategoriesUnsuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
-                StringUtil.appendStrings(Arrays.asList(browseCategoriesUri, "/", faker.produceFakeUuid().toString())),
+                StringUtil.appendStrings(Arrays.asList(categoriesBrowsingUri, "/", faker.produceFakeUuid().toString())),
                 null,
                 null,
                 RestUtil.EMethod.GET
@@ -65,18 +65,18 @@ public class BrowseCategoryProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
-    public void getMusicType() {
-
-        HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
-                browseCategoriesUri,
-                null,
-                null,
-                RestUtil.EMethod.GET
-        );
-
-        _requestProcessor._get();
-
-    }
+//    public void getMusicType() {
+//
+//        HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
+//                browseCategoriesUri,
+//                null,
+//                null,
+//                RestUtil.EMethod.GET
+//        );
+//
+//        _requestProcessor._get();
+//
+//    }
 
     //endregion
 
@@ -98,7 +98,7 @@ public class BrowseCategoryProcessor extends BaseProcessor {
 
     //endregion
 
-    public static void main(String []args) {
-        INSTANCE.getMusicType();
-    }
+//    public static void main(String []args) {
+//        INSTANCE.getMusicType();
+//    }
 }

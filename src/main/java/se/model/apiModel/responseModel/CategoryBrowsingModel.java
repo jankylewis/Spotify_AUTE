@@ -2,7 +2,7 @@ package se.model.apiModel.responseModel;
 
 import java.util.List;
 
-public class BrowseCategoryModel {
+public class CategoryBrowsingModel {
 
     public List<Categories> getCategories() {
         return categories;

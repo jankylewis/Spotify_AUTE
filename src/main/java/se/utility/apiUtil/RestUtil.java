@@ -7,7 +7,8 @@ import io.restassured.specification.RequestSpecification;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import se.model.apiModel.responseModel.BrowseCategoryModel;
+import se.model.apiModel.responseModel.CategoryBrowsingModel;
+import com.google.gson.Gson;
 
 import java.util.*;
 
@@ -37,6 +38,7 @@ public class RestUtil {
     private Response response;
     private String _requestedUri;
     private JsonPath jsonPath;
+    private Gson gson;
 
     //endregion
 
@@ -212,11 +214,7 @@ public class RestUtil {
         return jsonPath.get(property);
     }
 
-    public void _get() {
-        JsonPath js = response.jsonPath();
-        Object x = js.getJsonObject("items");
-
-        List<BrowseCategoryModel.Categories.Items> _x = js.getList("items", BrowseCategoryModel.Categories.Items.class);
+    public void getX(Response response) {
 
     }
 
