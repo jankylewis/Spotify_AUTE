@@ -54,5 +54,12 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
 
     //endregion
 
+    //region Verifications
 
+    public AvailableGenreSeedProcessor verifyGenreWasPresentedInTheListOfAvailableGenreSeeds(Response response) {
+
+        return this;
+    }
+
+    //endregion
 }
