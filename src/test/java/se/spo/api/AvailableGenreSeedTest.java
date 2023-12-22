@@ -12,11 +12,13 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
     @Test(
             priority = 1,
             testName = "SAAVAILABLEGENRESEED_01",
-            description = "Verify Gospel type was included in the response when User made a request",
+            description = "Verify Gospel type was included in the response when User made a request"
     )
     protected void spotifyApiTest_VerifyGospelTypeWasPresentedInTheResponse() {
         Pair<AvailableGenreSeedProcessor, Response> dataResponded =
                 availableGenreSeedProcessor.getAvailableGenreSeed();
+
+
 
     }
 
