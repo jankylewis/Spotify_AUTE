@@ -56,7 +56,7 @@ public class CategoryProcessor extends BaseProcessor {
     public Pair<CategoryProcessor, Response> getBrowseCategoriesUnsuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
-                StringUtil.appendStrings(Arrays.asList(categoriesBrowsingUri, "/", faker.produceFakeUuid().toString())),
+                StringUtil.appendStrings(Arrays.asList(categoriesBrowsingUri, "/", apiFaker.produceFakeUuid().toString())),
                 null,
                 null,
                 RestUtil.EMethod.GET

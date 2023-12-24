@@ -1,23 +1,21 @@
 package se.requestProcessor;
 
 import io.restassured.response.Response;
-import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
+import se.commonHandler.baseService.BaseApiService;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
 import se.commonHandler.constantHouse.ApiConstant;
-import se.utility.FakeDataUtil;
-import se.utility.LoggingUtil;
+import se.commonHandler.constantHouse.ApiMessageConstant;
 import se.utility.apiUtil.RestUtil;
 
-public class BaseProcessor implements IVerification {
+public class BaseProcessor extends BaseApiService implements IVerification {
 
     private int responseStatusCode = -1;
     private boolean responseHealth = false;
 
     protected ApiConstant apiConstant;
-    protected Logger LOGGER = LoggingUtil.TL_LOGGER.get();
-    protected FakeDataUtil faker;
+    protected ApiMessageConstant apiMessageConstant;
 
     protected static RestUtil _requestProcessor;
 
@@ -34,7 +32,7 @@ public class BaseProcessor implements IVerification {
 
     {
         apiConstant = new ApiConstant();
-        faker = new FakeDataUtil();
+        apiMessageConstant = new ApiMessageConstant();
     }
 
     //endregion

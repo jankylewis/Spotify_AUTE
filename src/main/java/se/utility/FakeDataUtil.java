@@ -2,6 +2,7 @@ package se.utility;
 
 import com.github.javafaker.Faker;
 
+import java.security.SecureRandom;
 import java.util.UUID;
 
 public class FakeDataUtil {

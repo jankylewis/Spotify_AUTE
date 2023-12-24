@@ -194,6 +194,39 @@ public class RestUtil {
         return INSTANCE;
     }
 
+    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+            String expectedToken,
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
+
+        setAccessToken(expectedToken);
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+        return new HashMap<>(){{
+            put(INSTANCE, response);
+        }};
+    }
+
     //endregion
 
     private RestUtil setAccessToken() {
@@ -203,6 +236,13 @@ public class RestUtil {
                 .given()
                 .header("Authorization", "Bearer " + accessToken);
 
+        return INSTANCE;
+    }
+
+    private RestUtil setAccessToken(String expectedToken) {
+        requestSpecification
+                .given()
+                .header("Authorization", "Bearer " + expectedToken);
         return INSTANCE;
     }
 

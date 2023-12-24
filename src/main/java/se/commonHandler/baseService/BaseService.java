@@ -5,7 +5,8 @@ import se.utility.DateTimeUtil;
 import se.utility.FakeDataUtil;
 import se.utility.LoggingUtil;
 
-public class BaseService {      //This service is used for running test cases
+//This service is used for running UI test scripts
+public class BaseService {
 
     //region Introducing variables
 

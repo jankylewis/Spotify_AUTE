@@ -1,20 +1,57 @@
 package se.spo.api.testDataProvider;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.testng.annotations.DataProvider;
+import se.commonHandler.baseService.BaseApiService;
 import se.utility.JUtil;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestDataProviderFactory {
+public class TestDataProviderFactory extends BaseApiService {
+
+    @Contract(value = " -> new", pure = true)
+    @DataProvider(
+            name = "ExpiredTokensProvider"
+    )
+    private Object @NotNull [] prepareExpiredTokens() {
+
+        return new Object[] {
+                "BQD-CkljS5p4KEB0sRfW2NzXtoFP8CO9jYtTBQWz-RzHtZZlgrAyMOmpwGPPJDVuYYCugVHrW34RCzKbwyqBm41EvI-pqk31ddNO6CUpjvmie3HxnCg",
+                "BQCQMSBGfz4tHRqO-gyWwvRuZ3ZfQnthO3Na5xHg0iIg49UmA2DOOKoRtkD196bpelfOhj0ycPBISLIzlRqTVJFkfbR-cKHqIEyux4dvEcJMhQyj2uk",
+                "BQCSglGCqEE4kuBAfDQeQGAK6_wLDfIEpUAhRMveBtFosdkuX8oEYLZE7U0Ex5hNToZfeStu5C8t8l7CCaw-W45a2UjG0sj_gIpfj9JqCtjTubi296I"
+        };
+    }
+
+    @DataProvider(
+            name = "InvalidTokensProvider"
+    )
+    private Object @NotNull [] prepareInvalidTokens() {
+
+        List<List<String>> listOfDummyTokens = new LinkedList<>();
+
+        for (int i = 0; i < apiFaker.getRandomInstance().nextInt(5, 30); ++i) {
+
+            List<String> dummyTokens = new LinkedList<>();
+
+            for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(30, 60); ++_i) {
+                dummyTokens.add(apiFaker.generateSpotifyDummyTokens(apiFaker.getSecureRandomInstance()));
+            }
+
+            listOfDummyTokens.add(dummyTokens);
+        }
+
+        //Converting list of tokens to array object
+        return JUtil.ListUtil.convertListToArray(listOfDummyTokens);
+    }
 
     public static class AvailableGenreSeedDataProvider {
 
         @DataProvider(
                 parallel = false,
-                name = "AvailableGenreSeedDataPreparation"
+                name = "AvailableGenreSeedsProvider"
         )
         private Object @Nullable [] prepareAvailableGenreSeedsData(@NotNull Method method) {
 
@@ -153,10 +190,6 @@ public class TestDataProviderFactory {
 
             switch (method.getName()) {
                 case "spotifyApiTest_VerifyRespondedListMatchedAccuratelyExpectedList" -> {
-
-                    availableGenreSeedsHashTable.put(1, "iqsndsiqdnqsdqds");
-                    availableGenreSeedsHashTable.put(2, "qindqisdidnnqsindiqndiqnsidqdnsidnqnds");
-                    availableGenreSeedsHashTable.put(3, "competed");
 
                     return new Object[] { availableGenreSeedsHashTable };
                 }

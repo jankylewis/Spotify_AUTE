@@ -5,15 +5,15 @@
        parallel="tests"
        thread-count="1">        <!-- Parallel running is not allowed here -->
 
-<!--    <test name="SAAVAILABLEGENRESEED_03">-->
-<!--        <classes>-->
-<!--            <class name="se.spo.api.AvailableGenreSeedTest">-->
-<!--                <methods>-->
-<!--                    <include name="spotifyApiTest_VerifySeveralAvailableGenreSeedsWillBeListed"></include>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="SAAVAILABLEGENRESEED_03">
+        <classes>
+            <class name="se.spo.api.AvailableGenreSeedTest">
+                <methods>
+                    <include name="spotifyApiTest_VerifySeveralAvailableGenreSeedsWillBeListed"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
 
     <test name="SAAVAILABLEGENRESEED_02">
         <classes>
@@ -24,5 +24,21 @@
             </class>
         </classes>
     </test>
+
+    <test name="SAAVAILABLEGENRESEED_01">
+        <classes>
+            <class name="se.spo.api.AvailableGenreSeedTest">
+                <methods>
+                    <include name="spotifyApiTest_VerifyGospelTypeWasPresentedInTheResponse"></include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- region Edge cases -->
+
+
+
+    <!-- endregion -->
 
 </suite>

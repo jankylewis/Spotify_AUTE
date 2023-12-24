@@ -227,4 +227,18 @@ public class JUtil {            //J means Java language
             return reversedList;
         }
     }
+
+    public static class ListUtil {
+
+        public static Object @NotNull [] convertListToArray(@NotNull List<?> convertedList) {
+
+            Object[] arrayObject = new Object[convertedList.size()];
+
+            for (int i = 0; i < convertedList.size(); ++i) {
+                arrayObject[i] = convertedList.get(i);
+            }
+
+            return arrayObject;
+        }
+    }
 }

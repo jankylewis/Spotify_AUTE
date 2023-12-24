@@ -5,6 +5,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 import se.requestProcessor.AvailableGenreSeedProcessor;
+import se.spo.api.testDataProvider.TestDataProviderFactory;
 import se.spo.api.testDataProvider.TestDataProviderFactory.AvailableGenreSeedDataProvider;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
             priority = 1,
             testName = "SAAVAILABLEGENRESEED_02",
             description = "Verify that the responded list of genre seeds shall match accurately the expected list",
-            dataProvider = "AvailableGenreSeedDataPreparation",
+            dataProvider = "AvailableGenreSeedsProvider",
             dataProviderClass = AvailableGenreSeedDataProvider.class
     )
     protected synchronized void spotifyApiTest_VerifyRespondedListMatchedAccuratelyExpectedList(
@@ -48,7 +49,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
             priority = 2,
             testName = "SAAVAILABLEGENRESEED_03",
             description = "Verify that several available genre seeds will be comprised of the responded list",
-            dataProvider = "AvailableGenreSeedDataPreparation",
+            dataProvider = "AvailableGenreSeedsProvider",
             dataProviderClass = AvailableGenreSeedDataProvider.class
     )
     protected synchronized void spotifyApiTest_VerifySeveralAvailableGenreSeedsWillBeListed(
@@ -61,5 +62,28 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
         availableGenreSeedProcessor.verifySeveralAvailableGenreSeedsListedInRespondedList(
                 dataResponded.getValue1(), availableGenreSeedsHashTable
         );
+    }
+
+    @Test(
+            priority = 3,
+            testName = "SAAVAILABLEGENRESEED_04",
+            description = "Verify that the invalid tokens shall not be authenticated",
+            dataProviderClass = TestDataProviderFactory.class,
+            dataProvider = "InvalidTokensProvider"
+    )
+    protected synchronized void spotifyApiTest_VerifyTheInvalidTokensWereNotAuthenticated(@NotNull List<String> invalidTokens) {
+
+        int numberOfTokensProcessed = invalidTokens.size();
+        int tokenIdx = 0;
+
+        do {
+
+            //Making a request headed toward getting available genre seeds API with dummy tokens
+            Pair<AvailableGenreSeedProcessor, Response> dataResponded =
+                    availableGenreSeedProcessor.getAvailableGenreSeed(invalidTokens.get(tokenIdx));
+
+            dataResponded.getValue0().verifyInvalidTokenErrorMessageResponded(dataResponded.getValue1());
+            tokenIdx++;
+        } while (tokenIdx < numberOfTokensProcessed);
     }
 }

@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import se.model.apiModel.responseModel.AvailableGenreSeedModel;
+import se.model.apiModel.responseModel.ErrorMessageModel;
 import se.utility.GlobalVariableUtil;
 import se.utility.JUtil;
 import se.utility.JUtil.MapUtil;
@@ -58,9 +59,55 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
+    public synchronized Pair<AvailableGenreSeedProcessor, Response> getAvailableGenreSeed(String dummyToken) {
+
+        //Making request with an expected token
+        HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
+                dummyToken,
+                getAvailableGenreSeedUri,
+                null,
+                null,
+                RestUtil.EMethod.GET
+        );
+
+        return Pair.with(INSTANCE, response.get(_requestProcessor));
+    }
+
     //endregion
 
     //region Verifications
+
+    public synchronized AvailableGenreSeedProcessor verifyInvalidTokenErrorMessageResponded(@NotNull Response response) {
+
+        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
+
+        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
+
+        int respondedStatusCode = errorModel.getStatus();
+        String respondedErrorMessage = errorModel.getMessage();
+
+        if (respondedStatusCode == apiConstant.RED_STATUS &&
+                Objects.equals(respondedErrorMessage, apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE)) {
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "The response was successfully matched the expectations: ",
+                    "\nStatus code: ",
+                    String.valueOf(apiConstant.RED_STATUS),
+                    "\nError message: ",
+                    apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE
+            )));
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
+                    "The response was not matched the expectations :(",
+                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.RED_STATUS), "]",
+                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE, "]"
+            )));
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
 
     public synchronized AvailableGenreSeedProcessor verifyGenreWasPresentedInTheListOfAvailableGenreSeeds(
             @NotNull Response response, String expectedGenreType) {
@@ -81,22 +128,22 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
             verificationWentFailed();
         }
 
-        return this;
+        return INSTANCE;
     }
 
     public synchronized AvailableGenreSeedProcessor verifySeveralAvailableGenreSeedsListedInRespondedList(
-            @NotNull Response response, @NotNull Hashtable<Integer, String> genres
+            @NotNull Response response, @NotNull Map<Integer, String> expectedGenres
     ) {
 
-        Map<Integer, String> unmodifiableGenresMap = Collections.unmodifiableMap(genres);
+        Map<Integer, String> unmodifiableGenresMap = Collections.unmodifiableMap(expectedGenres);
         Collection<String> unmodifiableGenresCollection =
                 Collections.unmodifiableCollection(new ArrayList<>(unmodifiableGenresMap.values()));
 
-        List<String> _genres = response.getBody()
+        List<String> genres = response.getBody()
                 .as(AvailableGenreSeedModel.class)
                 .getGenres();
 
-        Collection<String> _unmodifiableGenresCollection = Collections.unmodifiableCollection(_genres);
+        Collection<String> _unmodifiableGenresCollection = Collections.unmodifiableCollection(genres);
 
         unmodifiableGenresCollection.forEach(actGenre -> {
 
@@ -125,7 +172,7 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
 
         verificationWentPassed();
 
-        return this;
+        return INSTANCE;
     }
 
     public synchronized AvailableGenreSeedProcessor verifyTheExpectedListMatchedAccuratelyTheRespondedList(
@@ -179,7 +226,7 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
         }
 
         //Assertions
-        if (differentGenres != null) {
+        if (!(differentGenres.getValue0().isEmpty() && differentGenres.getValue1().isEmpty())) {
 
             LOGGER.error(StringUtil.appendStrings(Arrays.asList(
                     "There were differences between the expected list of genres and the actual list of genres: \n",
@@ -191,10 +238,12 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
             verificationWentFailed();
         }
         else {
+
+            LOGGER.info("The expected list of genres matched impeccably the actual list of genres");
             verificationWentPassed();
         }
 
-        return this;
+        return INSTANCE;
     }
 
     //endregion
