@@ -78,6 +78,9 @@ public class GlobalVariableUtil extends BaseFileReader {
         public static final Boolean SCREENSHOTTED =
                 Boolean.parseBoolean(RESOURCE_READER.getPropertyFromGV("is_screenshotted", FILE_PATH));
 
+        public static final Boolean TROUBLESHOOTING_MODE =
+                Boolean.parseBoolean(RESOURCE_READER.getPropertyFromGV("is_troubleshooting_mode", FILE_PATH));
+
         //endregion
     }
 

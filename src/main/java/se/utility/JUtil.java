@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.awt.Toolkit;
 import java.awt.Dimension;
+import java.util.*;
 
 public class JUtil {            //J means Java language
 
@@ -27,7 +28,7 @@ public class JUtil {            //J means Java language
             return Pair.with(width, height);
         }
 
-        public static @NotNull Pair<Integer, Integer> getDeviceScreenSize() {
+            public static @NotNull Pair<Integer, Integer> getDeviceScreenSize() {
             Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
             return Pair.with((int)dimension.getWidth(), (int)dimension.getHeight());
         }
@@ -132,4 +133,98 @@ public class JUtil {            //J means Java language
     }
 
     //endregion
+
+    public static class MapUtil {
+
+        public static Object retrieveKeyFromValue(@NotNull Hashtable<?, ?> hashTable, Object value) {
+
+            for (Map.Entry entry : hashTable.entrySet()) {
+                if (value.equals(entry.getValue())) {
+                    return entry.getKey();
+                }
+            }
+
+            throw new IllegalArgumentException("The expected value was not existed in the HashTable! ");
+        }
+        public static Object retrieveKeyFromValue(@NotNull Map<?, ?> map, Object value) {
+
+            for (Map.Entry entry : map.entrySet()) {
+                if (value.equals(entry.getValue())) {
+                    return entry.getKey();
+                }
+            }
+
+            throw new IllegalArgumentException("The expected value was not existed in the Map! ");
+        }
+
+        public static List<Object> retrieveKeysFromValues(@NotNull Map<?, ?> map, Iterable<Object> values) {
+
+            List<Object> keys = new ArrayList<>();
+
+            for (Map.Entry entry : map.entrySet()) {
+                for (Object value : values) {
+                    if (value.equals(entry.getValue())) {
+                        keys.add(value);
+                    }
+                }
+
+                return keys;
+            }
+
+            throw new IllegalArgumentException("Several expected values were not existed in the Map! ");
+
+        }
+
+        //region This function needs to be modified
+
+        public static @NotNull Map<?, ?> sortMapByInsertionOrder(
+                @NotNull Map<?, ?> map) {
+
+            List<?> values = new ArrayList<>(map.values());
+            List<?> keys = new ArrayList<>(map.keySet());
+
+            Collections.reverse(keys);
+            Collections.reverse(values);
+
+            Hashtable sortedHashTable = new Hashtable<>();
+            int hashTableSize = keys.size();
+
+            if (keys.size() != values.size()) {
+                if (GlobalVariableUtil.ScriptConfiguration.TROUBLESHOOTING_MODE) {
+                    throw new IllegalArgumentException(StringUtil.appendStrings(Arrays.asList(
+                            "Keys' size was not equal to values' size: \n",
+                            "Keys' size = ",
+                            String.valueOf(keys.size()),
+                            "\nValues' size = ",
+                            String.valueOf(values.size())
+                    )));
+                }
+
+                hashTableSize = Math.min(keys.size(), values.size());
+            }
+
+            for (int i = hashTableSize-1; i >= 0; i--) {
+                sortedHashTable.put(keys.get(i), values.get(i));
+            }
+
+//            List<?> _values = new ArrayList<>(sortedHashTable.values());
+
+            return sortedHashTable;
+        }
+
+        //endregion
+    }
+
+    public static class CollectionUtil {
+
+        public static Collection<?> reverseCollectionOrder(List<?> reversedCollection) {
+            Collections.reverse(reversedCollection);
+            return reversedCollection;
+        }
+
+        public static List<?> reverseListOrder(List<?> reversedList) {
+            Collections.reverse(reversedList);
+            return reversedList;
+        }
+    }
 }

@@ -7,7 +7,6 @@ import io.restassured.specification.RequestSpecification;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import se.model.apiModel.responseModel.CategoryBrowsingModel;
 import com.google.gson.Gson;
 
 import java.util.*;
