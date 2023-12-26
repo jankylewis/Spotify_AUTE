@@ -1,4 +1,4 @@
-package se.commonHandler.constantHouse;
+package se.commonHandler.constantHouse.uiConstant;
 
 public final class LocalPathConstant {
 

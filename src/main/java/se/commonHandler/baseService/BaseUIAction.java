@@ -4,8 +4,8 @@ import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.constantHouse.ActionConstant;
-import se.commonHandler.constantHouse.WaitConstant;
+import se.commonHandler.constantHouse.uiConstant.ActionConstant;
+import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 
 import java.util.ArrayList;
 import java.util.Collection;

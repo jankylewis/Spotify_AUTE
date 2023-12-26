@@ -1,4 +1,4 @@
-package se.commonHandler.constantHouse;
+package se.commonHandler.constantHouse.apiConstant;
 
 public class ApiConstant {
 

@@ -1,4 +1,4 @@
-package se.commonHandler.constantHouse;
+package se.commonHandler.constantHouse.uiConstant;
 
 import se.utility.StringUtil;
 
