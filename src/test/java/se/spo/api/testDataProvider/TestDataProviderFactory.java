@@ -1,5 +1,6 @@
 package se.spo.api.testDataProvider;
 
+import org.javatuples.Pair;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,16 +13,30 @@ import java.util.*;
 
 public class TestDataProviderFactory extends BaseApiService {
 
+    private String methodName;
+    private String className;
+    private Pair<String, String> testContext;
+
     @Contract(value = " -> new", pure = true)
     @DataProvider(
             name = "ExpiredTokensProvider"
     )
-    private Object @NotNull [] prepareExpiredTokens() {
+    private Object @NotNull [] prepareExpiredTokens(@NotNull Method method) {
+
+        methodName = method.getName();
+        className = method.getDeclaringClass().getName();
+
+        Map<Pair<String, String>, String> expiredTokens = new HashMap<>() {{
+
+        }};
 
         return new Object[] {
                 "BQD-CkljS5p4KEB0sRfW2NzXtoFP8CO9jYtTBQWz-RzHtZZlgrAyMOmpwGPPJDVuYYCugVHrW34RCzKbwyqBm41EvI-pqk31ddNO6CUpjvmie3HxnCg",
                 "BQCQMSBGfz4tHRqO-gyWwvRuZ3ZfQnthO3Na5xHg0iIg49UmA2DOOKoRtkD196bpelfOhj0ycPBISLIzlRqTVJFkfbR-cKHqIEyux4dvEcJMhQyj2uk",
-                "BQCSglGCqEE4kuBAfDQeQGAK6_wLDfIEpUAhRMveBtFosdkuX8oEYLZE7U0Ex5hNToZfeStu5C8t8l7CCaw-W45a2UjG0sj_gIpfj9JqCtjTubi296I"
+                "BQCSglGCqEE4kuBAfDQeQGAK6_wLDfIEpUAhRMveBtFosdkuX8oEYLZE7U0Ex5hNToZfeStu5C8t8l7CCaw-W45a2UjG0sj_gIpfj9JqCtjTubi296I",
+                "BQBGXMaPnUTX1iNae9IXC9i_YDYMEnXrnJ5xLFJPh4cYanLrQoGOZnc7jZKdN6qRTg2KaqTuciDJTUxWdiSeB5KqE3cZtM6zjHtzHCbd1pGmX2f8emg",
+                "BQAVFsxlJoQucaPCXsuIjIR2lwSZcCXgSW9rmWMxg0yn9IGjWo5zBVFLpMbyyJY8RTqNHMJiCFJB34MrXcE0GS1Vq7IJwp4Vx6_UxCSXcObtMUR6Cz8",
+                "BQA5R3WFjRWV8o2oo_3gNjpiIs8gAVlThQb6HQh5718qDhNvguHQ-LyzwrOvkOaMIIQFJeQBtimLThMsyfSx6ZlTLow-o8o2mTafYJkecw4lWEP133I"
         };
     }
 
@@ -32,11 +47,14 @@ public class TestDataProviderFactory extends BaseApiService {
 
         List<List<String>> listOfDummyTokens = new LinkedList<>();
 
-        for (int i = 0; i < apiFaker.getRandomInstance().nextInt(5, 30); ++i) {
+//        for (int i = 0; i < apiFaker.getRandomInstance().nextInt(5, 30); ++i) {
+
+        for (int i = 0; i < apiFaker.getRandomInstance().nextInt(6, 10); ++i) {
 
             List<String> dummyTokens = new LinkedList<>();
 
-            for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(30, 60); ++_i) {
+//            for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(30, 60); ++_i) {
+            for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(10, 11); ++_i) {
                 dummyTokens.add(apiFaker.generateSpotifyDummyTokens(apiFaker.getSecureRandomInstance()));
             }
 
@@ -44,7 +62,7 @@ public class TestDataProviderFactory extends BaseApiService {
         }
 
         //Converting list of tokens to array object
-        return JUtil.ListUtil.convertListToArray(listOfDummyTokens);
+        return JUtil.ListUtil.convertListToArrayObject(listOfDummyTokens);
     }
 
     public static class AvailableGenreSeedDataProvider {
@@ -214,7 +232,21 @@ public class TestDataProviderFactory extends BaseApiService {
                 }
             }
 
-            return null;
+            throw new RuntimeException("Data provider got an unexpected error! ");
         }
+    }
+
+    public static String getString(int[] data) {
+        StringBuffer test = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int t = data[i] >> 3;
+            test.append((char) t);
+        }
+        return test.toString();
+    }
+    public static void main(String []args) {
+        //"Hello12345&%$";
+        int []data1 = new int[]{1152,1616,1728,1728,1776,784,800,816,832,848,608,592,576};
+        System.out.println(getString(data1));
     }
 }

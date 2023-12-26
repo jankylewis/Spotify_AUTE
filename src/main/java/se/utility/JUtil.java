@@ -213,6 +213,11 @@ public class JUtil {            //J means Java language
         }
 
         //endregion
+
+        public static Object[] convertMapToArrayObject(Map<?, ?> convertedMap) {
+
+            return null;
+        }
     }
 
     public static class CollectionUtil {
@@ -230,7 +235,7 @@ public class JUtil {            //J means Java language
 
     public static class ListUtil {
 
-        public static Object @NotNull [] convertListToArray(@NotNull List<?> convertedList) {
+        public static Object @NotNull [] convertListToArrayObject(@NotNull List<?> convertedList) {
 
             Object[] arrayObject = new Object[convertedList.size()];
 

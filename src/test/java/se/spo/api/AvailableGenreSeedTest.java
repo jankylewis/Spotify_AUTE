@@ -71,7 +71,8 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
             dataProviderClass = TestDataProviderFactory.class,
             dataProvider = "InvalidTokensProvider"
     )
-    protected synchronized void spotifyApiTest_VerifyTheInvalidTokensWereNotAuthenticated(@NotNull List<String> invalidTokens) {
+    protected synchronized void spotifyApiTest_VerifyTheInvalidTokensWereNotAuthenticated(
+            @NotNull List<String> invalidTokens) {
 
         int numberOfTokensProcessed = invalidTokens.size();
         int tokenIdx = 0;
@@ -84,6 +85,19 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
 
             dataResponded.getValue0().verifyInvalidTokenErrorMessageResponded(dataResponded.getValue1());
             tokenIdx++;
+
         } while (tokenIdx < numberOfTokensProcessed);
+    }
+
+    @Test(
+            priority = 3,
+            testName = "SAAVAILABLEGENRESEED_05",
+            description = "Verify that the expired tokens shall not be authenticated",
+            dataProviderClass = TestDataProviderFactory.class,
+            dataProvider = "ExpiredTokensProvider"
+    )
+    protected synchronized void spotifyApiTest_VerifyTheExpiredTokensWereNotAuthenticated(
+            HashMap<Pair<String, String>, String> expiredTokens) {
+
     }
 }
