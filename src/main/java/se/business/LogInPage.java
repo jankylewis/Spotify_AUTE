@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
-import se.model.UserInformationModel;
+import se.model.uiModel.UserInformationModel;
 import se.pageObject.LogInObject;
 import se.utility.GlobalVariableUtil.Environment;
 

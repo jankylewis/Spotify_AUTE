@@ -8,9 +8,6 @@ import se.infrastructure.PlaywrightFactory;
 import se.infrastructure.PlaywrightManager;
 import se.pageObject.BaseObject;
 import se.utility.GlobalVariableUtil;
-import se.utility.StringUtil;
-
-import java.util.Arrays;
 
 public class BaseTestService extends BaseService {             //This service runs before each test class
 

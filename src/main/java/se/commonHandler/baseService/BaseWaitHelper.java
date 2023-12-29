@@ -11,7 +11,7 @@ import com.microsoft.playwright.Locator.WaitForOptions;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.constantEnumeration.WaitConstant;
+import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 
 public class BaseWaitHelper {
 

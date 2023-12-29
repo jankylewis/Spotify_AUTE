@@ -1,6 +1,6 @@
 package se.utility;
 
-import se.utility.fileReader.BaseFileReader;
+import se.utility.fileReaderUtil.BaseFileReader;
 
 public class GlobalVariableUtil extends BaseFileReader {
 
@@ -71,12 +71,32 @@ public class GlobalVariableUtil extends BaseFileReader {
 
         //region Introducing global variables
 
-        //Providing user infor's path
+        //Providing script config's path
         private static final String FILE_PATH = "./src/main/java/se/globalVariable/script_configuration.properties";
         public static final Boolean RECORDED =
                 Boolean.parseBoolean(RESOURCE_READER.getPropertyFromGV("is_recorded", FILE_PATH));
         public static final Boolean SCREENSHOTTED =
                 Boolean.parseBoolean(RESOURCE_READER.getPropertyFromGV("is_screenshotted", FILE_PATH));
+
+        public static final Boolean TROUBLESHOOTING_MODE =
+                Boolean.parseBoolean(RESOURCE_READER.getPropertyFromGV("is_troubleshooting_mode", FILE_PATH));
+
+        //endregion
+    }
+
+    //endregion
+
+    //region Variables come from api_credentials.properties
+
+    public static class ApiCredential {
+
+        //region Introducing global variables
+
+        //Providing api credentials' path
+        private static final String FILE_PATH = "./src/main/java/se/globalVariable/api_credential.properties";
+        public static final String CLIENT_ID = RESOURCE_READER.getPropertyFromGV("client_id", FILE_PATH);
+        public static final String CLIENT_SECRET = RESOURCE_READER.getPropertyFromGV("client_secret", FILE_PATH);
+        public static final String CLIENT_APP = RESOURCE_READER.getPropertyFromGV("client_app", FILE_PATH);
 
         //endregion
     }

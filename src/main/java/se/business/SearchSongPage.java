@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.baseService.BaseVerifier.IVerification;
-import se.model.SearchSongModel.ETab;
+import se.model.uiModel.SearchSongModel.ETab;
 import se.pageObject.SearchSongObject;
 import se.utility.GlobalVariableUtil;
 import se.utility.ParallelUtil;

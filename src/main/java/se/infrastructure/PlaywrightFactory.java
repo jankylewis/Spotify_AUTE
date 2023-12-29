@@ -3,7 +3,7 @@ package se.infrastructure;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.ScreenshotAnimations;
 import org.jetbrains.annotations.NotNull;
-import se.utility.JavaLangUtil.ViewportUtil;
+import se.utility.JUtil.ViewportUtil;
 
 import java.nio.file.Paths;
 import java.security.InvalidParameterException;
