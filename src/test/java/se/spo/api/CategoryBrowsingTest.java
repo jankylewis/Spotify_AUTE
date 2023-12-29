@@ -15,7 +15,7 @@ public class CategoryBrowsingTest extends BaseApiTestService {
             description = "Verify Api was SUCCESSFULLY processed when being hit by a request",
             groups = "singleThreaded"
     )
-    protected synchronized void spotifyApiTest_VerifyApiProcessedRequestWithGreenResponseCode() {
+    protected void spotifyApiTest_VerifyApiProcessedRequestWithGreenResponseCode() {
         Pair<CategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesSuccessfully();
         browseCategoryProcessor.verifyBrowseCategoriesRequestResponseSttCode(dataRetrieved.getValue1());
     }
@@ -29,13 +29,4 @@ public class CategoryBrowsingTest extends BaseApiTestService {
         Pair<CategoryProcessor, Response> dataRetrieved = browseCategoryProcessor.getBrowseCategoriesUnsuccessfully();
         browseCategoryProcessor.verifyBrowseCategoriesRequestResponseSttCode(dataRetrieved.getValue1());
     }
-
-//    @Test(
-//            priority = 1,
-//            testName = "SABROWSECATEGORIES_03",
-//            description = ""
-//    )
-//    protected void spotifyApiTest_VerifyMusicTypeWasComprisedOfVietnameseMusic() {
-//
-//    }
 }

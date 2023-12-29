@@ -41,7 +41,7 @@ public class CategoryProcessor extends BaseProcessor {
     //region Making requests to get list of browse categories
 
     //Blocking access to this method from others
-    public synchronized Pair<CategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
+    public Pair<CategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
                 categoriesBrowsingUri,
@@ -65,19 +65,6 @@ public class CategoryProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
-//    public void getMusicType() {
-//
-//        HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
-//                browseCategoriesUri,
-//                null,
-//                null,
-//                RestUtil.EMethod.GET
-//        );
-//
-//        _requestProcessor._get();
-//
-//    }
-
     //endregion
 
     //region Verifications
@@ -97,8 +84,4 @@ public class CategoryProcessor extends BaseProcessor {
     }
 
     //endregion
-
-//    public static void main(String []args) {
-//        INSTANCE.getMusicType();
-//    }
 }

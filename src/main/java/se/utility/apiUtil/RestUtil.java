@@ -229,9 +229,12 @@ public class RestUtil {
 
     //endregion
 
+    //region Processing tokens
+
     private RestUtil setAccessToken() {
 
         String accessToken = AuthenticationUtil.getAccessToken();
+
         requestSpecification
                 .given()
                 .header("Authorization", "Bearer " + accessToken);
@@ -240,21 +243,21 @@ public class RestUtil {
     }
 
     private RestUtil setAccessToken(String expectedToken) {
+
         requestSpecification
                 .given()
                 .header("Authorization", "Bearer " + expectedToken);
+
         return INSTANCE;
     }
+
+    //endregion
 
     //region Processing responses
 
     protected String getPropertyValue(String property) {
         jsonPath = new JsonPath(response.asPrettyString());
         return jsonPath.get(property);
-    }
-
-    public void getX(Response response) {
-
     }
 
     //endregion
