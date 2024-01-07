@@ -10,7 +10,7 @@ import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class BaseUIAction {
+public class BaseUiAction {
 
     // region Introducing objects
 
@@ -23,7 +23,7 @@ public class BaseUIAction {
 
     // region Introducing constructor
 
-    public BaseUIAction(Page page) {
+    public BaseUiAction(Page page) {
         this.page = page;
         waitHelper = new BaseWaitHelper(page);
     }

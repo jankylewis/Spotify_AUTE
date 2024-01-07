@@ -4,7 +4,7 @@ import com.microsoft.playwright.Page;
 import se.commonHandler.constantHouse.uiConstant.MessageConstant;
 import se.commonHandler.constantHouse.uiConstant.LocalPathConstant;
 import se.commonHandler.constantHouse.uiConstant.WaitConstant;
-import se.commonHandler.baseService.BaseUIAction;
+import se.commonHandler.baseService.BaseUiAction;
 import se.commonHandler.baseService.BaseVerifier;
 import se.commonHandler.baseService.BaseWaitHelper;
 import se.pageObject.BaseObject;
@@ -15,7 +15,7 @@ public class BasePage extends BaseObject {
     //region Introducing fields
 
     protected Page page;
-    protected BaseUIAction baseUi;
+    protected BaseUiAction baseUi;
     protected BaseVerifier baseVerifier;
     protected BaseWaitHelper waitHelper;
     protected WaitConstant waitConst;
@@ -38,7 +38,7 @@ public class BasePage extends BaseObject {
         super(page);                                //Extending from BaseObject
         this.page = page;
 
-        baseUi = new BaseUIAction(page);
+        baseUi = new BaseUiAction(page);
         baseVerifier = new BaseVerifier(page);
         waitHelper = new BaseWaitHelper(page);
     }
