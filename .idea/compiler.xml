@@ -9,5 +9,6 @@
         <module name="Spotify" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="20" />
   </component>
 </project>
