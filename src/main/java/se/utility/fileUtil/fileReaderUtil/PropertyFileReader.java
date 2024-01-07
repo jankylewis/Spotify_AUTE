@@ -1,4 +1,4 @@
-package se.utility.fileReaderUtil;
+package se.utility.fileUtil.fileReaderUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -8,7 +8,7 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-public class BaseFileReader {
+public class PropertyFileReader {
 
     public static class ResourceReader {            //Enclosing class needs to be declared in static state
 

@@ -1,8 +1,8 @@
 package se.utility;
 
-import se.utility.fileReaderUtil.BaseFileReader;
+import se.utility.fileUtil.fileReaderUtil.PropertyFileReader;
 
-public class GlobalVariableUtil extends BaseFileReader {
+public class GlobalVariableUtil extends PropertyFileReader {
 
     private static final ResourceReader RESOURCE_READER = ResourceReader.getInstance();
 
