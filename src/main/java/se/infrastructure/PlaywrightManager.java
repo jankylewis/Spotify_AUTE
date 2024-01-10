@@ -12,7 +12,6 @@ import java.util.Random;
 public final class PlaywrightManager {            //This service generates Playwright Interactive Page
 
     //region Thread Manager > Introducing Playwright objects
-
     private static final Boolean RECORDED = ScriptConfiguration.RECORDED;
     private static final ThreadLocal<Page> TL_PAGE = new ThreadLocal<>();
     private static final ThreadLocal<BrowserContext> TL_BROWSER_CONTEXT = new ThreadLocal<>();

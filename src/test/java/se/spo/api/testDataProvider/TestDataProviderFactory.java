@@ -7,50 +7,86 @@ import org.jetbrains.annotations.Nullable;
 import org.testng.annotations.DataProvider;
 import se.commonHandler.baseService.BaseApiService;
 import se.utility.JUtil;
+import se.utility.StringUtil;
+import se.utility.fileUtil.fileReaderUtil.CsvFileReader;
+import se.utility.fileUtil.fileWriterUtil.CsvFileWriter;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 
 public class TestDataProviderFactory extends BaseApiService {
 
+    //region Introducing variables
+
     private String methodName;
     private String className;
     private Pair<String, String> testContext;
+    private final String baseApiTestDataFolder = "apiTestDataFiles/";
+
+    //endregion
+
+    //region Introducing instance
+
+    public static final TestDataProviderFactory INSTANCE = getInstance();
+
+    private static class TestDataProviderFactoryHelper {
+        private static final TestDataProviderFactory _INSTANCE = new TestDataProviderFactory();
+    }
+
+    private static TestDataProviderFactory getInstance() {
+        return TestDataProviderFactoryHelper._INSTANCE;
+    }
+
+    private TestDataProviderFactory(){}
+
+    //endregion
 
     @Contract(value = " -> new", pure = true)
     @DataProvider(
             name = "ExpiredTokensProvider"
     )
-    private Object @NotNull [] prepareExpiredTokens(@NotNull Method method) {
+    private Object @NotNull [] prepareExpiredTokens(@NotNull Method method)
+            throws IOException {
 
-        methodName = method.getName();
-        className = method.getDeclaringClass().getName();
+        logRuntimeInformation(method);
 
-        Map<Pair<String, String>, String> expiredTokens = new HashMap<>() {{
+        List<Pair<String, String>> expiredTokens = CsvFileReader
+                .INSTANCE
+                .getValuesWithHeaders(
+                        baseApiTestDataFolder + "expired_tokens.csv", new String[]{"Tokens' unique ids", "Expired tokens provided"});
 
-        }};
-            
-        return new Object[] {
-                "BQD-CkljS5p4KEB0sRfW2NzXtoFP8CO9jYtTBQWz-RzHtZZlgrAyMOmpwGPPJDVuYYCugVHrW34RCzKbwyqBm41EvI-pqk31ddNO6CUpjvmie3HxnCg",
-                "BQCQMSBGfz4tHRqO-gyWwvRuZ3ZfQnthO3Na5xHg0iIg49UmA2DOOKoRtkD196bpelfOhj0ycPBISLIzlRqTVJFkfbR-cKHqIEyux4dvEcJMhQyj2uk",
-                "BQCSglGCqEE4kuBAfDQeQGAK6_wLDfIEpUAhRMveBtFosdkuX8oEYLZE7U0Ex5hNToZfeStu5C8t8l7CCaw-W45a2UjG0sj_gIpfj9JqCtjTubi296I",
-                "BQBGXMaPnUTX1iNae9IXC9i_YDYMEnXrnJ5xLFJPh4cYanLrQoGOZnc7jZKdN6qRTg2KaqTuciDJTUxWdiSeB5KqE3cZtM6zjHtzHCbd1pGmX2f8emg",
-                "BQAVFsxlJoQucaPCXsuIjIR2lwSZcCXgSW9rmWMxg0yn9IGjWo5zBVFLpMbyyJY8RTqNHMJiCFJB34MrXcE0GS1Vq7IJwp4Vx6_UxCSXcObtMUR6Cz8",
-                "BQA5R3WFjRWV8o2oo_3gNjpiIs8gAVlThQb6HQh5718qDhNvguHQ-LyzwrOvkOaMIIQFJeQBtimLThMsyfSx6ZlTLow-o8o2mTafYJkecw4lWEP133I",
-                "BQA-KuYiZuYAhGvkfawnO6S2gMGImwvkRg4S8FkbV5EaTVJytniimVvVV_FoBtBAnLFj5_CGLduF_LbLli_KsjxdfsHOF-pCQ1jcNfqpmXZPTYalMhI",
-                "BQCInvJPlztnwC4wU12hHT-0WRO8ujpRJ_7hTVfqsdQTeUFhKlFE9dxlCjWDG90Ktv3K5okZj3Aqq2JMIlSQAfZYieqA1RkT3vmv0GNA_Dv_AP9gBBw",
-                "QDJFiqRjLGBfHsutjcJaAvyf2SalGIPDEA_-KYYLbocXbLU61497jWz5F0sJnOI-gcCNMcP0WKtOxj2yS-w6KrpxlZAMNLqVdFtaELC9nXs6R3HHSE",
-                "BQA2nRqOditZIfFVNwqbH_ho7NWF3XeYLUPzbXXatFhkUWIqFsiMufH7xw39u_g_wwK0qV3O31t7TK1FRtYbdQiab-iU4yE2lT3mzfVqhZf71E81Z2E",
-                "BQC9n-46XzJxTHdz6_KY6x4hPq0Kc-LuzLf1YuLttEKo1xTn5pZdFcsh-XV89tgjYB1E5Pru_E-64RjTpvoFnMTf-XbUNl4D-JB3GXwluwz2Ywxp79Y",
-                "BQDP65hCZ0UiuGkZYRtMuIt0s6bxNCV0oMYSsVQ4gDhK8svzCgJDHB-9XqpQo-qYzh0REjQNcqwsNAzBbAtfs08MRQdcZz9LG2Q8yXt2BDRP13wUfPo",
-                "BQCGmwWjLsYX-qYzWk8UJz1Di1viAXDaEDP-K6Fwu0nMMmDEO56GCPw1013up5UFZfyEFq6sfnXav2qlaS342bSXFKAw9q2bHt2Vrui4YpXzQoTM5wY",
-                "BQAI5eot8mhX310Ma1uh22__rrYAsIXz0kpAFmKcJv7d1arfq7cPlqJ78gBsfG5rl5hh_TMtxU8R7Qqu96-24afPiCLIZvnHYM4eSr5s62UHKsgjE9k",
-                "BQBdHlNPbVY4m8zU0Bq9n4fkaNtlLkhe0Cd9guRfhRfPj3M0o_eiE_6BeAEL2nWdg9vvMw8Si_cr-TUqhwXvbU1tYnQuN__v_WSUAO3NsPGv7Xqk_5w",
-                "BQCxcy5KR5GbNuPha1O9k_I49dYog2w227hIBhmNjPzSUiM3tBcyE3d9OEuq50qVl6ySQ6I8IsMAyhXP7_UY09Yie5RYzao9rRs24UkYSKqNzAczUEM",
-                "BQA5mvOhQZzOU2HUz9jYm1aQ4i8el81oU-bf3TvS4xCycAjhb0LSgyGc2kFOJpLzTOKz2UOumS362_J2c0cT-cEZ34mo8TR92C6t4uzHR2WkqDblbsg",
-                "BQD4l3mBt-QarSC0b5VgKViYlkWE1iSfXPeXbwc-6GnkNNYZc6hhnpnSMgnXExIvHs_Aq4vaFbGjaPtxbqxaoNTbPMbNzQblUYlA5hxyqqO88IJDPHs",
-                "BQCCyxjZ4Qa86N1XH-qAfn2Ez46IlRHzbHgqKU8b6TG99taOB9s0Vqgj7y6KRvUqpFSuG-ujMSQOFqObsRGk-H1j7VeJsb2vLB85n1F3ZDsBbM3ycRM"
-        };
+        return JUtil.ListUtil.convertListToArrayObject(expiredTokens);
+    }
+
+    public Collection<?> prepareModifiableTokensWithCsv(@NotNull Method method)
+            throws IOException {
+
+        Collection<?> values =  new HashSet<>();
+
+        logRuntimeInformation(method);
+
+        switch (methodName) {
+            case "spotifyApiTest_VerifyApiThrewErrorIfNoTokenProvided" -> {
+
+                //No token prepared
+                CsvFileWriter.INSTANCE
+                        .modifyCsvFile(baseApiTestDataFolder + "modified_tokens.csv", new String[]{}, values);
+            }
+            case "spotifyApiTest_VerifyApiRejectedIfUserRequestedAnotherAuthenticationService" -> {
+
+                Collection<Pair<?, ?>> _values = new ArrayList<>(){{
+                    add(Pair.with(apiFaker.produceFakeUuid().toString(), ""));
+                    add(Pair.with(apiFaker.produceFakeUuid().toString(), ""));
+                }};
+
+                values = CsvFileWriter.INSTANCE
+                                .modifyCsvFileWithPairOfValues(baseApiTestDataFolder + "modified_tokens.csv",
+                                        new String[]{"Tokens' unique ids", "Empty tokens provided"}, _values);
+            }
+        }
+
+        return values;
     }
 
     @DataProvider(
@@ -60,13 +96,10 @@ public class TestDataProviderFactory extends BaseApiService {
 
         List<List<String>> listOfDummyTokens = new LinkedList<>();
 
-//        for (int i = 0; i < apiFaker.getRandomInstance().nextInt(5, 30); ++i) {
-
         for (int i = 0; i < apiFaker.getRandomInstance().nextInt(6, 10); ++i) {
 
             List<String> dummyTokens = new LinkedList<>();
 
-//            for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(30, 60); ++_i) {
             for (int _i = 0; _i < apiFaker.getRandomInstance().nextInt(10, 11); ++_i) {
                 dummyTokens.add(apiFaker.generateSpotifyDummyTokens(apiFaker.getSecureRandomInstance()));
             }
@@ -78,6 +111,20 @@ public class TestDataProviderFactory extends BaseApiService {
         return JUtil.ListUtil.convertListToArrayObject(listOfDummyTokens);
     }
 
+    private TestDataProviderFactory logRuntimeInformation(@NotNull Method callingMethod) {
+
+        LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                "\n",
+                "Method named <",
+                methodName = callingMethod.getName(),
+                "> ",
+                "and from class <",
+                className = callingMethod.getDeclaringClass().getName(),
+                "> calling request(s)"
+        )));
+
+        return INSTANCE;
+    }
     public static class AvailableGenreSeedDataProvider {
 
         @DataProvider(
@@ -85,6 +132,8 @@ public class TestDataProviderFactory extends BaseApiService {
                 name = "AvailableGenreSeedsProvider"
         )
         private Object @Nullable [] prepareAvailableGenreSeedsData(@NotNull Method method) {
+
+            INSTANCE.logRuntimeInformation(method);
 
             //region All genres existed in Spotify
 
@@ -247,19 +296,5 @@ public class TestDataProviderFactory extends BaseApiService {
 
             throw new RuntimeException("Data provider got an unexpected error! ");
         }
-    }
-
-    public static String getString(int[] data) {
-        StringBuffer test = new StringBuffer();
-        for (int i = 0; i < data.length; i++) {
-            int t = data[i] >> 3;
-            test.append((char) t);
-        }
-        return test.toString();
-    }
-    public static void main(String []args) {
-        //"Hello12345&%$";
-        int []data1 = new int[]{1152,1616,1728,1728,1776,784,800,816,832,848,608,592,576};
-        System.out.println(getString(data1));
     }
 }

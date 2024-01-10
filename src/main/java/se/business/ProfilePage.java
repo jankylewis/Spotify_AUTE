@@ -1,7 +1,7 @@
 package se.business;
 
 import com.microsoft.playwright.Page;
-import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseVerification.IVerification;
 import se.pageObject.ProfileObject;
 
 public class ProfilePage extends ProfileObject implements IVerification {
@@ -12,14 +12,14 @@ public class ProfilePage extends ProfileObject implements IVerification {
 
     public void verifySpotifyLogoPresented() {
         waitHelper.waitForElementVisible(findLocator(BTN_SPOTIFY_LOGO), true);
-        baseVerifier.verifyElementVisible(findLocator(BTN_SPOTIFY_LOGO));
+        baseVerification.verifyElementVisible(findLocator(BTN_SPOTIFY_LOGO));
 
         verificationWentPassed();
     }
 
     public void verifyUserSuccessfullyLoggedIn() {
         waitHelper.waitForElementVisible(findLocator(BTN_PROFILE), true);
-        baseVerifier.verifyElementVisible(findLocator(BTN_PROFILE));
+        baseVerification.verifyElementVisible(findLocator(BTN_PROFILE));
 
         verificationWentPassed();
     }

@@ -5,7 +5,7 @@ import se.commonHandler.constantHouse.uiConstant.MessageConstant;
 import se.commonHandler.constantHouse.uiConstant.LocalPathConstant;
 import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 import se.commonHandler.baseService.BaseUiAction;
-import se.commonHandler.baseService.BaseVerifier;
+import se.commonHandler.baseService.BaseVerification;
 import se.commonHandler.baseService.BaseWaitHelper;
 import se.pageObject.BaseObject;
 import se.utility.GlobalVariableUtil.Environment;
@@ -16,7 +16,7 @@ public class BasePage extends BaseObject {
 
     protected Page page;
     protected BaseUiAction baseUi;
-    protected BaseVerifier baseVerifier;
+    protected BaseVerification baseVerification;
     protected BaseWaitHelper waitHelper;
     protected WaitConstant waitConst;
     protected MessageConstant msgConst;
@@ -39,7 +39,7 @@ public class BasePage extends BaseObject {
         this.page = page;
 
         baseUi = new BaseUiAction(page);
-        baseVerifier = new BaseVerifier(page);
+        baseVerification = new BaseVerification(page);
         waitHelper = new BaseWaitHelper(page);
     }
 

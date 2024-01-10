@@ -1,43 +1,98 @@
 package se.utility.fileUtil.fileReaderUtil;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.javatuples.Pair;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CsvFileReader {
 
-    private CSVPrinter csvPrinter;
     private CSVFormat csvFormat;
-    private FileWriter fileWriter;
-//    private String[] headers = null;
+    private final String relativeFilePath = "./src/test/java/se/spo/testDataFiles/";
 
-    //Handling instance
+    //region Handling instance
 
-    static String[] headers = {"Expired tokens provided", "Tokens' unique ids"};
+    public static final CsvFileReader INSTANCE = getInstance();
 
-    public static void main (String[] args) throws IOException {
+    private CsvFileReader(){}
 
-        Reader r = new FileReader(
-                "./src/test/java/se/spo/testDataFiles/apiTestDataFiles/expired_tokens.csv");
+    private static final class CsvFileReaderHelper{
+        private static final CsvFileReader _INSTANCE = new CsvFileReader();
+    }
 
-        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+    private static CsvFileReader getInstance() {
+        return CsvFileReaderHelper._INSTANCE;
+    }
+
+    //endregion
+
+    //The destinationPath started from testDataFiles folder
+    public List<String> getValuesWithHeader(String destinationPath, String header)
+            throws IOException {
+
+        List<String> values = new ArrayList<>();
+
+        Reader reader = new FileReader(relativeFilePath + destinationPath);
+
+        csvFormat = CSVFormat
+                .DEFAULT
+                .builder()
+                .setHeader(header)
+                .setSkipHeaderRecord(true)
+                .build();
+
+        Iterable<CSVRecord> csvRecords = csvFormat.parse(reader);
+
+        for (CSVRecord csvRecord : csvRecords) {
+            values.add(csvRecord.get(header));
+        }
+
+        return values;
+    }
+
+    public List<Pair<String, String>> getValuesWithHeaders(String destinationPath, String[] headers) throws IOException {
+
+        List<Pair<String, String>> values = new ArrayList<>();
+
+        Reader reader = new FileReader(relativeFilePath + destinationPath);
+
+        csvFormat = CSVFormat
+                .DEFAULT
+                .builder()
                 .setHeader(headers)
                 .setSkipHeaderRecord(true)
                 .build();
 
-        Iterable<CSVRecord> csvRecords = csvFormat.parse(r);
+        Iterable<CSVRecord> csvRecords = csvFormat.parse(reader);
 
         for (CSVRecord csvRecord : csvRecords) {
-
-            String expiredToken = csvRecord.get(headers[0]);
-            String expiredTokenUniqueId = csvRecord.get(headers[1]);
-
-            System.out.println();
+            values.add(Pair.with(csvRecord.get(headers[0]), csvRecord.get(headers[1])));
         }
+
+        return values;
+    }
+
+    public List<String> getAllValuesFromCsvFile(String destinationPath) throws IOException {
+
+        List<String> values = new ArrayList<>();
+
+        Reader reader = new FileReader("./src/test/java/se/spo/testDataFiles/" + destinationPath);
+
+        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+
+        for (CSVRecord csvRecord : csvParser) {
+            values.add(csvRecord.get(0));
+        }
+
+        return values;
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        CsvFileReader.INSTANCE.getAllValuesFromCsvFile("apiTestDataFiles/expired_tokens.csv");
     }
 }
