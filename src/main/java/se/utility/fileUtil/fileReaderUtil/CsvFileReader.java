@@ -91,8 +91,4 @@ public class CsvFileReader {
         return values;
 
     }
-
-    public static void main(String[] args) throws IOException {
-        CsvFileReader.INSTANCE.getAllValuesFromCsvFile("apiTestDataFiles/expired_tokens.csv");
-    }
 }
