@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseVerification.IVerification;
 import se.model.uiModel.SearchSongModel.ETab;
 import se.pageObject.SearchSongObject;
 import se.utility.GlobalVariableUtil;
@@ -343,7 +343,7 @@ public class SearchSongPage extends SearchSongObject
     private boolean verifyTextsContained(@NotNull final Pair<String, Collection<String>> verifiedPairs) {
 
         for (String actText : verifiedPairs.getValue1()) {
-            baseVerifier.verifyExpectedStringContained(verifiedPairs.getValue0(), actText);
+            baseVerification.verifyExpectedStringContained(verifiedPairs.getValue0(), actText);
         }
 
         return true;
@@ -373,10 +373,10 @@ public class SearchSongPage extends SearchSongObject
         Locator noResultsFoundLbl = findLocator(LBL_NO_RESULTS_FOUND);
         Locator useDifferentKeywords = findLocator(LBL_USE_DIFFERENT_KEYWORDS);
 
-        if (baseVerifier.verifyElementVisible(noResultsFoundLbl) &&
-                baseVerifier.verifyStringEquality(msgConst.LBL_NO_RESULTS_FOUND(searchKey), noResultsFoundLbl.textContent()) &&
-                baseVerifier.verifyElementVisible(useDifferentKeywords) &&
-                baseVerifier.verifyStringEquality(msgConst.LBL_USE_DIFFERENT_KEYWORDS, useDifferentKeywords.textContent())) {
+        if (baseVerification.verifyElementVisible(noResultsFoundLbl) &&
+                baseVerification.verifyStringEquality(msgConst.LBL_NO_RESULTS_FOUND(searchKey), noResultsFoundLbl.textContent()) &&
+                baseVerification.verifyElementVisible(useDifferentKeywords) &&
+                baseVerification.verifyStringEquality(msgConst.LBL_USE_DIFFERENT_KEYWORDS, useDifferentKeywords.textContent())) {
 
             verificationWentPassed();
         }

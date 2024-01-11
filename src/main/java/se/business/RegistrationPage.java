@@ -3,8 +3,8 @@ package se.business;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.baseService.BaseVerifier.IErrorVerification;
-import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseVerification.IErrorVerification;
+import se.commonHandler.baseService.BaseVerification.IVerification;
 import se.model.uiModel.UserInformationModel;
 import se.pageObject.RegistrationObject;
 import se.utility.GlobalVariableUtil.Environment;
@@ -38,7 +38,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
             waitHelper.waitForElementVisible(invalidEmailAddressLbl);
 
-            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_USERNAME, invalidEmailAddressLbl.textContent())) {
+            if (baseVerification.verifyStringEquality(msgConst.LBL_INVALID_USERNAME, invalidEmailAddressLbl.textContent())) {
                 verificationWentPassed();
             }
         }
@@ -66,7 +66,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
             waitHelper.waitForElementVisible(invalidPwdLbl);
 
-            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_PASSWORD, invalidPwdLbl.textContent())) {
+            if (baseVerification.verifyStringEquality(msgConst.LBL_INVALID_PASSWORD, invalidPwdLbl.textContent())) {
                 verificationWentPassed();
             }
         }
@@ -169,7 +169,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
             waitHelper.waitForElementVisible(invalidBirthYearErrMsg);
 
-            if (baseVerifier.verifyExpectedStringContained(msgConst.LBL_INVALID_BIRTHYEAR, invalidBirthYearErrMsg.textContent())) {
+            if (baseVerification.verifyExpectedStringContained(msgConst.LBL_INVALID_BIRTHYEAR, invalidBirthYearErrMsg.textContent())) {
                 verificationWentPassed();
             }
         }
@@ -178,7 +178,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
             Locator invalidBirthDateErrMsg = findLocator(LBL_BIRTHDATE_DAY_ERRMSG);
 
             waitHelper.waitForElementVisible(invalidBirthDateErrMsg);
-            if (baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent())) {
+            if (baseVerification.verifyStringEquality(msgConst.LBL_INVALID_BIRTHDATE, invalidBirthDateErrMsg.textContent())) {
                 verificationWentPassed();
             }
         }
@@ -191,9 +191,9 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
 
             waitHelper.waitForElementVisible(displayedNameRequiredMsgLbl);
 
-            if (baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_DISPLAYED_NAME, displayedNameRequiredMsgLbl.textContent()) &&
-                    baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_DOB, dobRequiredMsgLbl.textContent()) &&
-                    baseVerifier.verifyStringEquality(msgConst.LBL_REQUIRED_GENDER, genderRequiredMsgLbl.textContent())) {
+            if (baseVerification.verifyStringEquality(msgConst.LBL_REQUIRED_DISPLAYED_NAME, displayedNameRequiredMsgLbl.textContent()) &&
+                    baseVerification.verifyStringEquality(msgConst.LBL_REQUIRED_DOB, dobRequiredMsgLbl.textContent()) &&
+                    baseVerification.verifyStringEquality(msgConst.LBL_REQUIRED_GENDER, genderRequiredMsgLbl.textContent())) {
                 verificationWentPassed();
             }
         }
@@ -232,7 +232,7 @@ public class RegistrationPage extends RegistrationObject implements IVerificatio
         }
 
         public void verifyHumanRecognitionLabelDisplayed() {
-            baseVerifier.verifyStringEquality(msgConst.LBL_HUMAN_RECOGNITION,
+            baseVerification.verifyStringEquality(msgConst.LBL_HUMAN_RECOGNITION,
                     findLocator(LBL_HUMAN_RECOGNITION).textContent());
         }
     }

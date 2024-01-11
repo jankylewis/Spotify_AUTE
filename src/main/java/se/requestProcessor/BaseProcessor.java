@@ -4,7 +4,7 @@ import io.restassured.response.Response;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import se.commonHandler.baseService.BaseApiService;
-import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseVerification.IVerification;
 import se.commonHandler.constantHouse.apiConstant.ApiConstant;
 import se.commonHandler.constantHouse.apiConstant.ApiMessageConstant;
 import se.utility.apiUtil.RestUtil;

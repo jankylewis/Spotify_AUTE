@@ -3,7 +3,7 @@ package se.business;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
-import se.commonHandler.baseService.BaseVerifier.IVerification;
+import se.commonHandler.baseService.BaseVerification.IVerification;
 import se.model.uiModel.UserInformationModel;
 import se.pageObject.LogInObject;
 import se.utility.GlobalVariableUtil.Environment;
@@ -53,7 +53,7 @@ public class LogInPage extends LogInObject implements IVerification {
 
     public void verifyAccountMenuPresented() {
         waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
-        baseVerifier.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
+        baseVerification.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
 
         verificationWentPassed();
     }
@@ -62,7 +62,7 @@ public class LogInPage extends LogInObject implements IVerification {
         Locator invalidCredentialsLbl = findLocator(LBL_INVALID_CREDENTIALS);
 
         waitHelper.waitForElementVisible(invalidCredentialsLbl, false);
-        baseVerifier.verifyStringEquality(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
+        baseVerification.verifyStringEquality(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
 
         verificationWentPassed();
     }

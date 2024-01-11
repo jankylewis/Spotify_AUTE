@@ -215,7 +215,6 @@ public class JUtil {            //J means Java language
         //endregion
 
         public static Object[] convertMapToArrayObject(Map<?, ?> convertedMap) {
-
             return null;
         }
     }

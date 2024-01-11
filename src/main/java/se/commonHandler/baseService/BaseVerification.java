@@ -4,11 +4,11 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
 
-public class BaseVerifier {
+public class BaseVerification {
 
     private Page page;
 
-    public BaseVerifier(Page page) {
+    public BaseVerification(Page page) {
         this.page = page;
     }
 

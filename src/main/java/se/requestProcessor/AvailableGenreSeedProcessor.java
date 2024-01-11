@@ -73,63 +73,21 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
+    public synchronized Pair<AvailableGenreSeedProcessor, Response> getAvailableGenreSeedWithBasicRequest() {
+        //Making request with an expected token
+        HashMap<RestUtil, Response> response = _requestProcessor.sendBasicRequestWithResponse(
+                getAvailableGenreSeedUri,
+                null,
+                null,
+                RestUtil.EMethod.GET
+        );
+
+        return Pair.with(INSTANCE, response.get(_requestProcessor));
+    }
+
     //endregion
 
     //region Verifications
-
-    public synchronized AvailableGenreSeedProcessor verifyInvalidTokenErrorMessageResponded(@NotNull Response response) {
-
-        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
-
-        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
-
-        int respondedStatusCode = errorModel.getStatus();
-        String respondedErrorMessage = errorModel.getMessage();
-
-        if (respondedStatusCode == apiConstant.RED_STATUS &&
-                Objects.equals(respondedErrorMessage, apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE)) {
-            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
-                    "The response was successfully matched the expectations: ",
-                    "\nStatus code: ",
-                    String.valueOf(apiConstant.RED_STATUS),
-                    "\nError message: ",
-                    apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE
-            )));
-            verificationWentPassed();
-        }
-        else {
-            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
-                    "The response was not matched the expectations :(",
-                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.RED_STATUS), "]",
-                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE, "]"
-            )));
-            verificationWentFailed();
-        }
-
-        return INSTANCE;
-    }
-
-    public synchronized AvailableGenreSeedProcessor verifyGenreWasPresentedInTheListOfAvailableGenreSeeds(
-            @NotNull Response response, String expectedGenreType) {
-
-        AvailableGenreSeedModel availableGenreSeedModel = response.getBody().as(AvailableGenreSeedModel.class);
-
-        String existedGenreType = availableGenreSeedModel.getGenres()
-                .stream()
-                .filter(gt -> gt.equalsIgnoreCase(expectedGenreType))
-                .findFirst()
-                .orElse(null);
-
-        if (existedGenreType != null) {
-            verificationWentPassed();
-        }
-        else {
-            LOGGER.error("The expected genre type {" + expectedGenreType + "} was not contained in the responded genre list");
-            verificationWentFailed();
-        }
-
-        return INSTANCE;
-    }
 
     public synchronized AvailableGenreSeedProcessor verifySeveralAvailableGenreSeedsListedInRespondedList(
             @NotNull Response response, @NotNull Map<Integer, String> expectedGenres
@@ -193,7 +151,7 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
 
         Pair<Map<Integer, String>, Map<Integer, String>> differentGenres = null;
 
-        //Finding differences between two maps with a nested loop: if there shall be any differences => assertion goes FAILED
+        //Finding differences between two maps: if there shall be any differences => assertion goes FAILED
         if (_unmodifiableGenres.size() != unmodifiableGenres.size() && GlobalVariableUtil.ScriptConfiguration.TROUBLESHOOTING_MODE) {
 
             throw new IllegalArgumentException(
@@ -246,5 +204,184 @@ public class AvailableGenreSeedProcessor extends BaseProcessor {
         return INSTANCE;
     }
 
-    //endregion
+    public synchronized AvailableGenreSeedProcessor verifyGenreWasPresentedInTheListOfAvailableGenreSeeds(
+            @NotNull Response response, String expectedGenreType) {
+
+        AvailableGenreSeedModel availableGenreSeedModel = response.getBody().as(AvailableGenreSeedModel.class);
+
+        String existedGenreType = availableGenreSeedModel.getGenres()
+                .stream()
+                .filter(gt -> gt.equalsIgnoreCase(expectedGenreType))
+                .findFirst()
+                .orElse(null);
+
+        if (existedGenreType != null) {
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error("The expected genre type {" + expectedGenreType + "} was not contained in the responded genre list");
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
+
+    //region Tokens verification
+
+    public synchronized AvailableGenreSeedProcessor verifyInvalidTokenErrorMessageResponded(@NotNull Response response) {
+
+        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
+
+        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
+
+        int respondedStatusCode = errorModel.getStatus();
+        String respondedErrorMessage = errorModel.getMessage();
+
+        if (respondedStatusCode == apiConstant.RED_STATUS &&
+                Objects.equals(respondedErrorMessage, apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE)) {
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was successfully matched the expectations: ",
+                    "\nStatus code: ",
+                    String.valueOf(apiConstant.RED_STATUS),
+                    "\nError message: ",
+                    apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE
+            )));
+
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was not matched the expectations :(",
+                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.RED_STATUS), "]",
+                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.INVALID_TOKEN_ERROR_MESSAGE, "]"
+            )));
+
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
+
+    public synchronized AvailableGenreSeedProcessor verifyExpiredTokenErrorMessageResponded(
+            @NotNull Response response, String expiredTokenUniqueId) {
+
+        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
+
+        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
+
+        int respondedStatusCode = errorModel.getStatus();
+        String respondedErrorMessage = errorModel.getMessage();
+
+        if (respondedStatusCode == apiConstant.RED_STATUS &&
+                Objects.equals(respondedErrorMessage, apiMessageConstant.EXPIRED_TOKEN_ERROR_MESSAGE)) {
+
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "\nExpired token's unique id = ",
+                    expiredTokenUniqueId
+            )));
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was successfully matched the expectations: ",
+                    "\nStatus code: ",
+                    String.valueOf(apiConstant.RED_STATUS),
+                    "\nError message: ",
+                    apiMessageConstant.EXPIRED_TOKEN_ERROR_MESSAGE
+            )));
+
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was not matched the expectations :(",
+                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.RED_STATUS), "]",
+                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.EXPIRED_TOKEN_ERROR_MESSAGE, "]"
+            )));
+            LOGGER.error("Token's unique id that was expected to be an expired token = " + expiredTokenUniqueId);
+
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
+
+    public synchronized AvailableGenreSeedProcessor verifyNoneOfTokenProvidedErrorMessageResponded(
+            @NotNull Response response) {
+
+        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
+
+        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
+
+        int respondedStatusCode = errorModel.getStatus();
+        String respondedErrorMessage = errorModel.getMessage();
+
+        if (respondedStatusCode == apiConstant.RED_STATUS &&
+                Objects.equals(respondedErrorMessage, apiMessageConstant.NO_TOKEN_PROVIDED)) {
+
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was successfully matched the expectations: ",
+                    "\nStatus code: ",
+                    String.valueOf(apiConstant.RED_STATUS),
+                    "\nError message: ",
+                    apiMessageConstant.NO_TOKEN_PROVIDED
+            )));
+
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was not matched the expectations :(",
+                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.RED_STATUS), "]",
+                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.NO_TOKEN_PROVIDED, "]"
+            )));
+
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
+
+    public synchronized AvailableGenreSeedProcessor verifyUnsupportedAuthenticationServiceErrorMessageResponded(
+            @NotNull Pair<String, String> unmodifiableToken, @NotNull Response response
+    ) {
+
+        ErrorMessageModel errorMessageModel = response.getBody().as(ErrorMessageModel.class);
+
+        ErrorMessageModel.Error errorModel = errorMessageModel.getError();
+
+        int respondedStatusCode = errorModel.getStatus();
+        String respondedErrorMessage = errorModel.getMessage();
+
+        LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                "\nAsserting the token with unique id = ",
+                unmodifiableToken.getValue0()
+        )));
+
+        if (respondedStatusCode == apiConstant.UNSUPPORTED_AUTHENTICATION_SERVICE &&
+                Objects.equals(respondedErrorMessage, apiMessageConstant.UNSUPPORTED_AUTHENTICATION_SERVICE)) {
+
+            LOGGER.info(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was successfully matched the expectations: ",
+                    "\nStatus code: ",
+                    String.valueOf(apiConstant.UNSUPPORTED_AUTHENTICATION_SERVICE),
+                    "\nError message: ",
+                    apiMessageConstant.UNSUPPORTED_AUTHENTICATION_SERVICE
+            )));
+
+            verificationWentPassed();
+        }
+        else {
+            LOGGER.error(StringUtil.appendStrings(Arrays.asList(
+                    "\nThe response was not matched the expectations :(",
+                    "\nStatus code: [", String.valueOf(respondedStatusCode), "] >< [", String.valueOf(apiConstant.UNSUPPORTED_AUTHENTICATION_SERVICE), "]",
+                    "\nError message: [", respondedErrorMessage, "] >< [", apiMessageConstant.UNSUPPORTED_AUTHENTICATION_SERVICE, "]"
+            )));
+
+            verificationWentFailed();
+        }
+
+        return INSTANCE;
+    }
+
+    //endregion Tokens verification
+
+    //endregion Verifications
 }

@@ -22,10 +22,10 @@ public class RestUtil {
     private RestUtil() {}
 
     public static RestUtil getInstance() {
-        return BaseRestUtilHelper._INSTANCE;
+        return RestUtilHelper._INSTANCE;
     }
 
-    private static final class BaseRestUtilHelper {
+    private static final class RestUtilHelper {
         private static final RestUtil _INSTANCE = new RestUtil();
     }
 
@@ -161,6 +161,37 @@ public class RestUtil {
         }
 
         return INSTANCE;
+    }
+
+    public HashMap<RestUtil, Response> sendBasicRequestWithResponse(
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+
+        return new HashMap<>(){{
+            put(INSTANCE, response);
+        }};
     }
 
     public RestUtil sendAuthenticatedRequest(
