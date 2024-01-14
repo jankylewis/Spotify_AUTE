@@ -54,7 +54,7 @@ public class LogInPage extends LogInObject implements IVerification {
     public LogInPage verifyAccountMenuPresented() {
 
         waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
-        baseVerification.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
+        baseVerification.verifyIfElementVisible(findLocator(BTN_ACCOUNT_MENU));
 
         verificationWentPassed();
 

@@ -4,6 +4,7 @@ import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.jetbrains.annotations.NotNull;
+import se.commonHandler.baseService.waitHelper.BaseWaitHelper;
 import se.commonHandler.constantHouse.uiConstant.ActionConstant;
 import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 
@@ -45,6 +46,7 @@ public class BaseUiAction {
     }
 
     public void sendKeyToElement(Locator expLocator, String expText) {
+
         waitHelper.waitForElementVisible(expLocator, false);
 
         clearAllValues(expLocator);
@@ -55,6 +57,7 @@ public class BaseUiAction {
     }
 
     public void clickOnElement(Locator expLocator) {
+
         waitHelper.waitForElementVisible(expLocator);
 
         expLocator.click(actionConst.clickOpts
@@ -68,20 +71,16 @@ public class BaseUiAction {
 
     public void clickOnElementByForcing(Locator expLocator) {
         waitHelper.waitForElementVisible(expLocator);
-
-        expLocator.click(actionConst.clickOpts
-                .setForce(true));
+        expLocator.click(actionConst.clickOpts.setForce(true));
     }
 
     public void clickOnElementByForcing(Locator expLocator, Double delayTimeOut) {
         waitHelper.waitForElementVisible(expLocator);
-
-        expLocator.click(actionConst.clickOpts
-                .setForce(true)
-                .setDelay(delayTimeOut));
+        expLocator.click(actionConst.clickOpts.setForce(true).setDelay(delayTimeOut));
     }
 
     public void clickOnElement(Locator expLocator, boolean isLongWaitUsed) {
+
         waitHelper.waitForElementVisible(expLocator, isLongWaitUsed);
 
         expLocator.click(actionConst.clickOpts
@@ -90,6 +89,7 @@ public class BaseUiAction {
     }
 
     public void clickOnElement(Locator expLocator, Double delayTimeOut) {           //Giving a hard-coded delay
+
         waitHelper.waitForElementVisible(expLocator, false);
 
         expLocator.click(actionConst.clickOpts
@@ -112,13 +112,11 @@ public class BaseUiAction {
 
     public void clickOnRadioButton(Locator expLocator) {
         waitHelper.waitForElementVisible(expLocator);
-
         expLocator.check();
     }
 
     public void selectDropdown(Locator expLocator, String expOption) {
         waitHelper.waitForElementVisible(expLocator);
-
         expLocator.selectOption(expOption);
     }
 

@@ -17,12 +17,22 @@ public class PlaylistPage extends PlaylistObject implements IVerification {
 
     public PlaylistPage deleteAllExistingPlaylists() {
 
+        //Waiting for skeletons to be vanished
+        Boolean wasLoadingCompleted = waitForSkeletonLoadingToBeDetached(6);
+        if (wasLoadingCompleted == null) {
+            throw new RuntimeException("Loading was not completed!  ");
+        }
+
+        LOGGER.info(wasLoadingCompleted.toString());
+
         List<Locator> listOfPlaylistLocators = findListOfLocators(DIV_PLAYLISTS);
 
         int idx = 0;
 
         //Cleaning all existing playlists
         while (idx < listOfPlaylistLocators.size()) {
+
+            pollingWaitHelper.waitForElementToBeEnabledWithPollings(listOfPlaylistLocators.get(0).toString());
 
             baseUi.clickOnElementByForcing(listOfPlaylistLocators.get(0));
             baseUi.clickOnElement(findLocator(BTN_MORE));
@@ -41,7 +51,7 @@ public class PlaylistPage extends PlaylistObject implements IVerification {
 
     public PlaylistPage verifyAllExistingPlaylistsDeleted() {
 
-        if (baseVerification.verifyElementVisible(findLocator(LBL_CREATE_YOUR_FIRST_PLAYLIST))) {
+        if (baseVerification.verifyIfElementVisible(findLocator(LBL_CREATE_YOUR_FIRST_PLAYLIST))) {
             verificationWentPassed();
         }
         else {

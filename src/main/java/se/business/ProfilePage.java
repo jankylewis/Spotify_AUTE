@@ -12,14 +12,14 @@ public class ProfilePage extends ProfileObject implements IVerification {
 
     public void verifySpotifyLogoPresented() {
         waitHelper.waitForElementVisible(findLocator(BTN_SPOTIFY_LOGO), true);
-        baseVerification.verifyElementVisible(findLocator(BTN_SPOTIFY_LOGO));
+        baseVerification.verifyIfElementVisible(findLocator(BTN_SPOTIFY_LOGO));
 
         verificationWentPassed();
     }
 
     public void verifyUserSuccessfullyLoggedIn() {
         waitHelper.waitForElementVisible(findLocator(BTN_PROFILE), true);
-        baseVerification.verifyElementVisible(findLocator(BTN_PROFILE));
+        baseVerification.verifyIfElementVisible(findLocator(BTN_PROFILE));
 
         verificationWentPassed();
     }

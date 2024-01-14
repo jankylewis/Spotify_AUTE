@@ -25,4 +25,5 @@ public class WaitConstant {
 
     //endregion
 
+    public final int POLLING_MAX_ATTEMPTS = 5;
 }

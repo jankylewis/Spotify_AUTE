@@ -1,4 +1,4 @@
-package se.commonHandler.baseService;
+package se.commonHandler.baseService.waitHelper;
 
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
@@ -16,7 +16,7 @@ import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 public class BaseWaitHelper {
 
     private Page page;
-    private WaitConstant waitConst;
+    protected WaitConstant waitConst;
 
     public BaseWaitHelper(Page page) {
         this.page = page;
@@ -36,7 +36,7 @@ public class BaseWaitHelper {
 
     //endregion
 
-    //region Wait section goes here
+    //region Wait helpers used for Locator type
 
     public void waitForElementVisible(@NotNull Locator expLocator) {
 
@@ -60,13 +60,13 @@ public class BaseWaitHelper {
     public void waitForElementVisible(@NotNull Locator expLocator, boolean isLongWait) {
 
         //Time-out settings
-        int selTimeOut = isLongWait == true ? waitConst.MAXTIMEOUT : waitConst.TIMEOUT3S;
+        int selTimeOut = isLongWait ? waitConst.MAXTIMEOUT : waitConst.TIMEOUT3S;
 
         //Waiting for locator to be visible with time-out
         expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE).setTimeout(selTimeOut));
     }
 
-    //endregion
+    //endregion Wait helpers used for Locator type
 
     //region Hard-coded waiting
 

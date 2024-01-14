@@ -24,6 +24,8 @@ public class BaseObject {
     protected final String BTN_ACCOUNT_MENU = "css=button[aria-controls='profileMenu']";
     protected final String BTN_LOG_OUT = "xpath=//button[contains(@data-testid, 'logout')]";
     protected final String DIV_PLAYLISTS = "css=div[data-encore-id='listRow']";     //This could be a list of locators
+    protected final String SECTION_SKELETON_LOADING =
+            "xpath=//section[@data-testid='home-page'][//*[contains(@data-testid, 'skeleton')]]";
 
     //region Locating locators service
 
