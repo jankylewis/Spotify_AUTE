@@ -51,23 +51,28 @@ public class LogInPage extends LogInObject implements IVerification {
 
     //region Making verifications on successful log-in
 
-    public void verifyAccountMenuPresented() {
+    public LogInPage verifyAccountMenuPresented() {
+
         waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
         baseVerification.verifyElementVisible(findLocator(BTN_ACCOUNT_MENU));
 
         verificationWentPassed();
+
+        return this;
     }
 
-    public void verifyErrorMessagePresented() {
+    public LogInPage verifyErrorMessagePresented() {
         Locator invalidCredentialsLbl = findLocator(LBL_INVALID_CREDENTIALS);
 
         waitHelper.waitForElementVisible(invalidCredentialsLbl, false);
         baseVerification.verifyStringEquality(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
 
         verificationWentPassed();
+
+        return this;
     }
 
-    //region IVerifications
+    //region IVerification
 
     @Override
     public void verificationWentPassed() {

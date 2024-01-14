@@ -9,7 +9,13 @@ public class HomePage extends HomeObject {
         super(page);
     }
 
-    public void waitForLogInButtonPresented() {
+    public HomePage waitForLogInButtonPresented() {
         waitHelper.waitForElementVisible(findLocator(BTN_LOG_IN), false);
+        return this;
+    }
+
+    public HomePage waitForInstallAppButtonPresented() {
+        waitHelper.waitForElementVisible(findLocator(BTN_INSTALL_APP));
+        return this;
     }
 }
