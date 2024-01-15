@@ -10,12 +10,12 @@ public class HomePage extends HomeObject {
     }
 
     public HomePage waitForLogInButtonPresented() {
-        waitHelper.waitForElementVisible(findLocator(BTN_LOG_IN), false);
+        waitHelper.waitForElementToBeVisible(findLocator(BTN_LOG_IN), false);
         return this;
     }
 
     public HomePage waitForInstallAppButtonPresented() {
-        waitHelper.waitForElementVisible(findLocator(BTN_INSTALL_APP));
+        waitHelper.waitForElementToBeVisible(findLocator(BTN_INSTALL_APP));
         return this;
     }
 }

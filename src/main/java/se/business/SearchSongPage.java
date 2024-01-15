@@ -37,7 +37,7 @@ public class SearchSongPage extends SearchSongObject
     }
 
     public SearchSongPage switchToTab(@NotNull ETab tab) {
-        baseUi.clickOnElement(
+        baseUi.clickOnVisibleElement(
                 findLocator(LNK_TAB(getTabIndex(tab.getEValue()))));
         return this;
     }

@@ -25,12 +25,20 @@ public class PollingWaitHelper extends BaseWaitHelper {
     //region Wait using Custom Polling approach
 
     //region Polling with times
-    public Boolean waitForElementToBeEnabledWithPollings(@NotNull String expLocatorString) {
+    public Boolean waitForElementToBeEnabledWithPollings(
+            @NotNull String expLocatorString, @Nullable Integer maxAttempts) {
+
+        maxAttempts = maxAttempts == null ? pollingConst.POLLING_MAX_ATTEMPTS : maxAttempts;
 
         Boolean isElementEnabled = null;
+        int idx = 0;
+        while (idx < maxAttempts) {
 
-        if (!baseVerification.verifyIfElementEnabled(expLocatorString)) {
-            isElementEnabled = true;
+            if (!baseVerification.verifyIfElementEnabled(expLocatorString)){
+                isElementEnabled = true;
+            }
+
+            idx++;
         }
 
         return isElementEnabled;
@@ -39,7 +47,7 @@ public class PollingWaitHelper extends BaseWaitHelper {
     public Boolean waitForElementToBeVisible(
             @NotNull String expLocatorString, @Nullable Integer maxAttempts) {
 
-        maxAttempts = maxAttempts == null ? waitConst.POLLING_MAX_ATTEMPTS : maxAttempts;
+        maxAttempts = maxAttempts == null ? pollingConst.POLLING_MAX_ATTEMPTS : maxAttempts;
 
         Boolean isElementVisible = null;
 
@@ -59,7 +67,7 @@ public class PollingWaitHelper extends BaseWaitHelper {
     public Boolean waitForElementToBeDetachedWithPollings(
             @NotNull String expLocatorString, @Nullable Integer maxAttempts) {
 
-        maxAttempts = maxAttempts == null ? waitConst.POLLING_MAX_ATTEMPTS : maxAttempts;
+        maxAttempts = maxAttempts == null ? pollingConst.POLLING_MAX_ATTEMPTS : maxAttempts;
 
         Boolean isElementDetached = null;
 

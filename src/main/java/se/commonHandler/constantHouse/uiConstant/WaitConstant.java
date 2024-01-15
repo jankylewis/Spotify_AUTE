@@ -24,6 +24,4 @@ public class WaitConstant {
     public final int TIMEOUT5S = 5000;
 
     //endregion
-
-    public final int POLLING_MAX_ATTEMPTS = 5;
 }

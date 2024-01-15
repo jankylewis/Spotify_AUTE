@@ -11,12 +11,14 @@ import com.microsoft.playwright.Locator.WaitForOptions;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
+import se.commonHandler.constantHouse.uiConstant.PollingConstant;
 import se.commonHandler.constantHouse.uiConstant.WaitConstant;
 
 public class BaseWaitHelper {
 
     private Page page;
     protected WaitConstant waitConst;
+    protected PollingConstant pollingConst;
 
     public BaseWaitHelper(Page page) {
         this.page = page;
@@ -24,11 +26,12 @@ public class BaseWaitHelper {
 
     {
         waitConst = new WaitConstant();
+        pollingConst = new PollingConstant();
     }
 
     //region Introducing vars
 
-    protected NavigateOptions navOpts = new NavigateOptions();
+    public NavigateOptions navOpts = new NavigateOptions();
     protected WaitForURLOptions waitUrlOpts = new WaitForURLOptions();
 
     private WaitForSelectorOptions waitForSelectorOptions = new WaitForSelectorOptions();
@@ -38,26 +41,19 @@ public class BaseWaitHelper {
 
     //region Wait helpers used for Locator type
 
-    public void waitForElementVisible(@NotNull Locator expLocator) {
-
-        //Waiting for locator to be visible
-        expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE));
-    }
-
     public void waitForElementAttached(@NotNull Locator expLocator) {
 
         //Waiting for locator to be attached on DOM
         expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.ATTACHED));
     }
 
-    public void waitForElementVisible(@NotNull Pair<ElementHandle, String> pairOfElement) {
+    public void waitForElementToBeVisible(@NotNull Locator expLocator) {
 
-        //Waiting for locator to be visible with time-out
-        pairOfElement.getValue0().waitForSelector(pairOfElement.getValue1(),
-                new ElementHandle.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
+        //Waiting for locator to be visible
+        expLocator.waitFor(waitForOptions.setState(WaitForSelectorState.VISIBLE));
     }
 
-    public void waitForElementVisible(@NotNull Locator expLocator, boolean isLongWait) {
+    public void waitForElementToBeVisible(@NotNull Locator expLocator, boolean isLongWait) {
 
         //Time-out settings
         int selTimeOut = isLongWait ? waitConst.MAXTIMEOUT : waitConst.TIMEOUT3S;
@@ -67,6 +63,21 @@ public class BaseWaitHelper {
     }
 
     //endregion Wait helpers used for Locator type
+
+    public void waitForElementToBeVisible(@NotNull Pair<ElementHandle, String> pairOfElement) {
+
+        //Waiting for locator to be visible with time-out
+        pairOfElement.getValue0().waitForSelector(pairOfElement.getValue1(),
+                new ElementHandle.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
+    }
+
+    public void waitForElementToBeDetached(String expLocator) {
+        page.waitForSelector(expLocator, new Page.WaitForSelectorOptions().setState(WaitForSelectorState.DETACHED));
+    }
+
+    public void waitForElementToBeEnabled(String expLocator) {
+        page.waitForSelector(expLocator, new Page.WaitForSelectorOptions().setState(WaitForSelectorState.DETACHED));
+    }
 
     //region Hard-coded waiting
 

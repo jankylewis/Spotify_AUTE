@@ -18,7 +18,7 @@ public class PlaylistPage extends PlaylistObject implements IVerification {
     public PlaylistPage deleteAllExistingPlaylists() {
 
         //Waiting for skeletons to be vanished
-        Boolean wasLoadingCompleted = waitForSkeletonLoadingToBeDetached(6);
+        Boolean wasLoadingCompleted = waitForSkeletonLoadingToBeDetached(50);
         if (wasLoadingCompleted == null) {
             throw new RuntimeException("Loading was not completed!  ");
         }
@@ -28,16 +28,17 @@ public class PlaylistPage extends PlaylistObject implements IVerification {
         List<Locator> listOfPlaylistLocators = findListOfLocators(DIV_PLAYLISTS);
 
         int idx = 0;
+        while (idx < listOfPlaylistLocators.size()) {           //Cleaning all existing playlists
 
-        //Cleaning all existing playlists
-        while (idx < listOfPlaylistLocators.size()) {
+            List<Locator> _listOfPlaylistLocators = findListOfLocators(DIV_PLAYLISTS);
 
-            pollingWaitHelper.waitForElementToBeEnabledWithPollings(listOfPlaylistLocators.get(0).toString());
+            pollingWaitHelper.waitForElementToBeEnabledWithPollings(DIV_PLAYLISTS, null);
 
-            baseUi.clickOnElementByForcing(listOfPlaylistLocators.get(0));
-            baseUi.clickOnElement(findLocator(BTN_MORE));
-            baseUi.clickOnElement(findLocator(BTN_DELETE));
-            baseUi.clickOnElement(findLocator(BTN_DELETE_ON_CONFIRMATION_MODAL));
+            baseUi.hoverElement(_listOfPlaylistLocators.get(0));
+            baseUi.clickOnVisibleElement(_listOfPlaylistLocators.get(0));
+            baseUi.clickOnVisibleElement(findLocator(BTN_MORE));
+            baseUi.clickOnVisibleElement(findLocator(BTN_DELETE));
+            baseUi.clickOnVisibleElement(findLocator(BTN_DELETE_ON_CONFIRMATION_MODAL));
 
             idx++;
         }

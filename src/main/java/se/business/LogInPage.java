@@ -33,7 +33,7 @@ public class LogInPage extends LogInObject implements IVerification {
         );
 
         //Signing-in
-        baseUi.clickOnElement(findLocator(BTN_LOG_IN), Double.valueOf(waitConst.TIMEOUT1S));
+        baseUi.clickOnVisibleElement(findLocator(BTN_LOG_IN), Double.valueOf(waitConst.TIMEOUT1S));
 
         return this;
     }
@@ -53,7 +53,7 @@ public class LogInPage extends LogInObject implements IVerification {
 
     public LogInPage verifyAccountMenuPresented() {
 
-        waitHelper.waitForElementVisible(findLocator(BTN_ACCOUNT_MENU), true);
+        waitHelper.waitForElementToBeVisible(findLocator(BTN_ACCOUNT_MENU), true);
         baseVerification.verifyIfElementVisible(findLocator(BTN_ACCOUNT_MENU));
 
         verificationWentPassed();
@@ -64,7 +64,7 @@ public class LogInPage extends LogInObject implements IVerification {
     public LogInPage verifyErrorMessagePresented() {
         Locator invalidCredentialsLbl = findLocator(LBL_INVALID_CREDENTIALS);
 
-        waitHelper.waitForElementVisible(invalidCredentialsLbl, false);
+        waitHelper.waitForElementToBeVisible(invalidCredentialsLbl, false);
         baseVerification.verifyStringEquality(msgConst.LBL_INVALID_CREDENTIALS, invalidCredentialsLbl.textContent());
 
         verificationWentPassed();
