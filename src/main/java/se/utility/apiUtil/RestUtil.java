@@ -103,6 +103,39 @@ public class RestUtil {
     //region Processing requests
 
     public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+            String expectedToken,
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
+
+        setAccessToken(expectedToken);
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+        return new HashMap<>(){{
+            put(INSTANCE, response);
+        }};
+    }
+
+    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
             @Nullable ContentType requestedContentType,
@@ -223,39 +256,6 @@ public class RestUtil {
         }
 
         return INSTANCE;
-    }
-
-    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
-            String expectedToken,
-            String requestedUri,
-            @Nullable Collection<Pair<Object, Object>> requestedBody,
-            @Nullable ContentType requestedContentType,
-            EMethod requestedMethod
-    ) {
-
-        setAccessToken(expectedToken);
-
-        setRequestedUri(requestedUri);
-
-        //Invoking a requested body if needed
-        if (requestedContentType != null && requestedBody != null) {
-            switch (requestedContentType) {
-                case URLENC -> buildUrlencodedForm(requestedBody);
-            }
-        }
-
-        switch (requestedMethod) {
-            case GET -> sendGetRequest();
-            case POST -> sendPostRequest();
-            case PUT -> sendPutRequest();
-            case HEAD -> sendHeadRequest();
-            case PATCH -> sendPatchRequest();
-            case DELETE -> sendDeleteRequest();
-            case OPTIONS -> sendOptionsRequest();
-        }
-        return new HashMap<>(){{
-            put(INSTANCE, response);
-        }};
     }
 
     //endregion

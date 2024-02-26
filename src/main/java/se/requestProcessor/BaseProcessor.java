@@ -37,6 +37,8 @@ public class BaseProcessor extends BaseApiService implements IVerification {
 
     //endregion
 
+    //region Verifying response code statuses
+
     protected Pair<Boolean, Integer> verifyResponseStatusCodeWentGreen(@NotNull Response response) {
 
         responseStatusCode = response.statusCode();
@@ -44,6 +46,24 @@ public class BaseProcessor extends BaseApiService implements IVerification {
 
         return Pair.with(responseHealth, responseStatusCode);
     }
+
+    protected Pair<Boolean, Integer> verifyResponseStatusCodeWentRed(@NotNull Response response) {
+
+        responseStatusCode = response.statusCode();
+        responseHealth = responseStatusCode == apiConstant.RED_STATUS;
+
+        return Pair.with(responseHealth, responseStatusCode);
+    }
+
+    protected Pair<Boolean, Integer> verifyResponseStatusCodeWent404(@NotNull Response response) {
+
+        responseStatusCode = response.statusCode();
+        responseHealth = responseStatusCode == apiConstant.SERVICE_NOT_FOUND;
+
+        return Pair.with(responseHealth, responseStatusCode);
+    }
+
+    //endregion
 
     //region IVerification
 

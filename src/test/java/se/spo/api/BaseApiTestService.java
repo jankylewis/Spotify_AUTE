@@ -1,3 +1,5 @@
 package se.spo.api;
 
-public class BaseApiTestService {}
+import se.commonHandler.baseService.BaseService;
+
+public class BaseApiTestService extends BaseService {}
