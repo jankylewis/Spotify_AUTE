@@ -74,7 +74,6 @@ public class BasePage extends BaseObject {
 //
 //        //Waiting for skeleton to be detached
 //        Boolean isSkeletonDetached = pollingWaitHelper.waitForElementToBeDetachedWithPollings(SECTION_SKELETON_LOADING, maxAttempts);
-//        Boolean isSkeletonDetached = pollingWaitHelper.waitForElementToBeDetachedWithPollings(SECTION_SKELETON_LOADING, maxAttempts);
 
         waitHelper.waitForElementToBeVisible(findLocator(SECTION_SKELETON_LOADING));
         waitHelper.waitForElementToBeDetached(SECTION_SKELETON_LOADING);
