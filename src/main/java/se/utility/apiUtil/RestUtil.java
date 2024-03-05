@@ -33,13 +33,29 @@ public class RestUtil {
 
     //region Introducing variables
 
-    private final RequestSpecification requestSpecification = given();
+    private final ThreadLocal<RequestSpecification> TL_REQUEST_SPECIFICATION = new ThreadLocal<>();
+    private RequestSpecification _requestSpecification;
     private Response response;
     private String _requestedUri;
     private JsonPath jsonPath;
     private Gson gson;
 
     //endregion
+
+    //Handling Thread Local to Http Client Request
+    {
+        setRequestSpecification();
+        _requestSpecification = get_requestSpecification();
+    }
+
+    //Request Specification getter n setter
+    private void setRequestSpecification() {
+        TL_REQUEST_SPECIFICATION.set(given());
+    }
+
+    private RequestSpecification get_requestSpecification() {
+        return TL_REQUEST_SPECIFICATION.get();
+    }
 
     private RestUtil setRequestedUri(String requestedUri) {
         _requestedUri = requestedUri;
@@ -60,10 +76,10 @@ public class RestUtil {
             String name = pair.getValue0().toString();
             String value = pair.getValue1().toString();
 
-            requestSpecification.formParam(name, value);
+            _requestSpecification.formParam(name, value);
         }
 
-        return requestSpecification;
+        return _requestSpecification;
     }
 
     //endregion
@@ -71,31 +87,31 @@ public class RestUtil {
     //region Methods' sending services
 
     private Response sendGetRequest() {
-        return response = requestSpecification.get(_requestedUri);
+        return response = _requestSpecification.get(_requestedUri);
     }
 
     private Response sendPostRequest() {
-        return response = requestSpecification.post(_requestedUri);
+        return response = _requestSpecification.post(_requestedUri);
     }
 
     private Response sendPatchRequest() {
-        return response = requestSpecification.patch(_requestedUri);
+        return response = _requestSpecification.patch(_requestedUri);
     }
 
     private Response sendHeadRequest() {
-        return response = requestSpecification.head(_requestedUri);
+        return response = _requestSpecification.head(_requestedUri);
     }
 
     private Response sendOptionsRequest() {
-        return response = requestSpecification.options(_requestedUri);
+        return response = _requestSpecification.options(_requestedUri);
     }
 
     private Response sendPutRequest() {
-        return response = requestSpecification.put(_requestedUri);
+        return response = _requestSpecification.put(_requestedUri);
     }
 
     private Response sendDeleteRequest() {
-        return response = requestSpecification.delete(_requestedUri);
+        return response = _requestSpecification.delete(_requestedUri);
     }
 
     //endregion
@@ -266,7 +282,7 @@ public class RestUtil {
 
         String accessToken = AuthenticationUtil.getAccessToken();
 
-        requestSpecification
+        _requestSpecification
                 .given()
                 .header("Authorization", "Bearer " + accessToken);
 
@@ -275,7 +291,7 @@ public class RestUtil {
 
     private RestUtil setAccessToken(String expectedToken) {
 
-        requestSpecification
+        _requestSpecification
                 .given()
                 .header("Authorization", "Bearer " + expectedToken);
 
