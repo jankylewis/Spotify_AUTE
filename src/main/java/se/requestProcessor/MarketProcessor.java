@@ -67,6 +67,19 @@ public class MarketProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
+    public Pair<MarketProcessor, Response> getMarketsWithExpiredToken(String expiredToken) {
+
+        HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
+                expiredToken,
+                marketBrowsingUri,
+                null,
+                null,
+                RestUtil.EMethod.GET
+        );
+
+        return Pair.with(INSTANCE, response.get(_requestProcessor));
+    }
+
     //endregion
 
     //region Verifications

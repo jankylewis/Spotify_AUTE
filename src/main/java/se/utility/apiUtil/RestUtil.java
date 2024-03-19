@@ -33,7 +33,7 @@ public class RestUtil {
 
     //region Introducing variables
 
-    private final ThreadLocal<RequestSpecification> TL_REQUEST_SPECIFICATION = new ThreadLocal<>();
+    private final ThreadLocal<RequestSpecification> TL_REQUEST_SPECIFICATION = new ThreadLocal<>();     //Removing this ThreadLocal usage
     private RequestSpecification _requestSpecification;
     private Response response;
     private String _requestedUri;
