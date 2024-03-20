@@ -38,7 +38,7 @@ public class TestDataFactory extends BaseApiService {
         return TestDataProviderFactoryHelper._INSTANCE;
     }
 
-    private TestDataFactory(){}
+    public TestDataFactory(){}
 
     //endregion
 
@@ -294,7 +294,7 @@ public class TestDataFactory extends BaseApiService {
                 }
             }
 
-            throw new RuntimeException("Data provider got an unexpected error! ");
+            throw new RuntimeException("Data provider got an unexpected error!      ");
         }
     }
 }

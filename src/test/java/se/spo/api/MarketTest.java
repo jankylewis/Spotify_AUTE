@@ -14,9 +14,9 @@ public class MarketTest extends BaseApiTestService {
             testName = "SAMARKETS_01",
             description = "Verify Api went GREEN when being hit by a normal request"
     )
-    protected void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithGreenCode() {
-        Pair<MarketProcessor, Response> dataReturned = marketProcessor.getMarkets();
-//        marketProcessor.verifyRetrievingMarketsSuccessfully(dataReturned.getValue1());
+    protected synchronized void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithGreenCode() {
+        Pair<MarketProcessor, Response> dataReturned = marketProcessor.getMarketsWithAbnormalUri();
+        marketProcessor.verifyRetrievingMarketsSuccessfully(dataReturned.getValue1());
     }
 
     @Test(
@@ -24,12 +24,10 @@ public class MarketTest extends BaseApiTestService {
             testName = "SAMARKETS_02",
             description = "Verify Api went RED when being hit by an abnormal URI"
     )
-    protected void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithRedCode() {
-
+    protected synchronized void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWith404Code() {
         Pair<MarketProcessor, Response> dataReturned =
-                marketProcessor.getMarkets(faker.produceFakeUuid().toString());
-
-//        marketProcessor.verifyRetrievingMarketsUnsuccessfully(dataReturned.getValue1());
+                marketProcessor.getMarketsWithAbnormalUri(apiFaker.produceFakeUuid().toString());
+        marketProcessor.verifyApiResponded404(dataReturned.getValue1());
     }
 
     @Test(
@@ -37,11 +35,13 @@ public class MarketTest extends BaseApiTestService {
             testName = "SAMARKETS_03",
             description = "Verify Api went RED when being hit by an invalid access token"
     )
-    protected void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithRedCodeByAnInvalidExpiredAccessToken() {
+    protected synchronized void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithRedCodeByAnInvalidAccessToken() {
 
-        Pair<MarketProcessor, Response> dataReturned =
-                marketProcessor.getMarketsWithExpiredToken(faker.produceFakeUuid().toString());
+        Pair<MarketProcessor, Response> dataReturned = marketProcessor
+                .getMarketsWithExpiredToken(apiFaker
+                        .generateSpotifyDummyTokens(apiFaker
+                                .getSecureRandomInstance()));
 
-//        marketProcessor.verifyRetrievingMarketsUnsuccessfully(dataReturned.getValue1());
+        marketProcessor.verifyApiResponded401(dataReturned.getValue1());
     }
 }
