@@ -33,7 +33,6 @@ public class RestUtil {
 
     //region Introducing variables
 
-    private final ThreadLocal<RequestSpecification> TL_REQUEST_SPECIFICATION = new ThreadLocal<>();     //Removing this ThreadLocal usage
     private RequestSpecification _requestSpecification;
     private Response response;
     private String _requestedUri;
@@ -44,17 +43,7 @@ public class RestUtil {
 
     //Handling Thread Local to Http Client Request
     {
-        setRequestSpecification();
-        _requestSpecification = get_requestSpecification();
-    }
-
-    //Request Specification getter n setter
-    private void setRequestSpecification() {
-        TL_REQUEST_SPECIFICATION.set(given());
-    }
-
-    private RequestSpecification get_requestSpecification() {
-        return TL_REQUEST_SPECIFICATION.get();
+        _requestSpecification = given();
     }
 
     private RestUtil setRequestedUri(String requestedUri) {

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestDataProviderFactory extends BaseApiService {
+public class TestDataFactory extends BaseApiService {
 
     //region Introducing variables
 
@@ -28,17 +28,17 @@ public class TestDataProviderFactory extends BaseApiService {
 
     //region Introducing instance
 
-    public static final TestDataProviderFactory INSTANCE = getInstance();
+    public static final TestDataFactory INSTANCE = getInstance();
 
     private static class TestDataProviderFactoryHelper {
-        private static final TestDataProviderFactory _INSTANCE = new TestDataProviderFactory();
+        private static final TestDataFactory _INSTANCE = new TestDataFactory();
     }
 
-    private static TestDataProviderFactory getInstance() {
+    private static TestDataFactory getInstance() {
         return TestDataProviderFactoryHelper._INSTANCE;
     }
 
-    private TestDataProviderFactory(){}
+    private TestDataFactory(){}
 
     //endregion
 
@@ -111,7 +111,7 @@ public class TestDataProviderFactory extends BaseApiService {
         return JUtil.ListUtil.convertListToArrayObject(listOfDummyTokens);
     }
 
-    private TestDataProviderFactory logRuntimeInformation(@NotNull Method callingMethod) {
+    private TestDataFactory logRuntimeInformation(@NotNull Method callingMethod) {
 
         LOGGER.info(StringUtil.appendStrings(Arrays.asList(
                 "\n",

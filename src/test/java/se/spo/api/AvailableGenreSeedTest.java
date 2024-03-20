@@ -5,8 +5,8 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 import se.requestProcessor.AvailableGenreSeedProcessor;
-import se.spo.api.testDataProvider.TestDataProviderFactory;
-import se.spo.api.testDataProvider.TestDataProviderFactory.AvailableGenreSeedDataProvider;
+import se.spo.api.testDataProvider.TestDataFactory;
+import se.spo.api.testDataProvider.TestDataFactory.AvailableGenreSeedDataProvider;
 
 import java.io.IOException;
 import java.util.*;
@@ -69,7 +69,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
             priority = 3,
             testName = "SAAVAILABLEGENRESEED_04",
             description = "Verify that the invalid tokens shall not be authenticated",
-            dataProviderClass = TestDataProviderFactory.class,
+            dataProviderClass = TestDataFactory.class,
             dataProvider = "InvalidTokensProvider"
     )
     protected synchronized void spotifyApiTest_VerifyTheInvalidTokensWereNotAuthenticated(
@@ -94,7 +94,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
             priority = 3,
             testName = "SAAVAILABLEGENRESEED_05",
             description = "Verify that the expired tokens shall not be authenticated",
-            dataProviderClass = TestDataProviderFactory.class,
+            dataProviderClass = TestDataFactory.class,
             dataProvider = "ExpiredTokensProvider"
     )
     protected synchronized void spotifyApiTest_VerifyTheExpiredTokensWereNotAuthenticated(
@@ -116,7 +116,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
     protected synchronized void spotifyApiTest_VerifyApiThrewErrorIfNoTokenProvided() throws IOException {
 
         //Generating an empty HashSet
-        TestDataProviderFactory.INSTANCE.prepareModifiableTokensWithCsv(
+        TestDataFactory.INSTANCE.prepareModifiableTokensWithCsv(
                 new Object() {}.getClass().getEnclosingMethod());
 
         Pair<AvailableGenreSeedProcessor, Response> dataResponded =
@@ -136,7 +136,7 @@ public class AvailableGenreSeedTest extends BaseApiTestService {
 
         Collection<Pair<String, String>> unmodifiableTokens =
                 Collections.unmodifiableCollection((Collection<Pair<String, String>>)
-                                TestDataProviderFactory.INSTANCE.
+                                TestDataFactory.INSTANCE.
                                         prepareModifiableTokensWithCsv(new Object() {}.getClass().getEnclosingMethod()));
 
         for (int idx = 0; idx < unmodifiableTokens.size(); idx++) {
