@@ -55,6 +55,8 @@ public class MarketProcessor extends BaseProcessor {
                 RestUtil.EMethod.GET
         );
 
+        System.out.println("_  " + _requestProcessor.hashCode());
+
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
@@ -66,6 +68,8 @@ public class MarketProcessor extends BaseProcessor {
                 null,
                 RestUtil.EMethod.GET
         );
+
+        System.out.println("_  " + _requestProcessor.hashCode());
 
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
@@ -79,6 +83,8 @@ public class MarketProcessor extends BaseProcessor {
                 null,
                 RestUtil.EMethod.GET
         );
+
+        System.out.println("_  " + _requestProcessor.hashCode());
 
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }

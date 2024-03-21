@@ -107,7 +107,7 @@ public class RestUtil {
 
     //region Processing requests
 
-    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+    public synchronized HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
             String expectedToken,
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
@@ -140,7 +140,7 @@ public class RestUtil {
         }};
     }
 
-    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+    public synchronized HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
             @Nullable ContentType requestedContentType,
