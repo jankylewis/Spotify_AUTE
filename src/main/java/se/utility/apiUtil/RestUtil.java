@@ -19,7 +19,7 @@ public class RestUtil {
 
     protected static final RestUtil INSTANCE = getInstance();
 
-    private RestUtil() {}
+    public RestUtil() {}
 
     public static RestUtil getInstance() {
         return RestUtilHelper._INSTANCE;
@@ -107,7 +107,44 @@ public class RestUtil {
 
     //region Processing requests
 
-    public synchronized HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+    //region Grouped tests
+
+    public Response _sendAuthenticatedRequestWithResponse(
+            String expectedToken,
+            String requestedUri,
+            @Nullable Collection<Pair<Object, Object>> requestedBody,
+            @Nullable ContentType requestedContentType,
+            EMethod requestedMethod
+    ) {
+
+        setAccessToken(expectedToken);
+
+        setRequestedUri(requestedUri);
+
+        //Invoking a requested body if needed
+        if (requestedContentType != null && requestedBody != null) {
+            switch (requestedContentType) {
+                case URLENC -> buildUrlencodedForm(requestedBody);
+            }
+        }
+
+        switch (requestedMethod) {
+            case GET -> sendGetRequest();
+            case POST -> sendPostRequest();
+            case PUT -> sendPutRequest();
+            case HEAD -> sendHeadRequest();
+            case PATCH -> sendPatchRequest();
+            case DELETE -> sendDeleteRequest();
+            case OPTIONS -> sendOptionsRequest();
+        }
+        return response;
+    }
+
+
+
+    //endregion
+
+    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
             String expectedToken,
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
@@ -140,7 +177,7 @@ public class RestUtil {
         }};
     }
 
-    public synchronized HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
+    public HashMap<RestUtil, Response> sendAuthenticatedRequestWithResponse(
             String requestedUri,
             @Nullable Collection<Pair<Object, Object>> requestedBody,
             @Nullable ContentType requestedContentType,

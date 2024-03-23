@@ -46,7 +46,7 @@ public class MarketProcessor extends BaseProcessor {
 
     //region Making requests
 
-    public Pair<MarketProcessor, Response> getMarketsWithAbnormalUri() {       //Normal request
+    public Pair<MarketProcessor, Response> getMarketsWithNormalUri() {       //Normal request
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
             marketBrowsingUri,
@@ -55,12 +55,10 @@ public class MarketProcessor extends BaseProcessor {
                 RestUtil.EMethod.GET
         );
 
-        System.out.println("_  " + _requestProcessor.hashCode());
-
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
-    public Pair<MarketProcessor, Response> getMarketsWithAbnormalUri(String abnormalSuffix) {       //Abnormal request
+    public Pair<MarketProcessor, Response> getMarketsWithNormalUri(String abnormalSuffix) {       //Abnormal request
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
                 marketBrowsingUri + "/" + abnormalSuffix,

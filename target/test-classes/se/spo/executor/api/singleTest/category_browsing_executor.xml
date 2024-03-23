@@ -9,7 +9,7 @@
 
     <test name="SABROWSECATEGORIES_02">
         <classes>
-            <class name="se.spo.api.CategoryBrowsingTest">
+            <class name="se.spo.api.categoryBrowsingTest.GeneralCategoryBrowsingTest">
                 <methods>
                     <include name="spotifyApiTest_VerifyApiProcessedRequestWithBadResponseCode"></include>
                 </methods>
@@ -23,7 +23,7 @@
 
     <test name="SABROWSECATEGORIES_01">
         <classes>
-            <class name="se.spo.api.CategoryBrowsingTest">
+            <class name="se.spo.api.categoryBrowsingTest.GeneralCategoryBrowsingTest">
                 <methods>
                     <include name="spotifyApiTest_VerifyApiProcessedRequestWithGreenResponseCode"></include>
                 </methods>

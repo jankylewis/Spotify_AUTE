@@ -15,7 +15,7 @@ public class MarketTest extends BaseApiTestService {
             description = "Verify Api went GREEN when being hit by a normal request"
     )
     protected void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWithGreenCode() {
-        Pair<MarketProcessor, Response> dataReturned = marketProcessor.getMarketsWithAbnormalUri();
+        Pair<MarketProcessor, Response> dataReturned = marketProcessor.getMarketsWithNormalUri();
         marketProcessor.verifyRetrievingMarketsSuccessfully(dataReturned.getValue1());
     }
 
@@ -26,7 +26,7 @@ public class MarketTest extends BaseApiTestService {
     )
     protected void spotifyApiTest_VerifyApiProcessedRetrievingMarketsWith404Code() {
         Pair<MarketProcessor, Response> dataReturned =
-                marketProcessor.getMarketsWithAbnormalUri(apiFaker.produceFakeUuid().toString());
+                marketProcessor.getMarketsWithNormalUri(apiFaker.produceFakeUuid().toString());
         marketProcessor.verifyApiResponded404(dataReturned.getValue1());
     }
 

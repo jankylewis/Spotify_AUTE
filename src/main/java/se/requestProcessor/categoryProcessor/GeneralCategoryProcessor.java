@@ -1,37 +1,38 @@
-package se.requestProcessor;
+package se.requestProcessor.categoryProcessor;
 
 import io.restassured.response.Response;
 import org.javatuples.Pair;
+import se.requestProcessor.BaseProcessor;
 import se.utility.StringUtil;
 import se.utility.apiUtil.RestUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class CategoryProcessor extends BaseProcessor {
+public class GeneralCategoryProcessor extends BaseProcessor {
 
     //region Introducing constructors
 
-    private CategoryProcessor() {
+    private GeneralCategoryProcessor() {
         super();
     }
-    private CategoryProcessor(RestUtil restUtil) {
+    private GeneralCategoryProcessor(RestUtil restUtil) {
         super(restUtil);
     }
 
     //endregion
 
     //region Processing instance
-    public static final CategoryProcessor INSTANCE = getInstance();
+    public static final GeneralCategoryProcessor INSTANCE = getInstance();
 
-    private static CategoryProcessor getInstance() {
+    private static GeneralCategoryProcessor getInstance() {
         _requestProcessor = RestUtil.getInstance();
         return BrowseCategoryProcessorHelper._INSTANCE;
     }
 
     private static final class BrowseCategoryProcessorHelper {
-        private static final CategoryProcessor _INSTANCE =
-                new CategoryProcessor();
+        private static final GeneralCategoryProcessor _INSTANCE =
+                new GeneralCategoryProcessor();
     }
 
     //endregion
@@ -41,7 +42,7 @@ public class CategoryProcessor extends BaseProcessor {
     //region Making requests to get list of browse categories
 
     //Blocking access to this method from others
-    public Pair<CategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
+    public Pair<GeneralCategoryProcessor, Response> getBrowseCategoriesSuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
                 categoriesBrowsingUri,
@@ -53,7 +54,7 @@ public class CategoryProcessor extends BaseProcessor {
         return Pair.with(INSTANCE, response.get(_requestProcessor));
     }
 
-    public Pair<CategoryProcessor, Response> getBrowseCategoriesUnsuccessfully() {
+    public Pair<GeneralCategoryProcessor, Response> getBrowseCategoriesUnsuccessfully() {
 
         HashMap<RestUtil, Response> response = _requestProcessor.sendAuthenticatedRequestWithResponse(
                 StringUtil.appendStrings(Arrays.asList(categoriesBrowsingUri, "/", apiFaker.produceFakeUuid().toString())),
